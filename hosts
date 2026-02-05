@@ -1,0 +1,20 @@
+# ===== Inventario del Cluster SLURM =====
+
+# Headnode
+[headnode]
+slurm-hn ansible_host=192.168.100.10 ansible_connection=stack ansible_become_password=stack
+
+# Grupo para los Workers
+[workers]
+slurm-wn1 ansible_host=192.168.100.11 ansible_connection=ssh ansible_user=ubuntu 
+slurm-wn2 ansible_host=192.168.100.12 ansible_connection=ssh ansible_user=ubuntu
+slurm-wn3 ansible_host=192.168.100.13 ansible_connection=ssh ansible_user=ubuntu
+slurm-wn4 ansible_host=192.168.100.14 ansible_connection=ssh ansible_user=ubuntu
+
+[workers:vars]
+# Escalado de privilegios en los workers
+ansible_become=yes
+ansible_become_method=sudo
+ansible_become_user=root
+ansible_become_password=ubuntu
+ansible_ssh_pass=ubuntu

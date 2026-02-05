@@ -1,0 +1,24 @@
+---
+# ===== Playbook de configuracion para los workers =====
+  
+- name: Configuraciones especificas de los workers
+  hosts: workers
+  become: yes
+  gather_facts: yes
+  
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+  roles:
+    - 
+  
+  post_tasks:
+    - name: Mensaje final de configuracion de los workers
+      debug:
+        msg:
+          - "========================================="
+          - "Configuracion de los Workers Completada"
+          - "========================================="

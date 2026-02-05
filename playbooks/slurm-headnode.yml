@@ -1,0 +1,24 @@
+---
+# ===== Playbook de configuracion para el headnode =====
+  
+- name: Configuraciones especificas del Headnode
+  hosts: headnode
+  become: yes
+  gather_facts: yes
+  
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+  roles:
+    - 
+  
+  post_tasks:
+    - name: Mensaje final de configuracion del headnode
+      debug:
+        msg:
+          - "========================================="
+          - "Configuracion del Headnode Completada"
+          - "========================================="

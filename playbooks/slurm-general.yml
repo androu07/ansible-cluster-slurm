@@ -1,0 +1,42 @@
+---
+# ===== Playbook de configuracion para todos los hosts =====
+
+- name: Configuracion General de todo el cluster
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  pre_tasks:
+    - name: Instalacion de paquetes necesarios
+      apt:
+        name:
+          - chrony                      # Servicio de sincronizacion de tiempo  
+          - libpam-ldap                 # Autenticacion via LDAP
+          - ldap-utils                  # Utilidades LDAP
+          - libnss-ldap                 # Resolucion de nombres via LDAP
+          - munge                       # Servicio de autenticacion para SLURM
+          - slurm-wlm                   # SLURM Workload Manager
+          - nftables                    # Firewall
+          - nfs-common                  # Cliente NFS
+          - prometheus-node-exporter    # Exportador de datos de Prometheus para monitoreo  
+          - acl                         # Control de acceso avanzado
+        state: present
+      tags:
+        - instalacion_paquetes
+  
+  roles:
+    - slurm-general
+  
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+  
+  post_tasks:
+    - name: Mensaje final de configuracion general
+      debug:
+        msg:
+          - "========================================="
+          - "Configuracion General Completada"
+          - "========================================="

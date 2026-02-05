@@ -1,0 +1,30 @@
+---
+# ===== SITE.YML - Master Playbook =====
+# Este playbook ejecuta toda la configuracion del cluster SLURM
+
+- name: "Configuracion General"
+  import_playbook: playbooks/slurm-general.yml
+  tags:
+    - general
+
+- name: "Configuracion Headnode"
+  import_playbook: playbooks/slurm-headnode.yml
+  tags:
+    - headnode
+- name: "Configuracion Workers"
+  import_playbook: playbooks/slurm-workers.yml
+  tags:
+    - workers
+
+- name: Resumen
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Display deployment summary
+      debug:
+        msg:
+          - ""
+          - "========================================="
+          - "Cluster configured"
+          - "========================================="
+          - ""
