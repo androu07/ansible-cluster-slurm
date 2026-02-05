@@ -1,0 +1,28 @@
+flush ruleset
+
+table inet filter {
+    chain input {
+        type filter hook input priority 0; policy drop;
+
+        # Aceptar trafico de loopback (localhost)
+        iif "lo" accept
+
+        # Aceptar conexiones establecidas y relacionadas
+        ct state established,related accept
+
+        # Aceptar ICMP (Ping)
+        ip protocol icmp accept
+
+        # Aceptar SSH (Puerto 22)
+        tcp dport 22 accept
+
+        # Trafico interno del Cluster (Slurm, Munge, NFS, MySQL)
+        ip saddr {{ internal_network_cidr }} accept
+    }
+    chain forward {
+        type filter hook forward priority 0; policy drop;
+    }
+    chain output {
+        type filter hook output priority 0; policy accept;
+    }
+}

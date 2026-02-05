@@ -1,12 +1,10 @@
 127.0.0.1 localhost
 127.0.1.1 {{ inventory_hostname }}
 
-# OpenStack Cluster Nodes
-192.168.4.210 slurm-hn controller
-192.168.4.211 slurm-wn1 compute1
-192.168.4.212 slurm-wn2 compute2
-192.168.4.213 slurm-wn3 compute3
-192.168.4.214 slurm-wn4 compute4
+# Cluster Nodes
+{% for host in groups['all'] %}
+{{ hostvars[host]['ansible_host'] }} {{ host }}
+{% endfor %}
 
 # The following lines are desirable for IPv6 capable hosts
 ::1     ip6-localhost ip6-loopback

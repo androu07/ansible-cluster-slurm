@@ -6,33 +6,183 @@
   become: yes
   gather_facts: yes
 
-  pre_tasks:
-    - name: Instalacion de paquetes necesarios
-      apt:
-        name:
-          - chrony                      # Servicio de sincronizacion de tiempo  
-          - libpam-ldap                 # Autenticacion via LDAP
-          - ldap-utils                  # Utilidades LDAP
-          - libnss-ldap                 # Resolucion de nombres via LDAP
-          - munge                       # Servicio de autenticacion para SLURM
-          - slurm-wlm                   # SLURM Workload Manager
-          - nftables                    # Firewall
-          - nfs-common                  # Cliente NFS
-          - prometheus-node-exporter    # Exportador de datos de Prometheus para monitoreo  
-          - acl                         # Control de acceso avanzado
-        state: present
-      tags:
-        - instalacion_paquetes
-  
-  roles:
-    - slurm-general
-  
   tasks:
-    - name: Update apt cache
+    # Dando a conocer los hosts del cluster
+    - name: Archivo '/etc/hosts'
+      template:
+        src: /etc/ansible/templates/hosts.j2
+        dest: /etc/hosts
+        owner: root
+        group: root
+        mode: '0644'
+      tags:
+        - archivo_hosts
+    
+    # Crear grupos y usuarios para Munge y Slurm con GID/UID fijos
+    - name: Crear grupos
+      group:
+        name: "{{ item.name }}"
+        gid: "{{ item.gid }}"
+        state: present
+      loop:
+        - { name: 'munge', gid: 991 }
+        - { name: 'slurm', gid: 990 }
+      tags:
+        - gestion_usuarios
+    - name: Crear usuarios
+      user:
+        name: "{{ item.name }}"
+        uid: "{{ item.uid }}"
+        group: "{{ item.name }}"
+        shell: "{{ item.shell }}"
+        home: "{{ item.home }}"
+        create_home: no
+        system: yes
+        state: present
+      loop:
+        - { name: 'munge', uid: 991, shell: '/sbin/nologin', home: '/var/lib/munge' }
+        - { name: 'slurm', uid: 990, shell: '/bin/bash', home: '/var/lib/slurm' }
+      tags:
+        - gestion_usuarios
+
+    # Instalacion de paqueteria comun y redimension del disco
+    - name: Actualizar cache de apt
       apt:
         update_cache: yes
         cache_valid_time: 3600
+      tags:
+        - actualizar_cache
+
+    - name: Instalar cloud-guest-utils
+      apt:
+        name: cloud-guest-utils
+        state: present
+      tags: disco
+    - name: Extender la partición root para ocupar todo el disco
+      command: growpart /dev/vda 2
+      ignore_errors: yes # Ignora error si ya está extendida
+      register: growpart_result
+      changed_when: "'CHANGED' in growpart_result.stdout"
+      tags: disco
+    - name: Redimensionar el sistema de archivos ext4
+      command: resize2fs /dev/vda2
+      when: growpart_result.changed
+      tags: disco
+      
+    - name: Instalacion de paquetes necesarios
+      apt:
+        name:
+          # Servicio de sincronizacion de tiempo
+          - chrony
+          # Autenticacion
+          - sssd
+          - sssd-ldap
+          - ldap-utils
+          - acl
+          # Slurm y Auth
+          - munge
+          - slurm-wlm
+          # Firewall
+          - nftables
+          # Almacenamiento compartido
+          - nfs-common
+          # Monitoreo de los nodos
+          - prometheus-node-exporter  
+        state: present
+      tags:
+        - instalacion_paquetes
+    
+    # Directorios y Permisos
+    - name: Crear directorios de Munge y Log
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: munge
+        group: munge
+        mode: '0700'
+      loop:
+        - /etc/munge
+        - /var/log/munge
+        - /var/lib/munge
+      tags:
+        - munge_config
+    - name: Crear directorios de Slurm
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: slurm
+        group: slurm
+        mode: '0755'
+      loop:
+        - /var/log/slurm
+        - /var/lib/slurm
+        - /etc/slurm-llnl 
+      tags:
+        - slurm_config
+    
+    # Distribucion del archivo base de Slurm
+    - name: Distribuir archivo slurm.conf
+      template:
+        src: /etc/ansible/templates/slurm.conf.j2
+        dest: /etc/slurm-llnl/slurm.conf
+        owner: slurm
+        group: slurm
+        mode: '0644'
+      tags: slurm.conf_file
+
+    # Servicio base Munge
+    - name: Iniciar munge
+      service:
+        name: munge
+        state: stopped  # Munge detenido hasta tener la llave
+        enabled: yes
+      tags:
+        - munge_service
   
+    # Configuracion deL Firewall
+    - name: Configurar reglas base de NFTables
+      template:
+        src: /etc/ansible/templates/nftables.conf.j2
+        dest: /etc/nftables.conf
+        mode: '0755'
+      notify: Reiniciar nftables
+      tags: firewall
+    - name: Habilitar servicio NFTables
+      service:
+        name: nftables
+        state: started
+        enabled: yes
+      tags: firewall
+
+    # Configuracion del SSSD
+    - name: Configurar SSSD para LDAP
+      template:
+        src: /etc/ansible/templates/sssd.conf.j2
+        dest: /etc/sssd/sssd.conf
+        owner: root
+        group: root
+        mode: '0600'
+      notify: Reiniciar sssd
+      tags: ldap_config
+
+    - name: Habilitar servicio SSSD
+      service:
+        name: sssd
+        state: started
+        enabled: yes
+      tags: ldap_config
+    
+  handlers:
+    - name: Reiniciar nftables
+      service:
+        name: nftables
+        state: restarted
+
+    - name: Reiniciar sssd
+      service:
+        name: sssd
+        state: restarted
+
   post_tasks:
     - name: Mensaje final de configuracion general
       debug:

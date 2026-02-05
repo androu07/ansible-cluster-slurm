@@ -2,14 +2,14 @@
 
 # Headnode
 [headnode]
-slurm-hn ansible_host=192.168.100.10 ansible_connection=stack ansible_become_password=stack
+slurm-hn ansible_host=192.168.100.10 ansible_connection=local ansible_become_password=ubuntu
 
 # Grupo para los Workers
 [workers]
-slurm-wn1 ansible_host=192.168.100.11 ansible_connection=ssh ansible_user=ubuntu 
-slurm-wn2 ansible_host=192.168.100.12 ansible_connection=ssh ansible_user=ubuntu
-slurm-wn3 ansible_host=192.168.100.13 ansible_connection=ssh ansible_user=ubuntu
-slurm-wn4 ansible_host=192.168.100.14 ansible_connection=ssh ansible_user=ubuntu
+slurm-wn1 ansible_host=192.168.100.1 ansible_connection=ssh ansible_user=ubuntu 
+slurm-wn2 ansible_host=192.168.100.2 ansible_connection=ssh ansible_user=ubuntu
+slurm-wn3 ansible_host=192.168.100.3 ansible_connection=ssh ansible_user=ubuntu
+slurm-wn4 ansible_host=192.168.100.4 ansible_connection=ssh ansible_user=ubuntu
 
 [workers:vars]
 # Escalado de privilegios en los workers

@@ -1,0 +1,14 @@
+# --- Variables Globales del Cluster ---
+
+# Nombre del cluster
+cluster_name: "SlurmCluster"
+
+# Configuracion de Red
+internal_network_cidr: "192.168.100.0/24"
+
+# Configuracion LDAP
+ldap_base_dn: "dc=nodomain"
+
+# Recursos de las VMs (Ajustar segun la config de las VMs)
+slurm_node_cpus: 2       # Cantidad de CPUs
+slurm_node_mem: 8192     # RAM en MB
