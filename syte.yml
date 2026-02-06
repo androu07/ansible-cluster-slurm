@@ -2,6 +2,16 @@
 # ===== SITE.YML - Master Playbook =====
 # Este playbook ejecuta toda la configuracion del cluster SLURM
 
+- name: "Paqueteria para que ansible funcione"
+  hosts: localhost
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: Instalar sshpass para uso de Ansible con password
+      apt:
+        name: sshpass
+        state: present
+
 - name: "Configuracion General"
   import_playbook: playbooks/slurm-general.yml
   tags:

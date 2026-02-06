@@ -47,6 +47,17 @@
       tags: slurm_conf
 
     # Configuracion del NFS Client
+    - name: Crear puntos de montaje locales
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+      loop:
+        - /nfs/general
+        - /nfs/privileged
+      tags: nfs_mount
     - name: Montar NFS /nfs/general
       mount:
         path: /nfs/general
