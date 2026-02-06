@@ -1,0 +1,17 @@
+# Slurm cgroup support configuration file
+CgroupAutomount=yes
+
+# Contencion de RAM: Evita que un trabajo use mas RAM de la asignada
+ConstrainRamSpace=yes
+
+# Contencion de Swap
+ConstrainSwapSpace=yes
+
+# Contencion de Cores: Evita que un trabajo salte a CPUs no asignadas
+ConstrainCores=yes
+
+# Afinidad: Slurm no gestionara la afinidad de CPU directamente, esta tarea se delega a cgroup
+TaskAffinity=no
+
+# Dispositivos: Desactivado para entorno virtual sin GPUs
+ConstrainDevices=no

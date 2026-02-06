@@ -7,14 +7,82 @@
   gather_facts: yes
   
   tasks:
-    - name: Update apt cache
-      apt:
-        update_cache: yes
-        cache_valid_time: 3600
+    # Sincronizacion de hora con el headnode
+    - name: Configurar Chrony como cliente del Headnode
+      template:
+        src: templates/chrony_client.conf.j2
+        dest: /etc/chrony/chrony.conf
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Reiniciar chrony
+      tags: chrony_client
 
-  roles:
-    - 
-  
+    # Distribucion de llaves generados en el headnode 
+    - name: Distribuir llave Munge desde el controlador
+      copy:
+        src: buffer/munge.key
+        dest: /etc/munge/munge.key
+        owner: munge
+        group: munge
+        mode: '0400'
+      notify: Reiniciar munge
+      tags: llaves_munge_workers
+    - name: Agregar llave SSH publica para ingresar como root a los workers
+      authorized_key:
+        user: root
+        state: present
+        key: "{{ lookup('file', 'buffer/headnode_root_key.pub') }}"
+      tags: llaves_ssh_workers
+    
+    # Gestion de recursos (Cgroups)
+    - name: Distribuir configuración de Cgroups
+      template:
+        src: templates/cgroup.conf.j2
+        dest: /etc/slurm-llnl/cgroup.conf
+        owner: slurm
+        group: slurm
+        mode: '0644'
+      notify: Reiniciar slurmd
+      tags: slurm_conf
+
+    # Configuracion del NFS Client
+    - name: Montar NFS /nfs/general
+      mount:
+        path: /nfs/general
+        src: "{{ hostvars[groups['headnode'][0]]['ansible_host'] }}:/nfs/general"
+        fstype: nfs
+        opts: auto,nofail,noatime,nolock,intr,tcp,actimeo=1800
+        state: mounted
+      tags: nfs_mount
+    - name: Montar NFS /nfs/privileged
+      mount:
+        path: /nfs/privileged
+        src: "{{ hostvars[groups['headnode'][0]]['ansible_host'] }}:/nfs/privileged"
+        fstype: nfs
+        opts: auto,nofail,noatime,nolock,intr,tcp,actimeo=1800
+        state: mounted
+      tags: nfs_mount
+    
+    # Iniciar del daemon de Slurm
+    - name: Iniciar servicio Slurmd (Worker Daemon)
+      service:
+        name: slurmd
+        state: started
+        enabled: yes
+      tags: slurmd_start_workers
+    
+  handlers:
+    - name: Reiniciar chrony
+      service: name=chrony state=restarted
+    
+    # Munge arranca POR PRIMERA VEZ correctamente con la llave generada por el headnode
+    - name: Reiniciar munge
+      service: name=munge state=restarted
+    
+    - name: Reiniciar slurmd
+      service: name=slurmd state=restarted
+
   post_tasks:
     - name: Mensaje final de configuracion de los workers
       debug:
