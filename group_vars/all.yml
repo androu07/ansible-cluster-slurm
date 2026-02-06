@@ -9,6 +9,11 @@ internal_network_cidr: "192.168.100.0/24"
 # Configuracion LDAP
 ldap_base_dn: "dc=nodomain"
 
-# Recursos de las VMs (Ajustar segun la config de las VMs)
+# Recursos de las VMs (Ajustar variables segun la config de las VMs del cluster)
 slurm_node_cpus: 2       # Cantidad de CPUs
 slurm_node_mem: 8192     # RAM en MB
+
+# Base de Datos Slurm
+db_slurm_user: "slurm"
+db_slurm_pass: "slurm_pass"     # Variable a cambiar por seguridad
+db_slurm_name: "slurm_acct_db"

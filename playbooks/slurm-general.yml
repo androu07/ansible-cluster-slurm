@@ -90,7 +90,7 @@
           - prometheus-node-exporter  
         state: present
       tags:
-        - instalacion_paquetes
+        - instalacion_paquetes_general
     
     # Directorios y Permisos
     - name: Crear directorios de Munge y Log
@@ -177,7 +177,6 @@
       service:
         name: nftables
         state: restarted
-
     - name: Reiniciar sssd
       service:
         name: sssd

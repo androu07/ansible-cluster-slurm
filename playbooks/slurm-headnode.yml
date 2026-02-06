@@ -7,14 +7,180 @@
   gather_facts: yes
   
   tasks:
-    - name: Update apt cache
+    # Instalacion de paqueteria necesaria en el headnode
+    - name: Instalacion de paquetes del headnode
       apt:
-        update_cache: yes
-        cache_valid_time: 3600
-
-  roles:
-    - 
+        name:
+          # Base de datos para el accounting
+          - mariadb-server
+          - mariadb-client
+          # Daemon de la base de datos de Slurm
+          - slurmdbd
+          # Servidor NFS
+          - nfs-kernel-server
+          # Para las llaves criptograficas
+          - rng-tools
+          # Para el manejo de MySQL/MariaDB
+          - python3-pymysql
+        state: present
+      tags:
+        - instalacion_paquetes_headnode
   
+    # Configuracion del chrony
+    - name: Configurar Chrony para permitir clientes solo de la red
+      lineinfile:
+        path: /etc/chrony/chrony.conf
+        line: "allow {{ internal_network_cidr }}"
+        state: present
+      notify: Reiniciar chrony
+      tags: chrony_config
+
+    # Configuracion del NFS
+    - name: Crear directorios para exportar NFS
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: nobody
+        group: nogroup
+        mode: '0777'
+      loop:
+        - /nfs/general
+        - /nfs/privileged
+      tags: nfs_config
+    - name: Configurar exports NFS
+      template:
+        src: /etc/ansible/templates/exports.j2
+        dest: /etc/exports
+        mode: '0644'
+      notify: Reiniciar nfs
+      tags: nfs_config
+
+    # Gestion de llaves importantes en el headnode
+    - name: Generar llave Munge
+      command: /usr/sbin/create-munge-key -r
+      args:
+        creates: /etc/munge/munge.key
+      notify: Reiniciar munge
+      tags: llaves_munge
+    - name: Asegurar permisos estrictos de llave Munge
+      file:
+        path: /etc/munge/munge.key
+        owner: munge
+        group: munge
+        mode: '0400'
+      tags: llaves_munge
+    - name: Descargar llave Munge al controlador
+      fetch:
+        src: /etc/munge/munge.key
+        dest: buffer/munge.key
+        flat: yes
+      tags: llaves_munge
+
+    - name: Generar par de llaves ssh RSA para root
+      user:
+        name: root
+        generate_ssh_key: yes
+        ssh_key_bits: 2048
+        ssh_key_file: /root/.ssh/id_rsa
+      tags: llaves_ssh_head
+    - name: Descargar llave publica SSH de root
+      fetch:
+        src: /root/.ssh/id_rsa.pub
+        dest: buffer/headnode_root_key.pub
+        flat: yes
+      tags: llaves_ssh_head
+
+    # Configuracion del MariaDB
+    - name: Iniciar servicio MariaDB
+      service:
+        name: mariadb
+        state: started
+        enabled: yes
+      tags: mariadb_config
+    - name: Crear BD para Slurm Accounting
+      community.mysql.mysql_db:
+        name: "{{ db_slurm_name }}"
+        state: present
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+      tags: mariadb_config
+    - name: Crear Usuario de Base de Datos y dar permisos
+      community.mysql.mysql_user:
+        name: "{{ db_slurm_user }}"
+        password: "{{ db_slurm_pass }}"
+        priv: "{{ db_slurm_name }}.*:ALL"
+        state: present
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+      tags: mariadb_config
+    - name: Optimizar MariaDB (innodb_buffer_pool)
+      lineinfile:
+        path: /etc/mysql/mariadb.conf.d/50-server.cnf
+        regexp: '^innodb_buffer_pool_size'
+        line: 'innodb_buffer_pool_size = 1G'
+        insertafter: '\[mysqld\]'
+      notify: Reiniciar mariadb
+      tags: mariadb_config
+
+    # Configuracion del SlurmBD
+    - name: Configurar archivo slurmdbd.conf
+      template:
+        src: /etc/ansible/templates/slurmdbd.conf.j2
+        dest: /etc/slurm-llnl/slurmdbd.conf
+        owner: slurm
+        group: slurm
+        mode: '0600'
+      notify: Reiniciar slurmdbd
+      tags: slurmdbd_config
+    - name: Iniciar servicio SlurmDBD
+      service:
+        name: slurmdbd
+        state: started
+        enabled: yes
+      tags: slurmdbd_config
+
+    # Iniciar accounting y controlador del Slurm
+    - name: Esperar a que SlurmDBD responda
+      wait_for:
+        port: 6819
+        delay: 5
+        timeout: 60
+      tags: accounting_config
+    - name: Registrar Cluster en Accounting
+      command: sacctmgr -i add cluster {{ cluster_name }}
+      register: cluster_add
+      changed_when: "'Cluster added' in cluster_add.stdout"
+      failed_when: 
+        - cluster_add.rc != 0 
+        - "'already exists' not in cluster_add.stdout"
+      ignore_errors: yes
+      tags: accounting_config
+    - name: Crear cuentas base de usuarios
+      command: sacctmgr -i add account {{ item }} Description="Base Account" Organization="Cluster"
+      loop:
+        - researchers
+        - students
+      register: acct_add
+      changed_when: "'Account added' in acct_add.stdout"
+      failed_when: false
+      tags: accounting_config
+    - name: Iniciar Slurm Controller (slurmctld)
+      service:
+        name: slurmctld
+        state: started
+        enabled: yes
+      tags: accounting_config
+
+  handlers:
+    - name: Reiniciar chrony
+      service: name=chrony state=restarted
+    - name: Reiniciar nfs
+      service: name=nfs-kernel-server state=restarted
+    - name: Reiniciar munge
+      service: name=munge state=restarted
+    - name: Reiniciar mariadb
+      service: name=mariadb state=restarted
+    - name: Reiniciar slurmdbd
+      service: name=slurmdbd state=restarted
+
   post_tasks:
     - name: Mensaje final de configuracion del headnode
       debug:
