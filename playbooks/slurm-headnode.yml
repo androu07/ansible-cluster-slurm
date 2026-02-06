@@ -61,20 +61,20 @@
       args:
         creates: /etc/munge/munge.key
       notify: Reiniciar munge
-      tags: llaves_munge
+      tags: llaves_munge_head
     - name: Asegurar permisos estrictos de llave Munge
       file:
         path: /etc/munge/munge.key
         owner: munge
         group: munge
         mode: '0400'
-      tags: llaves_munge
+      tags: llaves_munge_head
     - name: Descargar llave Munge al controlador
       fetch:
         src: /etc/munge/munge.key
         dest: buffer/munge.key
         flat: yes
-      tags: llaves_munge
+      tags: llaves_munge_head
 
     - name: Generar par de llaves ssh RSA para root
       user:
