@@ -128,7 +128,7 @@
         owner: slurm
         group: slurm
         mode: '0644'
-      tags: slurm.conf_file
+      tags: slurm_conf_file
 
     # Servicio base Munge
     - name: Iniciar munge
