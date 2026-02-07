@@ -7,6 +7,22 @@
   gather_facts: yes
 
   tasks:
+    # Configurar el hostname según el inventario
+    - name: Configurar hostname del nodo
+      hostname:
+        name: "{{ inventory_hostname }}"
+      register: hostname_changed
+      tags:
+        - hostname_config
+    
+    - name: Reiniciar para aplicar hostname
+      reboot:
+        reboot_timeout: 300
+        msg: "Reiniciando para aplicar el nuevo hostname"
+      when: hostname_changed.changed
+      tags:
+        - hostname_config
+    
     # Dando a conocer los hosts del cluster
     - name: Archivo '/etc/hosts'
       template:
@@ -131,7 +147,7 @@
       tags: slurm_conf_file
 
     # Servicio base Munge
-    - name: Iniciar munge
+    - name: No iniciar munge
       service:
         name: munge
         state: stopped  # Munge detenido hasta tener la llave
