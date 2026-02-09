@@ -11,7 +11,7 @@ ldap_base_dn: "dc=nodomain"
 
 # Recursos de las VMs (Ajustar variables segun la config de las VMs del cluster)
 slurm_node_cpus: 2       # Cantidad de CPUs
-slurm_node_mem: 8192     # RAM en MB
+slurm_node_mem: 7900     # RAM en MB (ajustado a la RAM real de las VMs)
 
 # Base de Datos Slurm
 db_slurm_user: "slurm"

@@ -10,7 +10,7 @@
     # Sincronizacion de hora con el headnode
     - name: Configurar Chrony como cliente del Headnode
       template:
-        src: templates/chrony_client.conf.j2
+        src: /etc/ansible/templates/chrony_client.conf.j2
         dest: /etc/chrony/chrony.conf
         owner: root
         group: root
@@ -21,24 +21,29 @@
     # Distribucion de llaves generados en el headnode 
     - name: Distribuir llave Munge desde el controlador
       copy:
-        src: buffer/munge.key
+        src: /etc/ansible/playbooks/buffer/munge.key
         dest: /etc/munge/munge.key
         owner: munge
         group: munge
         mode: '0400'
-      notify: Reiniciar munge
+      tags: llaves_munge_workers
+    - name: Iniciar servicio Munge en workers
+      service:
+        name: munge
+        state: started
+        enabled: yes
       tags: llaves_munge_workers
     - name: Agregar llave SSH publica para ingresar como root a los workers
       authorized_key:
         user: root
         state: present
-        key: "{{ lookup('file', 'buffer/headnode_root_key.pub') }}"
+        key: "{{ lookup('file', '/etc/ansible/playbooks/buffer/headnode_root_key.pub') }}"
       tags: llaves_ssh_workers
     
     # Gestion de recursos (Cgroups)
     - name: Distribuir configuración de Cgroups
       template:
-        src: templates/cgroup.conf.j2
+        src: /etc/ansible/templates/cgroup.conf.j2
         dest: /etc/slurm-llnl/cgroup.conf
         owner: slurm
         group: slurm
@@ -85,14 +90,17 @@
     
   handlers:
     - name: Reiniciar chrony
-      service: name=chrony state=restarted
-    
-    # Munge arranca POR PRIMERA VEZ correctamente con la llave generada por el headnode
+      service:
+        name: chrony
+        state: restarted
     - name: Reiniciar munge
-      service: name=munge state=restarted
-    
+      service:
+        name: munge
+        state: restarted
     - name: Reiniciar slurmd
-      service: name=slurmd state=restarted
+      service:
+        name: slurmd
+        state: restarted
 
   post_tasks:
     - name: Mensaje final de configuracion de los workers

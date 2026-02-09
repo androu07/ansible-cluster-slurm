@@ -132,6 +132,8 @@
       loop:
         - /var/log/slurm
         - /var/lib/slurm
+        - /var/lib/slurm/slurmd
+        - /var/lib/slurm/slurmctld
         - /etc/slurm-llnl 
       tags:
         - slurm_config

@@ -11,20 +11,19 @@
       apt:
         name: sshpass
         state: present
-
-- name: "Configuracion General"
   import_playbook: playbooks/slurm-general.yml
   tags:
     - general
 
-#- name: "Configuracion Headnode"
-#  import_playbook: playbooks/slurm-headnode.yml
-#  tags:
-#    - headnode
-#- name: "Configuracion Workers"
-#  import_playbook: playbooks/slurm-workers.yml
-#  tags:
-#    - workers
+- name: "Configuracion Headnode"
+  import_playbook: playbooks/slurm-headnode.yml
+  tags:
+    - headnode
+
+- name: "Configuracion Workers"
+  import_playbook: playbooks/slurm-workers.yml
+  tags:
+    - workers
 
 - name: Resumen
   hosts: localhost

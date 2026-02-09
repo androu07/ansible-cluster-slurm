@@ -72,9 +72,34 @@
     - name: Descargar llave Munge al controlador
       fetch:
         src: /etc/munge/munge.key
-        dest: buffer/munge.key
+        dest: /etc/ansible/playbooks/buffer/munge.key
         flat: yes
       tags: llaves_munge_head
+    - name: Iniciar servicio Munge en headnode
+      service:
+        name: munge
+        state: started
+        enabled: yes
+      tags: llaves_munge_head
+    # PARA PRUEBAS - BACKUP DE LA LLAVE MUNGE
+    - name: Crear directorio de backup
+      file:
+        path: /root/backups
+        state: directory
+        owner: root
+        group: root
+        mode: '0700'
+      tags: backup_munge
+    - name: Backup de munge.key
+      copy:
+        src: /etc/munge/munge.key
+        dest: /root/backups/munge.key.backup
+        owner: root
+        group: root
+        mode: '0400'
+        remote_src: yes
+      tags: backup_munge
+    #######
 
     - name: Generar par de llaves ssh RSA para root
       user:
@@ -86,7 +111,7 @@
     - name: Descargar llave publica SSH de root
       fetch:
         src: /root/.ssh/id_rsa.pub
-        dest: buffer/headnode_root_key.pub
+        dest: /etc/ansible/playbooks/buffer/headnode_root_key.pub
         flat: yes
       tags: llaves_ssh_head
 
@@ -171,15 +196,25 @@
 
   handlers:
     - name: Reiniciar chrony
-      service: name=chrony state=restarted
+      service:
+        name: chrony
+        state: restarted
     - name: Reiniciar nfs
-      service: name=nfs-kernel-server state=restarted
+      service:
+        name: nfs-kernel-server
+        state: restarted
     - name: Reiniciar munge
-      service: name=munge state=restarted
+      service:
+        name: munge
+        state: restarted
     - name: Reiniciar mariadb
-      service: name=mariadb state=restarted
+      service:
+        name: mariadb
+        state: restarted
     - name: Reiniciar slurmdbd
-      service: name=slurmdbd state=restarted
+      service:
+        name: slurmdbd
+        state: restarted
 
   post_tasks:
     - name: Mensaje final de configuracion del headnode
