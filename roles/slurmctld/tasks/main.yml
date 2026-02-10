@@ -1,0 +1,18 @@
+---
+# ===== SLURM Controller (slurmctld) =====
+
+- name: Esperar a que SlurmDBD responda
+  wait_for:
+    port: 6819
+    delay: 5
+    timeout: 60
+  tags:
+    - wait_slurmdbd
+
+- name: Iniciar Slurm Controller (slurmctld)
+  service:
+    name: slurmctld
+    state: started
+    enabled: yes
+  tags:
+    - start_slurmctld

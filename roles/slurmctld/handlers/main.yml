@@ -1,0 +1,5 @@
+---
+- name: Reiniciar slurmctld
+  service:
+    name: slurmctld
+    state: restarted

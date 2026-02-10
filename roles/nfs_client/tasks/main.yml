@@ -1,0 +1,35 @@
+---
+# ===== Cliente NFS (Workers) =====
+
+- name: Crear puntos de montaje locales
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  loop:
+    - /nfs/general
+    - /nfs/privileged
+  tags:
+    - mount_points
+
+- name: Montar NFS /nfs/general
+  mount:
+    path: /nfs/general
+    src: "{{ hostvars[groups['headnode'][0]]['ansible_host'] }}:/nfs/general"
+    fstype: nfs
+    opts: auto,nofail,noatime,nolock,intr,tcp,actimeo=1800
+    state: mounted
+  tags:
+    - mount_nfs
+
+- name: Montar NFS /nfs/privileged
+  mount:
+    path: /nfs/privileged
+    src: "{{ hostvars[groups['headnode'][0]]['ansible_host'] }}:/nfs/privileged"
+    fstype: nfs
+    opts: auto,nofail,noatime,nolock,intr,tcp,actimeo=1800
+    state: mounted
+  tags:
+    - mount_nfs

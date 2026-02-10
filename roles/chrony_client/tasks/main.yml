@@ -1,0 +1,13 @@
+---
+# ===== Chrony Client (Workers) =====
+
+- name: Configurar Chrony como cliente del Headnode
+  template:
+    src: chrony_client.conf.j2
+    dest: /etc/chrony/chrony.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Reiniciar chrony
+  tags:
+    - chrony_client_config

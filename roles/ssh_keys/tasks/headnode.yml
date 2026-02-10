@@ -1,0 +1,19 @@
+---
+# ===== Gestión de llaves SSH =====
+
+- name: Generar par de llaves ssh RSA para root
+  user:
+    name: root
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: /root/.ssh/id_rsa
+  tags:
+    - generate_ssh_key
+
+- name: Descargar llave publica SSH de root
+  fetch:
+    src: /root/.ssh/id_rsa.pub
+    dest: /etc/ansible/playbooks/buffer/headnode_root_key.pub
+    flat: yes
+  tags:
+    - fetch_ssh_key

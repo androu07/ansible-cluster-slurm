@@ -1,0 +1,24 @@
+---
+# ===== SLURM Accounting Configuration =====
+
+- name: Registrar Cluster en Accounting
+  command: sacctmgr -i add cluster {{ cluster_name }}
+  register: cluster_add
+  changed_when: "'Cluster added' in cluster_add.stdout"
+  failed_when:
+    - cluster_add.rc != 0
+    - "'already exists' not in cluster_add.stdout"
+  ignore_errors: yes
+  tags:
+    - register_cluster
+
+- name: Crear cuentas base de usuarios
+  command: sacctmgr -i add account {{ item }} Description="Base Account" Organization="Cluster"
+  loop:
+    - researchers
+    - students
+  register: acct_add
+  changed_when: "'Account added' in acct_add.stdout"
+  failed_when: false
+  tags:
+    - create_accounts

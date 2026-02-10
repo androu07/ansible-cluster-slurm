@@ -1,0 +1,21 @@
+---
+# ===== SLURM Compute Daemon (slurmd) =====
+
+- name: Distribuir configuración de Cgroups
+  template:
+    src: cgroup.conf.j2
+    dest: /etc/slurm-llnl/cgroup.conf
+    owner: slurm
+    group: slurm
+    mode: '0644'
+  notify: Reiniciar slurmd
+  tags:
+    - cgroup_config
+
+- name: Iniciar servicio Slurmd (Worker Daemon)
+  service:
+    name: slurmd
+    state: started
+    enabled: yes
+  tags:
+    - start_slurmd

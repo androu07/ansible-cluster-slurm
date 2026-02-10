@@ -1,0 +1,5 @@
+---
+- name: Reiniciar nftables
+  service:
+    name: nftables
+    state: restarted

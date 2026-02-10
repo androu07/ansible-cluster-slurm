@@ -1,0 +1,21 @@
+---
+# ===== Configuración LDAP/SSSD =====
+
+- name: Configurar SSSD para LDAP
+  template:
+    src: sssd.conf.j2
+    dest: /etc/sssd/sssd.conf
+    owner: root
+    group: root
+    mode: '0600'
+  notify: Reiniciar sssd
+  tags:
+    - sssd_config
+
+- name: Habilitar servicio SSSD
+  service:
+    name: sssd
+    state: started
+    enabled: yes
+  tags:
+    - sssd_service

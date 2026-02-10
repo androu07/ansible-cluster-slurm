@@ -1,0 +1,28 @@
+---
+# ===== Configuración de SlurmDBD =====
+
+- name: Instalar slurmdbd
+  apt:
+    name: slurmdbd
+    state: present
+  tags:
+    - install_slurmdbd
+
+- name: Configurar archivo slurmdbd.conf
+  template:
+    src: slurmdbd.conf.j2
+    dest: /etc/slurm-llnl/slurmdbd.conf
+    owner: slurm
+    group: slurm
+    mode: '0600'
+  notify: Reiniciar slurmdbd
+  tags:
+    - config_slurmdbd
+
+- name: Iniciar servicio SlurmDBD
+  service:
+    name: slurmdbd
+    state: started
+    enabled: yes
+  tags:
+    - start_slurmdbd

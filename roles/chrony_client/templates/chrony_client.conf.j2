@@ -1,0 +1,11 @@
+# Sincronizar con el Headnode
+server {{ hostvars[groups['headnode'][0]]['ansible_host'] }} iburst
+
+# Archivos de drift y logs
+driftfile /var/lib/chrony/chrony.drift
+logdir /var/log/chrony
+
+# Ajustes estandar
+maxupdateskew 100.0
+rtcsync
+makestep 1 3

@@ -1,0 +1,10 @@
+---
+# ===== Distribuir llaves SSH a workers =====
+
+- name: Agregar llave SSH publica para ingresar como root a los workers
+  authorized_key:
+    user: root
+    state: present
+    key: "{{ lookup('file', '/etc/ansible/playbooks/buffer/headnode_root_key.pub') }}"
+  tags:
+    - distribute_ssh_key

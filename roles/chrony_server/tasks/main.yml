@@ -1,0 +1,11 @@
+---
+# ===== Chrony Server (Headnode) =====
+
+- name: Configurar Chrony como servidor
+  lineinfile:
+    path: /etc/chrony/chrony.conf
+    line: "allow {{ internal_network_cidr }}"
+    state: present
+  notify: Reiniciar chrony
+  tags:
+    - chrony_server_config

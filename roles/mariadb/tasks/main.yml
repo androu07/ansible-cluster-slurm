@@ -1,0 +1,48 @@
+---
+# ===== Configuración de MariaDB =====
+
+- name: Instalar mariadb y dependencias
+  apt:
+    name:
+      - mariadb-server
+      - mariadb-client
+      - python3-pymysql
+    state: present
+  tags:
+    - install_mariadb
+
+- name: Iniciar servicio MariaDB
+  service:
+    name: mariadb
+    state: started
+    enabled: yes
+  tags:
+    - start_mariadb
+
+- name: Crear BD para Slurm Accounting
+  community.mysql.mysql_db:
+    name: "{{ db_slurm_name }}"
+    state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  tags:
+    - create_database
+
+- name: Crear Usuario de Base de Datos y dar permisos
+  community.mysql.mysql_user:
+    name: "{{ db_slurm_user }}"
+    password: "{{ db_slurm_pass }}"
+    priv: "{{ db_slurm_name }}.*:ALL"
+    state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  tags:
+    - create_user
+
+- name: Optimizar MariaDB (innodb_buffer_pool)
+  lineinfile:
+    path: /etc/mysql/mariadb.conf.d/50-server.cnf
+    regexp: '^innodb_buffer_pool_size'
+    line: 'innodb_buffer_pool_size = 1G'
+    insertafter: '\[mysqld\]'
+  notify: Reiniciar mariadb
+  tags:
+    - optimize_mariadb

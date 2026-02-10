@@ -1,0 +1,31 @@
+---
+# ===== Servidor NFS (Headnode) =====
+
+- name: Instalar nfs-kernel-server
+  apt:
+    name: nfs-kernel-server
+    state: present
+  tags:
+    - install_nfs
+
+- name: Crear directorios para exportar NFS
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: '0777'
+  loop:
+    - /nfs/general
+    - /nfs/privileged
+  tags:
+    - nfs_directories
+
+- name: Configurar exports NFS
+  template:
+    src: exports.j2
+    dest: /etc/exports
+    mode: '0644'
+  notify: Reiniciar nfs
+  tags:
+    - nfs_exports

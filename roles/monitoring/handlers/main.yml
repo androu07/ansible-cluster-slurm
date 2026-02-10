@@ -1,0 +1,4 @@
+---
+- name: Reiniciar contenedor prometheus
+  shell: docker restart prometheus
+  ignore_errors: yes

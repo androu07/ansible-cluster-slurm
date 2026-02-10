@@ -1,0 +1,23 @@
+---
+# ===== Setup inicial para conectividad =====
+
+- name: Actualizar cache de apt
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  tags:
+    - update_cache
+
+- name: Instalar sshpass
+  apt:
+    name: sshpass
+    state: present
+  tags:
+    - install_sshpass
+
+- name: Instalar rng-tools
+  apt:
+    name: rng-tools
+    state: present
+  tags:
+    - install_rngtools

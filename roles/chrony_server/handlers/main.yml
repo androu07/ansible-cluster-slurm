@@ -1,0 +1,5 @@
+---
+- name: Reiniciar chrony
+  service:
+    name: chrony
+    state: restarted

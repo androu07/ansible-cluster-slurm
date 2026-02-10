@@ -1,0 +1,126 @@
+---
+# ===== Tareas comunes para todos los hosts =====
+
+- name: Configurar hostname del nodo
+  hostname:
+    name: "{{ inventory_hostname }}"
+  register: hostname_changed
+  tags:
+    - hostname
+
+- name: Reiniciar para aplicar hostname
+  reboot:
+    reboot_timeout: 300
+    msg: "Reiniciando para aplicar el nuevo hostname"
+  when: hostname_changed.changed
+  tags:
+    - hostname
+
+- name: Configurar archivo '/etc/hosts'
+  template:
+    src: hosts.j2
+    dest: /etc/hosts
+    owner: root
+    group: root
+    mode: '0644'
+  tags:
+    - hosts_file
+
+- name: Crear grupos del sistema
+  group:
+    name: "{{ item.name }}"
+    gid: "{{ item.gid }}"
+    state: present
+  loop:
+    - { name: 'munge', gid: 991 }
+    - { name: 'slurm', gid: 990 }
+  tags:
+    - system_users
+
+- name: Crear usuarios del sistema
+  user:
+    name: "{{ item.name }}"
+    uid: "{{ item.uid }}"
+    group: "{{ item.name }}"
+    shell: "{{ item.shell }}"
+    home: "{{ item.home }}"
+    create_home: no
+    system: yes
+    state: present
+  loop:
+    - { name: 'munge', uid: 991, shell: '/sbin/nologin', home: '/var/lib/munge' }
+    - { name: 'slurm', uid: 990, shell: '/bin/bash', home: '/var/lib/slurm' }
+  tags:
+    - system_users
+
+- name: Actualizar cache de apt
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  tags:
+    - packages
+
+- name: Instalar paquetes comunes
+  apt:
+    name:
+      - chrony
+      - sssd
+      - sssd-ldap
+      - ldap-utils
+      - acl
+      - munge
+      - slurm-wlm
+      - nftables
+      - nfs-common
+      - prometheus-node-exporter
+    state: present
+  tags:
+    - packages
+
+- name: Crear directorios de Munge
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: munge
+    group: munge
+    mode: '0700'
+  loop:
+    - /etc/munge
+    - /var/log/munge
+    - /var/lib/munge
+  tags:
+    - directories
+
+- name: Crear directorios de Slurm
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: slurm
+    group: slurm
+    mode: '0755'
+  loop:
+    - /var/log/slurm
+    - /var/lib/slurm
+    - /var/lib/slurm/slurmd
+    - /var/lib/slurm/slurmctld
+    - /etc/slurm-llnl
+  tags:
+    - directories
+
+- name: Distribuir archivo slurm.conf
+  template:
+    src: slurm.conf.j2
+    dest: /etc/slurm-llnl/slurm.conf
+    owner: slurm
+    group: slurm
+    mode: '0644'
+  tags:
+    - slurm_config
+
+- name: Detener munge inicialmente
+  service:
+    name: munge
+    state: stopped
+    enabled: yes
+  tags:
+    - munge_init

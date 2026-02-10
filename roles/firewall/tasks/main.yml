@@ -1,0 +1,19 @@
+---
+# ===== Configuración de Firewall NFTables =====
+
+- name: Configurar reglas de NFTables
+  template:
+    src: nftables.conf.j2
+    dest: /etc/nftables.conf
+    mode: '0755'
+  notify: Reiniciar nftables
+  tags:
+    - nftables_config
+
+- name: Habilitar servicio NFTables
+  service:
+    name: nftables
+    state: started
+    enabled: yes
+  tags:
+    - nftables_service
