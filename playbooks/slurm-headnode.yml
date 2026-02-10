@@ -22,10 +22,20 @@
           - rng-tools
           # Para el manejo de MySQL/MariaDB
           - python3-pymysql
+          # Paquetes para Docker y Monitoreo
+          - docker.io
+          - python3-pip
         state: present
       tags:
         - instalacion_paquetes_headnode
-  
+    - name: Asegurar que la libreria Docker para Python este actualizada
+      pip:
+        name: docker
+        state: present
+        executable: pip3
+      tags:
+        - instalacion_paquetes_headnode
+
     # Configuracion del chrony
     - name: Configurar Chrony para permitir clientes solo de la red
       lineinfile:
@@ -162,6 +172,87 @@
         enabled: yes
       tags: slurmdbd_config
 
+    # Configuracion de Monitoreo Prometheus y Grafana (usando node exporter y slurm exporter)
+    - name: Crear estructura de directorios para Grafana
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - /etc/grafana/provisioning/datasources
+        - /etc/grafana/provisioning/dashboards
+        - /etc/grafana/dashboards_json
+      tags: monitoring_cluster
+    - name: Provisionar Data Source Prometheus
+      template:
+        src: /etc/ansible/templates/grafana_datasource.yml.j2
+        dest: /etc/grafana/provisioning/datasources/prometheus.yml
+        mode: '0644'
+      tags: monitoring_cluster
+    - name: Provisionar Provider de Dashboards
+      template:
+        src: /etc/ansible/templates/grafana_dashboards.yml.j2
+        dest: /etc/grafana/provisioning/dashboards/main.yaml
+        mode: '0644'
+      tags: monitoring_cluster
+
+    - name: Configurar Prometheus (prometheus.yml)
+      template:
+        src: /etc/ansible/templates/prometheus.yml.j2
+        dest: /etc/prometheus/prometheus.yml
+        mode: '0644'
+      tags: monitoring_cluster
+      notify: Reiniciar contenedor prometheus shell
+
+    - name: Verificar si el contenedor de Prometheus ya existe (por si el playbook se corre varias veces)
+      shell: docker ps -a -q -f name=prometheus
+      register: prom_exist
+      ignore_errors: yes
+      tags: monitoring_cluster
+    - name: Desplegar Contenedor Prometheus
+      shell: |
+        docker run -d --name prometheus \
+        --restart always \
+        --network host \
+        -v /etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
+        prom/prometheus:latest
+      when: prom_exist.stdout == ""
+      tags: monitoring_cluster
+
+    - name: Verificar si el contenedor de Grafana ya existe (por si el playbook se corre varias veces)
+      shell: docker ps -a -q -f name=grafana
+      register: graf_exist
+      ignore_errors: yes
+      tags: monitoring_cluster
+    - name: Eliminar Grafana antiguo para actualizar volumenes
+      shell: docker rm -f grafana
+      when: graf_exist.stdout != ""
+      tags: monitoring_cluster
+    
+    - name: Descargar Dashboard Node Exporter Full (ID 1860)
+      get_url:
+        url: https://grafana.com/api/dashboards/1860/revisions/latest/download
+        dest: /etc/grafana/dashboards_json/node-exporter-full.json
+        mode: '0644'
+      tags: monitoring_cluster
+    - name: Corregir el Data Source en el JSON del Dashboard
+      replace:
+        path: /etc/grafana/dashboards_json/node-exporter-full.json
+        regexp: '\$\{DS_PROMETHEUS\}'
+        replace: 'Prometheus'
+      tags: monitoring_cluster
+
+    - name: Desplegar Contenedor Grafana
+      shell: |
+        docker run -d --name grafana \
+        --restart always \
+        --network host \
+        -e "GF_SECURITY_ADMIN_PASSWORD=admin" \
+        -v /etc/grafana/provisioning:/etc/grafana/provisioning \
+        -v /etc/grafana/dashboards_json:/var/lib/grafana/dashboards \
+        grafana/grafana:latest
+      tags: monitoring_cluster
+
     # Iniciar accounting y controlador del Slurm
     - name: Esperar a que SlurmDBD responda
       wait_for:
@@ -215,6 +306,15 @@
       service:
         name: slurmdbd
         state: restarted
+    - name: Reiniciar contenedor prometheus shell
+      shell: docker restart prometheus 
+    - name: Reiniciar contenedor prometheus shell
+      shell: docker restart prometheus
+    - name: Reiniciar slurm_exporter
+      service:
+        name: prometheus-slurm-exporter
+        state: restarted
+        daemon_reload: yes
 
   post_tasks:
     - name: Mensaje final de configuracion del headnode

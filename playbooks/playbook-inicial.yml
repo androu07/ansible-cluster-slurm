@@ -1,0 +1,32 @@
+---
+# ===== Playbook de configuracion inicial para la conectividad entre hosts =====
+
+- name: Instalar SSHPASS para la conexion ssh de headnode a workers
+  hosts: headnode
+  become: yes
+  gather_facts: yes
+
+  tasks:
+    # Actualizar cache de apt
+    - name: Actualizar cache de apt
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+      tags:
+        - actualizar_cache_headnode
+
+    # Instalar SSHPASS para uso de Ansible
+    - name: Instalar sshpass para uso de Ansible con password
+      apt:
+        name: sshpass
+        state: present
+      tags:
+        - sshpass  
+
+  post_tasks:
+    - name: Mensaje final de configuracion general
+      debug:
+        msg:
+          - "========================================="
+          - " Configuracion Inicial Completada"
+          - "========================================="
