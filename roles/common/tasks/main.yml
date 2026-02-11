@@ -60,6 +60,20 @@
   tags:
     - packages
 
+- name: Extender la partición root para ocupar todo el disco
+  command: growpart /dev/vda 2
+  ignore_errors: yes # Ignora error si ya está extendida
+  register: growpart_result
+  changed_when: "'CHANGED' in growpart_result.stdout"
+  tags:
+    - disco 
+
+- name: Redimensionar el sistema de archivos ext4
+  command: resize2fs /dev/vda2
+  when: growpart_result.changed
+  tags:
+    - disco
+
 - name: Instalar paquetes comunes
   apt:
     name:
