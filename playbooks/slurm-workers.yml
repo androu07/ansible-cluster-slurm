@@ -7,17 +7,13 @@
   gather_facts: yes
   
   roles:
+    - munge
     - chrony_client
     - nfs_client
     - slurmd
 
   tasks:
-    # Configurar Munge y SSH (roles con tasks_from específicos)
-    - name: Configurar Munge en workers
-      include_role:
-        name: munge
-        tasks_from: workers
-
+    # Configurar SSH keys
     - name: Configurar SSH keys en workers
       include_role:
         name: ssh_keys

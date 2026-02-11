@@ -1,0 +1,31 @@
+---
+# ===== Punto de entrada principal del rol Munge =====
+# Ejecuta las tareas correspondientes según el tipo de host
+
+- name: Configurar Munge en headnode
+  include_tasks: headnode.yml
+  when: inventory_hostname in groups['headnode']
+  tags:
+    - munge_headnode
+
+- name: Configurar Munge en workers
+  include_tasks: workers.yml
+  when: inventory_hostname in groups['workers']
+  tags:
+    - munge_workers
+
+- name: Verificar que el socket de Munge esté disponible
+  wait_for:
+    path: /run/munge/munge.socket.2
+    state: present
+    timeout: 30
+  tags:
+    - munge_validation
+
+- name: Verificar que Munge responda correctamente
+  command: munge -n
+  register: munge_test
+  changed_when: false
+  failed_when: munge_test.rc != 0
+  tags:
+    - munge_validation

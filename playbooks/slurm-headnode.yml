@@ -7,6 +7,7 @@
   gather_facts: yes
   
   roles:
+    - munge
     - chrony_server
     - nfs_server
     - mariadb
@@ -16,12 +17,7 @@
     - monitoring
 
   tasks:
-    # Configurar Munge y SSH (roles con tasks_from específicos)
-    - name: Configurar Munge en headnode
-      include_role:
-        name: munge
-        tasks_from: headnode
-
+    # Configurar SSH keys
     - name: Configurar SSH keys en headnode
       include_role:
         name: ssh_keys
