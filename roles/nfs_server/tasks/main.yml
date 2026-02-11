@@ -19,7 +19,7 @@
     - /nfs/general
     - /nfs/privileged
   tags:
-    - nfs_directories
+    - nfs_config
 
 - name: Configurar exports NFS
   template:
@@ -28,4 +28,9 @@
     mode: '0644'
   notify: Reiniciar nfs
   tags:
-    - nfs_exports
+    - nfs_config
+
+- name: Aplicar configuración de exports
+  command: exportfs -ra
+  tags:
+    - nfs_config
