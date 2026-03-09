@@ -2,21 +2,21 @@
 # ===== Setup inicial para conectividad =====
 
 - name: Actualizar cache de apt
-  apt:
+  ansible.builtin.apt:
     update_cache: yes
     cache_valid_time: 3600
   tags:
     - update_cache
 
 - name: Instalar sshpass
-  apt:
+  ansible.builtin.apt:
     name: sshpass
     state: present
   tags:
     - install_sshpass
 
 - name: Instalar rng-tools
-  apt:
+  ansible.builtin.apt:
     name: rng-tools
     state: present
   tags:

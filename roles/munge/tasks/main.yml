@@ -23,7 +23,7 @@
     - munge_validation
 
 - name: Verificar que Munge responda correctamente
-  command: munge -n
+  ansible.builtin.command: munge -n
   register: munge_test
   changed_when: false
   failed_when: munge_test.rc != 0

@@ -38,7 +38,7 @@
     - system_users
 
 - name: Crear usuarios del sistema
-  user:
+  ansible.builtin.user:
     name: "{{ item.name }}"
     uid: "{{ item.uid }}"
     group: "{{ item.name }}"
@@ -54,14 +54,14 @@
     - system_users
 
 - name: Actualizar cache de apt
-  apt:
+  ansible.builtin.apt:
     update_cache: yes
     cache_valid_time: 3600
   tags:
     - packages
 
 - name: Extender la partición root para ocupar todo el disco
-  command: growpart /dev/vda 2
+  ansible.builtin.command: growpart /dev/vda 2
   ignore_errors: yes # Ignora error si ya está extendida
   register: growpart_result
   changed_when: "'CHANGED' in growpart_result.stdout"
@@ -69,13 +69,13 @@
     - disco 
 
 - name: Redimensionar el sistema de archivos ext4
-  command: resize2fs /dev/vda2
+  ansible.builtin.command: resize2fs /dev/vda2
   when: growpart_result.changed
   tags:
     - disco
 
 - name: Instalar paquetes comunes
-  apt:
+  ansible.builtin.apt:
     name:
       - chrony
       - sssd
@@ -92,7 +92,7 @@
     - packages
 
 - name: Crear directorios de Munge
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     owner: munge
@@ -106,15 +106,15 @@
     - directories
 
 - name: Crear directorios de Slurm
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     owner: slurm
     group: slurm
     mode: '0755'
   loop:
-    - /var/log/slurm
-    - /var/lib/slurm
+    - /var/log/slurm-llnl
+    - /var/lib/slurm-llnl
     - /var/lib/slurm/slurmd
     - /var/lib/slurm/slurmctld
     - /etc/slurm-llnl
@@ -132,7 +132,7 @@
     - slurm_config
 
 - name: Detener munge inicialmente
-  service:
+  ansible.builtin.service:
     name: munge
     state: stopped
     enabled: yes

@@ -1,0 +1,45 @@
+---
+# ===== Instalacion y Configuracion de OpenLDAP Server (Headnode) =====
+
+- name: Pre-configurar contrasenas de slapd (debconf)
+  ansible.builtin.debconf:
+    name: slapd
+    question: "{{ item.question }}"
+    value: "{{ ldap_admin_password }}"
+    vtype: 'password'
+  loop:
+    - { question: 'slapd/root_password' }
+    - { question: 'slapd/root_password_again' }
+
+- name: Instalar paquetes de OpenLDAP
+  ansible.builtin.apt:
+    name:
+      - slapd
+      - ldap-utils
+      - python3-ldap
+    state: present
+
+- name: Asegurar que slapd este iniciado y habilitado
+  ansible.builtin.service:
+    name: slapd
+    state: started
+    enabled: yes
+
+- name: Crear unidades organizativas base (People y Group)
+  community.general.ldap_entry:
+    dn: "{{ item.dn }}"
+    objectClass: "{{ item.objectClass }}"
+    server_uri: "ldap://localhost"
+    bind_dn: "cn=admin,{{ ldap_base_dn }}"
+    bind_pw: "{{ ldap_admin_password }}"
+  loop:
+    - { dn: "ou=People,{{ ldap_base_dn }}", objectClass: ['top', 'organizationalUnit'] }
+    - { dn: "ou=Group,{{ ldap_base_dn }}", objectClass: ['top', 'organizationalUnit'] }
+  tags: [ldap_structure]
+
+- name: Configurar mkhomedir en el Headnode (PAM)
+  ansible.builtin.lineinfile:
+    path: /etc/pam.d/common-session
+    line: "session optional pam_mkhomedir.so skel=/etc/skel umask=0077"
+    state: present
+  tags: [pam_config]

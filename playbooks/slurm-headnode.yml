@@ -9,6 +9,7 @@
   roles:
     - munge
     - chrony_server
+    - ldap_server
     - nfs_server
     - mariadb
     - slurmdbd
@@ -30,3 +31,4 @@
           - "========================================="
           - "Configuracion del Headnode Completada"
           - "========================================="
+

@@ -2,8 +2,8 @@
 # ===== Configuración de Munge en Workers =====
 
 - name: Distribuir llave Munge desde el controlador
-  copy:
-    src: /etc/ansible/playbooks/buffer/munge.key
+  ansible.builtin.copy:
+    src: ./buffer/munge.key
     dest: /etc/munge/munge.key
     owner: munge
     group: munge
@@ -12,7 +12,7 @@
     - distribute_key
 
 - name: Iniciar servicio Munge en workers
-  service:
+  ansible.builtin.service:
     name: munge
     state: started
     enabled: yes

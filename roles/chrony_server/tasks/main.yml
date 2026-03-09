@@ -1,11 +1,26 @@
 ---
 # ===== Chrony Server (Headnode) =====
 
-- name: Configurar Chrony como servidor
-  lineinfile:
+- name: Asegurar que Chrony use pools de Sudamérica
+  ansible.builtin.lineinfile:
+    path: /etc/chrony/chrony.conf
+    regexp: '^pool '
+    line: "pool south-america.pool.ntp.org iburst"
+    state: present
+  notify: Reiniciar chrony
+
+- name: Permitir sincronización a la red interna
+  ansible.builtin.lineinfile:
     path: /etc/chrony/chrony.conf
     line: "allow {{ internal_network_cidr }}"
     state: present
   notify: Reiniciar chrony
-  tags:
-    - chrony_server_config
+
+- name: Forzar al Headnode a ser autoritativo (Local Stratum)
+  ansible.builtin.lineinfile:
+    path: /etc/chrony/chrony.conf
+    line: "local stratum 10"
+    state: present
+  notify: Reiniciar chrony
+  tags: [chrony_server_config]
+

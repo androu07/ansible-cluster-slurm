@@ -2,16 +2,16 @@
 # ===== Configuración de Firewall NFTables =====
 
 - name: Configurar reglas de NFTables
-  template:
+  ansible.builtin.template:
     src: nftables.conf.j2
     dest: /etc/nftables.conf
-    mode: '0755'
+    mode: '0644'
   notify: Reiniciar nftables
   tags:
     - nftables_config
 
 - name: Habilitar servicio NFTables
-  service:
+  ansible.builtin.service:
     name: nftables
     state: started
     enabled: yes

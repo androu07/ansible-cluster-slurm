@@ -1,0 +1,130 @@
+2026-03-09 18:29:21,508 p=56571 u=root n=ansible | slurm-wn1 | FAILED! => {
+    "msg": "to use the 'ssh' connection type with passwords or pkcs11_provider, you must install the sshpass program"
+}
+2026-03-09 18:29:21,519 p=56571 u=root n=ansible | slurm-wn2 | FAILED! => {
+    "msg": "to use the 'ssh' connection type with passwords or pkcs11_provider, you must install the sshpass program"
+}
+2026-03-09 18:29:22,005 p=56571 u=root n=ansible | slurm-hn | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2026-03-09 18:30:25,963 p=56629 u=root n=ansible | ERROR! the role 'initial_setup' was not found in /root/ansible-cluster-slurm/playbooks/roles:/root/.ansible/roles:/usr/share/ansible/roles:/etc/ansible/roles:/root/ansible-cluster-slurm/playbooks
+
+The error appears to be in '/root/ansible-cluster-slurm/playbooks/playbook-inicial.yml': line 10, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+  roles:
+    - initial_setup
+      ^ here
+
+2026-03-09 18:31:18,164 p=56647 u=root n=ansible | slurm-wn1 | FAILED! => {
+    "msg": "to use the 'ssh' connection type with passwords or pkcs11_provider, you must install the sshpass program"
+}
+2026-03-09 18:31:18,171 p=56647 u=root n=ansible | slurm-wn2 | FAILED! => {
+    "msg": "to use the 'ssh' connection type with passwords or pkcs11_provider, you must install the sshpass program"
+}
+2026-03-09 18:31:18,624 p=56647 u=root n=ansible | slurm-hn | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2026-03-09 18:31:26,313 p=56689 u=root n=ansible | ERROR! the role 'initial_setup' was not found in /root/ansible-cluster-slurm/playbooks/roles:/root/.ansible/roles:/usr/share/ansible/roles:/etc/ansible/roles:/root/ansible-cluster-slurm/playbooks
+
+The error appears to be in '/root/ansible-cluster-slurm/playbooks/playbook-inicial.yml': line 10, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+  roles:
+    - initial_setup
+      ^ here
+
+2026-03-09 18:34:16,753 p=56745 u=root n=ansible | PLAY [Instalar SSHPASS para la conexion ssh de headnode a workers] ***************************************************************************************************************************
+2026-03-09 18:34:16,763 p=56745 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-09 18:34:18,534 p=56745 u=root n=ansible | ok: [slurm-hn]
+2026-03-09 18:34:18,556 p=56745 u=root n=ansible | TASK [initial_setup : Actualizar cache de apt] ***********************************************************************************************************************************************
+2026-03-09 18:34:19,574 p=56745 u=root n=ansible | ok: [slurm-hn]
+2026-03-09 18:34:19,584 p=56745 u=root n=ansible | TASK [initial_setup : Instalar sshpass] ******************************************************************************************************************************************************
+2026-03-09 18:34:21,624 p=56745 u=root n=ansible | changed: [slurm-hn]
+2026-03-09 18:34:21,634 p=56745 u=root n=ansible | TASK [initial_setup : Instalar rng-tools] ****************************************************************************************************************************************************
+2026-03-09 18:34:23,511 p=56745 u=root n=ansible | changed: [slurm-hn]
+2026-03-09 18:34:23,534 p=56745 u=root n=ansible | TASK [Mensaje final de configuracion general] ************************************************************************************************************************************************
+2026-03-09 18:34:23,554 p=56745 u=root n=ansible | ok: [slurm-hn] => {
+    "msg": [
+        "=========================================",
+        " Configuracion Inicial Completada",
+        "========================================="
+    ]
+}
+2026-03-09 18:34:23,568 p=56745 u=root n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************
+2026-03-09 18:34:23,568 p=56745 u=root n=ansible | slurm-hn                   : ok=5    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-03-09 18:40:41,981 p=56981 u=root n=ansible | PLAY [Instalar SSHPASS para la conexion ssh de headnode a workers] ***************************************************************************************************************************
+2026-03-09 18:40:41,991 p=56981 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-09 18:40:42,714 p=56981 u=root n=ansible |  [ERROR]: User interrupted execution
+
+2026-03-09 18:40:47,262 p=57013 u=root n=ansible | PLAY [Instalar SSHPASS para la conexion ssh de headnode a workers] ***************************************************************************************************************************
+2026-03-09 18:40:47,271 p=57013 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-09 18:40:48,800 p=57013 u=root n=ansible | ok: [slurm-hn]
+2026-03-09 18:40:48,823 p=57013 u=root n=ansible | TASK [initial_setup : Actualizar cache de apt] ***********************************************************************************************************************************************
+2026-03-09 18:40:49,786 p=57013 u=root n=ansible | ok: [slurm-hn]
+2026-03-09 18:40:49,796 p=57013 u=root n=ansible | TASK [initial_setup : Instalar sshpass] ******************************************************************************************************************************************************
+2026-03-09 18:40:51,670 p=57013 u=root n=ansible | changed: [slurm-hn]
+2026-03-09 18:40:51,678 p=57013 u=root n=ansible | TASK [initial_setup : Instalar rng-tools] ****************************************************************************************************************************************************
+2026-03-09 18:40:53,550 p=57013 u=root n=ansible | changed: [slurm-hn]
+2026-03-09 18:40:53,575 p=57013 u=root n=ansible | TASK [Mensaje final de configuracion general] ************************************************************************************************************************************************
+2026-03-09 18:40:53,600 p=57013 u=root n=ansible | ok: [slurm-hn] => {
+    "msg": [
+        "=========================================",
+        " Configuracion Inicial Completada",
+        "========================================="
+    ]
+}
+2026-03-09 18:40:53,616 p=57013 u=root n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************
+2026-03-09 18:40:53,616 p=57013 u=root n=ansible | slurm-hn                   : ok=5    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-03-09 18:41:02,587 p=57221 u=root n=ansible | PLAY [Instalar SSHPASS para la conexion ssh de headnode a workers] ***************************************************************************************************************************
+2026-03-09 18:41:02,596 p=57221 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-09 18:41:04,161 p=57221 u=root n=ansible | ok: [slurm-hn]
+2026-03-09 18:41:04,182 p=57221 u=root n=ansible | TASK [initial_setup : Actualizar cache de apt] ***********************************************************************************************************************************************
+2026-03-09 18:41:05,147 p=57221 u=root n=ansible | ok: [slurm-hn]
+2026-03-09 18:41:05,157 p=57221 u=root n=ansible | TASK [initial_setup : Instalar sshpass] ******************************************************************************************************************************************************
+2026-03-09 18:41:17,310 p=57221 u=root n=ansible | changed: [slurm-hn]
+2026-03-09 18:41:17,319 p=57221 u=root n=ansible | TASK [initial_setup : Instalar rng-tools] ****************************************************************************************************************************************************
+2026-03-09 18:41:30,478 p=57221 u=root n=ansible | changed: [slurm-hn]
+2026-03-09 18:41:30,503 p=57221 u=root n=ansible | TASK [Mensaje final de configuracion general] ************************************************************************************************************************************************
+2026-03-09 18:41:30,529 p=57221 u=root n=ansible | ok: [slurm-hn] => {
+    "msg": [
+        "=========================================",
+        " Configuracion Inicial Completada",
+        "========================================="
+    ]
+}
+2026-03-09 18:41:30,547 p=57221 u=root n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************
+2026-03-09 18:41:30,547 p=57221 u=root n=ansible | slurm-hn                   : ok=5    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-03-09 18:43:22,170 p=57723 u=root n=ansible | slurm-hn | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2026-03-09 18:43:23,624 p=57723 u=root n=ansible | slurm-wn1 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2026-03-09 18:43:23,641 p=57723 u=root n=ansible | slurm-wn2 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}

@@ -17,3 +17,4 @@ slurm_node_mem: 7900     # RAM en MB (ajustado a la RAM real de las VMs)
 db_slurm_user: "slurm"
 db_slurm_pass: "slurm_pass"     # Variable a cambiar por seguridad
 db_slurm_name: "slurm_acct_db"
+

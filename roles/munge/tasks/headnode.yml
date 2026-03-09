@@ -2,14 +2,14 @@
 # ===== Configuración de Munge en Headnode =====
 
 - name: Generar llave Munge
-  command: /usr/sbin/create-munge-key -r
+  ansible.builtin.command: /usr/sbin/create-munge-key -r
   args:
     creates: /etc/munge/munge.key
   tags:
     - generate_key
 
 - name: Asegurar permisos estrictos de llave Munge
-  file:
+  ansible.builtin.file:
     path: /etc/munge/munge.key
     owner: munge
     group: munge
@@ -20,13 +20,13 @@
 - name: Descargar llave Munge al controlador
   fetch:
     src: /etc/munge/munge.key
-    dest: /etc/ansible/playbooks/buffer/munge.key
+    dest: ./buffer/munge.key
     flat: yes
   tags:
     - fetch_key
 
 - name: Crear directorio de backup
-  file:
+  ansible.builtin.file:
     path: /root/backups
     state: directory
     owner: root
@@ -47,7 +47,7 @@
     - backup
 
 - name: Iniciar servicio Munge
-  service:
+  ansible.builtin.service:
     name: munge
     state: started
     enabled: yes
