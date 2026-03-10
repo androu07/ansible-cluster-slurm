@@ -11,10 +11,10 @@ SlurmUser=slurm
 SlurmdUser=root
 SlurmctldPort=6817
 SlurmdPort=6818
-SlurmctldLogFile=/var/log/slurm-llnl/slurmctld.log
-SlurmdLogFile=/var/log/slurm-llnl/slurmd.log
-SlurmdSpoolDir=/var/lib/slurm-llnl/slurmd
-StateSaveLocation=/var/lib/slurm-llnl/slurmctld
+SlurmctldLogFile=/var/log/slurm/slurmctld.log
+SlurmdLogFile=/var/log/slurm/slurmd.log
+SlurmdSpoolDir=/var/lib/slurm/slurmd
+StateSaveLocation=/var/lib/slurm/slurmctld
 
 # Scheduler y Prioridad
 SchedulerType=sched/backfill
@@ -29,7 +29,7 @@ PriorityWeightQOS=10000
 AccountingStorageType=accounting_storage/slurmdbd
 AccountingStorageHost={{ groups['headnode'][0] }}
 JobCompType=jobcomp/filetxt
-JobCompLoc=/var/log/slurm-llnl/job_completions.log
+JobCompLoc=/var/log/slurm/job_completions.log
 
 # Procesos
 ProctrackType=proctrack/cgroup

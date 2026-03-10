@@ -2,25 +2,25 @@
 # ===== SITE.YML - Master Playbook =====
 # Este playbook ejecuta toda la configuracion del cluster SLURM
 
-#- name: "Paqueteria para que ansible funcione"
-#  import_playbook: playbooks/playbook-inicial.yml
-#  tags:
-#    - inicial
+- name: "Paqueteria para que ansible funcione"
+  import_playbook: playbooks/playbook-inicial.yml
+  tags:
+    - inicial
 
-#- name: "Configuracion General del Cluster"
-#  import_playbook: playbooks/slurm-general.yml
-#  tags:
-#    - general
+- name: "Configuracion General del Cluster"
+  import_playbook: playbooks/slurm-general.yml
+  tags:
+    - general
 
 - name: "Configuracion Headnode"
   import_playbook: playbooks/slurm-headnode.yml
   tags:
     - headnode
 
-#- name: "Configuracion Workers"
-#  import_playbook: playbooks/slurm-workers.yml
-#  tags:
-#    - workers
+- name: "Configuracion Workers"
+  import_playbook: playbooks/slurm-workers.yml
+  tags:
+    - workers
 
 - name: Resumen
   hosts: localhost

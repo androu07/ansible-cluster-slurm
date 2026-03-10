@@ -103,18 +103,18 @@
     group: slurm
     mode: '0755'
   loop:
-    - /var/log/slurm-llnl
-    - /var/lib/slurm-llnl
+    - /var/log/slurm
+    - /var/lib/slurm
     - /var/lib/slurm/slurmd
     - /var/lib/slurm/slurmctld
-    - /etc/slurm-llnl
+    - /etc/slurm
   tags:
     - directories
 
 - name: Distribuir archivo slurm.conf
   ansible.builtin.template:
     src: slurm.conf.j2
-    dest: /etc/slurm-llnl/slurm.conf
+    dest: /etc/slurm/slurm.conf
     owner: slurm
     group: slurm
     mode: '0644'
@@ -128,3 +128,4 @@
     enabled: yes
   tags:
     - munge_init
+

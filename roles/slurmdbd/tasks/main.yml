@@ -8,10 +8,26 @@
   tags:
     - install_slurmdbd
 
+- name: Asegurar directorio de logs con permisos correctos
+  ansible.builtin.file:
+    path: /var/log/slurm
+    state: directory
+    owner: slurm
+    group: slurm
+    mode: '0755'
+
+- name: Crear archivo de log si no existe
+  ansible.builtin.file:
+    path: /var/log/slurm/slurmdbd.log
+    state: touch
+    owner: slurm
+    group: slurm
+    mode: '0644'
+
 - name: Configurar archivo slurmdbd.conf
   ansible.builtin.template:
     src: slurmdbd.conf.j2
-    dest: /etc/slurm-llnl/slurmdbd.conf
+    dest: /etc/slurm/slurmdbd.conf
     owner: slurm
     group: slurm
     mode: '0600'
