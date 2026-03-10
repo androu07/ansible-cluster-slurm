@@ -2,22 +2,14 @@
 # ===== Tareas comunes para todos los hosts =====
 
 - name: Configurar hostname del nodo
-  hostname:
+  ansible.builtin.hostname:
     name: "{{ inventory_hostname }}"
   register: hostname_changed
   tags:
     - hostname
 
-- name: Reiniciar para aplicar hostname
-  reboot:
-    reboot_timeout: 300
-    msg: "Reiniciando para aplicar el nuevo hostname"
-  when: hostname_changed.changed
-  tags:
-    - hostname
-
 - name: Configurar archivo '/etc/hosts'
-  template:
+  ansible.builtin.template:
     src: hosts.j2
     dest: /etc/hosts
     owner: root
@@ -27,20 +19,18 @@
     - hosts_file
 
 - name: Crear grupos del sistema
-  group:
+  ansible.builtin.group:
     name: "{{ item.name }}"
-    gid: "{{ item.gid }}"
     state: present
   loop:
-    - { name: 'munge', gid: 991 }
-    - { name: 'slurm', gid: 990 }
+    - { name: 'munge' }
+    - { name: 'slurm' }
   tags:
     - system_users
 
 - name: Crear usuarios del sistema
   ansible.builtin.user:
     name: "{{ item.name }}"
-    uid: "{{ item.uid }}"
     group: "{{ item.name }}"
     shell: "{{ item.shell }}"
     home: "{{ item.home }}"
@@ -48,8 +38,8 @@
     system: yes
     state: present
   loop:
-    - { name: 'munge', uid: 991, shell: '/sbin/nologin', home: '/var/lib/munge' }
-    - { name: 'slurm', uid: 990, shell: '/bin/bash', home: '/var/lib/slurm' }
+    - { name: 'munge', shell: '/usr/sbin/nologin', home: '/var/lib/munge' }
+    - { name: 'slurm', shell: '/bin/bash', home: '/var/lib/slurm' }
   tags:
     - system_users
 
@@ -122,7 +112,7 @@
     - directories
 
 - name: Distribuir archivo slurm.conf
-  template:
+  ansible.builtin.template:
     src: slurm.conf.j2
     dest: /etc/slurm-llnl/slurm.conf
     owner: slurm

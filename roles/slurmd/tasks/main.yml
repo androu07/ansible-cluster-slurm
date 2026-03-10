@@ -1,8 +1,16 @@
 ---
 # ===== SLURM Compute Daemon (slurmd) =====
 
+- name: Asegurar directorio de configuración
+  ansible.builtin.file:
+    path: /etc/slurm-llnl
+    state: directory
+    owner: slurm
+    group: slurm
+    mode: '0755'
+
 - name: Distribuir configuración de Cgroups
-  template:
+  ansible.builtin.template:
     src: cgroup.conf.j2
     dest: /etc/slurm-llnl/cgroup.conf
     owner: slurm
@@ -13,7 +21,7 @@
     - cgroup_config
 
 - name: Iniciar servicio Slurmd (Worker Daemon)
-  service:
+  ansible.builtin.service:
     name: slurmd
     state: started
     enabled: yes

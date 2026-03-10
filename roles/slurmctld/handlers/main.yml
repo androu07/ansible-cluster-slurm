@@ -1,5 +1,5 @@
 ---
 - name: Reiniciar slurmctld
-  service:
+  ansible.builtin.service:
     name: slurmctld
     state: restarted

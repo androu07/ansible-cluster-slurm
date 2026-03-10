@@ -1,4 +1,7 @@
 ---
 - name: Reiniciar contenedor prometheus
-  shell: docker restart prometheus
-  ignore_errors: yes
+  community.docker.docker_container:
+    name: prometheus
+    image: prom/prometheus:latest
+    state: started
+    restart: yes

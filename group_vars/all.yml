@@ -7,7 +7,9 @@ cluster_name: "slurmcluster"
 internal_network_cidr: "192.168.100.0/24"
 
 # Configuracion LDAP
-ldap_base_dn: "dc=nodomain"
+ldap_base_dn: "dc=cluster,dc=local" 
+ldap_admin_password: "admin_password" 
+ldap_domain: "cluster.local"
 
 # Recursos de las VMs (Ajustar variables segun la config de las VMs del cluster)
 slurm_node_cpus: 2       # Cantidad de CPUs

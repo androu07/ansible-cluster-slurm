@@ -2,14 +2,14 @@
 # ===== Configuración de SlurmDBD =====
 
 - name: Instalar slurmdbd
-  apt:
+  ansible.builtin.apt:
     name: slurmdbd
     state: present
   tags:
     - install_slurmdbd
 
 - name: Configurar archivo slurmdbd.conf
-  template:
+  ansible.builtin.template:
     src: slurmdbd.conf.j2
     dest: /etc/slurm-llnl/slurmdbd.conf
     owner: slurm
@@ -20,7 +20,7 @@
     - config_slurmdbd
 
 - name: Iniciar servicio SlurmDBD
-  service:
+  ansible.builtin.service:
     name: slurmdbd
     state: started
     enabled: yes

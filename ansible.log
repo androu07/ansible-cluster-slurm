@@ -128,3 +128,937 @@ The offending line appears to be:
     "changed": false,
     "ping": "pong"
 }
+2026-03-10 01:20:22,476 p=60274 u=root n=ansible | PLAY [Configuracion General de todo el cluster] **********************************************************************************************************************************************
+2026-03-10 01:20:22,490 p=60274 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-10 01:20:24,172 p=60274 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 01:20:25,243 p=60274 u=root n=ansible | ok: [slurm-wn2]
+2026-03-10 01:20:25,395 p=60274 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 01:20:25,435 p=60274 u=root n=ansible | TASK [common : Configurar hostname del nodo] *************************************************************************************************************************************************
+2026-03-10 01:20:26,480 p=60274 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 01:20:26,641 p=60274 u=root n=ansible | changed: [slurm-wn2]
+2026-03-10 01:20:26,682 p=60274 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 01:20:26,696 p=60274 u=root n=ansible | TASK [common : Reiniciar para aplicar hostname] **********************************************************************************************************************************************
+2026-03-10 01:20:26,729 p=60274 u=root n=ansible | fatal: [slurm-hn]: FAILED! => {"changed": false, "elapsed": 0, "msg": "Running reboot with local connection would reboot the control node.", "rebooted": false}
+2026-03-10 01:20:26,738 p=60274 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 01:20:26,746 p=60274 u=root n=ansible | changed: [slurm-wn2]
+2026-03-10 01:20:26,755 p=60274 u=root n=ansible | TASK [common : Configurar archivo '/etc/hosts'] **********************************************************************************************************************************************
+2026-03-10 01:20:27,516 p=60274 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 01:20:27,521 p=60274 u=root n=ansible | changed: [slurm-wn2]
+2026-03-10 01:20:27,530 p=60274 u=root n=ansible | TASK [common : Crear grupos del sistema] *****************************************************************************************************************************************************
+2026-03-10 01:20:28,220 p=60274 u=root n=ansible | changed: [slurm-wn1] => (item={'name': 'munge', 'gid': 991})
+2026-03-10 01:20:28,235 p=60274 u=root n=ansible | changed: [slurm-wn2] => (item={'name': 'munge', 'gid': 991})
+2026-03-10 01:20:28,727 p=60274 u=root n=ansible | changed: [slurm-wn1] => (item={'name': 'slurm', 'gid': 990})
+2026-03-10 01:20:28,750 p=60274 u=root n=ansible | changed: [slurm-wn2] => (item={'name': 'slurm', 'gid': 990})
+2026-03-10 01:20:28,761 p=60274 u=root n=ansible | TASK [common : Crear usuarios del sistema] ***************************************************************************************************************************************************
+2026-03-10 01:20:29,643 p=60274 u=root n=ansible | changed: [slurm-wn2] => (item={'name': 'munge', 'uid': 991, 'shell': '/sbin/nologin', 'home': '/var/lib/munge'})
+2026-03-10 01:20:29,644 p=60274 u=root n=ansible | changed: [slurm-wn1] => (item={'name': 'munge', 'uid': 991, 'shell': '/sbin/nologin', 'home': '/var/lib/munge'})
+2026-03-10 01:20:30,228 p=60274 u=root n=ansible | changed: [slurm-wn1] => (item={'name': 'slurm', 'uid': 990, 'shell': '/bin/bash', 'home': '/var/lib/slurm'})
+2026-03-10 01:20:30,238 p=60274 u=root n=ansible | changed: [slurm-wn2] => (item={'name': 'slurm', 'uid': 990, 'shell': '/bin/bash', 'home': '/var/lib/slurm'})
+2026-03-10 01:20:30,251 p=60274 u=root n=ansible | TASK [common : Actualizar cache de apt] ******************************************************************************************************************************************************
+2026-03-10 01:20:31,762 p=60274 u=root n=ansible | changed: [slurm-wn2]
+2026-03-10 01:20:31,843 p=60274 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 01:20:31,854 p=60274 u=root n=ansible | TASK [common : Extender la partición root para ocupar todo el disco] *************************************************************************************************************************
+2026-03-10 01:20:32,491 p=60274 u=root n=ansible | skipping: [slurm-wn1]
+2026-03-10 01:20:32,492 p=60274 u=root n=ansible | skipping: [slurm-wn2]
+2026-03-10 01:20:32,503 p=60274 u=root n=ansible | TASK [common : Redimensionar el sistema de archivos ext4] ************************************************************************************************************************************
+2026-03-10 01:20:32,524 p=60274 u=root n=ansible | skipping: [slurm-wn1]
+2026-03-10 01:20:32,537 p=60274 u=root n=ansible | skipping: [slurm-wn2]
+2026-03-10 01:20:32,546 p=60274 u=root n=ansible | TASK [common : Instalar paquetes comunes] ****************************************************************************************************************************************************
+2026-03-10 01:20:34,974 p=60274 u=root n=ansible | changed: [slurm-wn2]
+2026-03-10 01:20:35,356 p=60274 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 01:20:35,365 p=60274 u=root n=ansible | TASK [common : Crear directorios de Munge] ***************************************************************************************************************************************************
+2026-03-10 01:20:36,031 p=60274 u=root n=ansible | changed: [slurm-wn1] => (item=/etc/munge)
+2026-03-10 01:20:36,040 p=60274 u=root n=ansible | changed: [slurm-wn2] => (item=/etc/munge)
+2026-03-10 01:20:36,509 p=60274 u=root n=ansible | changed: [slurm-wn1] => (item=/var/log/munge)
+2026-03-10 01:20:36,536 p=60274 u=root n=ansible | changed: [slurm-wn2] => (item=/var/log/munge)
+2026-03-10 01:20:36,999 p=60274 u=root n=ansible | changed: [slurm-wn1] => (item=/var/lib/munge)
+2026-03-10 01:20:37,002 p=60274 u=root n=ansible | [WARNING]: failed to look up user munge. Create user up to this point in real play
+
+2026-03-10 01:20:37,002 p=60274 u=root n=ansible | [WARNING]: failed to look up group munge. Create group up to this point in real play
+
+2026-03-10 01:20:37,028 p=60274 u=root n=ansible | changed: [slurm-wn2] => (item=/var/lib/munge)
+2026-03-10 01:20:37,039 p=60274 u=root n=ansible | TASK [common : Crear directorios de Slurm] ***************************************************************************************************************************************************
+2026-03-10 01:20:37,557 p=60274 u=root n=ansible | changed: [slurm-wn1] => (item=/var/log/slurm-llnl)
+2026-03-10 01:20:37,590 p=60274 u=root n=ansible | changed: [slurm-wn2] => (item=/var/log/slurm-llnl)
+2026-03-10 01:20:38,041 p=60274 u=root n=ansible | changed: [slurm-wn1] => (item=/var/lib/slurm-llnl)
+2026-03-10 01:20:38,086 p=60274 u=root n=ansible | changed: [slurm-wn2] => (item=/var/lib/slurm-llnl)
+2026-03-10 01:20:38,534 p=60274 u=root n=ansible | changed: [slurm-wn1] => (item=/var/lib/slurm/slurmd)
+2026-03-10 01:20:38,582 p=60274 u=root n=ansible | changed: [slurm-wn2] => (item=/var/lib/slurm/slurmd)
+2026-03-10 01:20:39,021 p=60274 u=root n=ansible | changed: [slurm-wn1] => (item=/var/lib/slurm/slurmctld)
+2026-03-10 01:20:39,078 p=60274 u=root n=ansible | changed: [slurm-wn2] => (item=/var/lib/slurm/slurmctld)
+2026-03-10 01:20:39,523 p=60274 u=root n=ansible | changed: [slurm-wn1] => (item=/etc/slurm-llnl)
+2026-03-10 01:20:39,525 p=60274 u=root n=ansible | [WARNING]: failed to look up user slurm. Create user up to this point in real play
+
+2026-03-10 01:20:39,525 p=60274 u=root n=ansible | [WARNING]: failed to look up group slurm. Create group up to this point in real play
+
+2026-03-10 01:20:39,582 p=60274 u=root n=ansible | changed: [slurm-wn2] => (item=/etc/slurm-llnl)
+2026-03-10 01:20:39,598 p=60274 u=root n=ansible | TASK [common : Distribuir archivo slurm.conf] ************************************************************************************************************************************************
+2026-03-10 01:20:40,106 p=60274 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 01:20:40,150 p=60274 u=root n=ansible | changed: [slurm-wn2]
+2026-03-10 01:20:40,159 p=60274 u=root n=ansible | TASK [common : Detener munge inicialmente] ***************************************************************************************************************************************************
+2026-03-10 01:20:41,199 p=60274 u=root n=ansible | fatal: [slurm-wn1]: FAILED! => {"changed": false, "msg": "Could not find the requested service munge: host"}
+2026-03-10 01:20:41,211 p=60274 u=root n=ansible | fatal: [slurm-wn2]: FAILED! => {"changed": false, "msg": "Could not find the requested service munge: host"}
+2026-03-10 01:20:41,213 p=60274 u=root n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************
+2026-03-10 01:20:41,214 p=60274 u=root n=ansible | slurm-hn                   : ok=2    changed=1    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2026-03-10 01:20:41,214 p=60274 u=root n=ansible | slurm-wn1                  : ok=11   changed=10   unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
+2026-03-10 01:20:41,214 p=60274 u=root n=ansible | slurm-wn2                  : ok=11   changed=10   unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
+2026-03-10 01:24:02,012 p=61087 u=root n=ansible | PLAY [Configuracion General de todo el cluster] **********************************************************************************************************************************************
+2026-03-10 01:24:02,027 p=61087 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-10 01:24:03,654 p=61087 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 01:24:04,370 p=61087 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 01:24:04,402 p=61087 u=root n=ansible | ok: [slurm-wn2]
+2026-03-10 01:24:04,439 p=61087 u=root n=ansible | TASK [common : Configurar hostname del nodo] *************************************************************************************************************************************************
+2026-03-10 01:24:05,478 p=61087 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 01:24:05,604 p=61087 u=root n=ansible | changed: [slurm-wn2]
+2026-03-10 01:24:05,611 p=61087 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 01:24:05,621 p=61087 u=root n=ansible | TASK [common : Configurar archivo '/etc/hosts'] **********************************************************************************************************************************************
+2026-03-10 01:24:06,150 p=61087 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 01:24:06,257 p=61087 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 01:24:06,267 p=61087 u=root n=ansible | changed: [slurm-wn2]
+2026-03-10 01:24:06,276 p=61087 u=root n=ansible | TASK [common : Crear grupos del sistema] *****************************************************************************************************************************************************
+2026-03-10 01:24:06,782 p=61087 u=root n=ansible | changed: [slurm-hn] => (item={'name': 'munge', 'gid': 991})
+2026-03-10 01:24:06,908 p=61087 u=root n=ansible | changed: [slurm-wn1] => (item={'name': 'munge', 'gid': 991})
+2026-03-10 01:24:06,922 p=61087 u=root n=ansible | changed: [slurm-wn2] => (item={'name': 'munge', 'gid': 991})
+2026-03-10 01:24:07,118 p=61087 u=root n=ansible | changed: [slurm-hn] => (item={'name': 'slurm', 'gid': 990})
+2026-03-10 01:24:07,388 p=61087 u=root n=ansible | changed: [slurm-wn1] => (item={'name': 'slurm', 'gid': 990})
+2026-03-10 01:24:07,422 p=61087 u=root n=ansible | changed: [slurm-wn2] => (item={'name': 'slurm', 'gid': 990})
+2026-03-10 01:24:07,435 p=61087 u=root n=ansible | TASK [common : Crear usuarios del sistema] ***************************************************************************************************************************************************
+2026-03-10 01:24:08,027 p=61087 u=root n=ansible | changed: [slurm-hn] => (item={'name': 'munge', 'uid': 991, 'shell': '/sbin/nologin', 'home': '/var/lib/munge'})
+2026-03-10 01:24:08,158 p=61087 u=root n=ansible | changed: [slurm-wn1] => (item={'name': 'munge', 'uid': 991, 'shell': '/sbin/nologin', 'home': '/var/lib/munge'})
+2026-03-10 01:24:08,180 p=61087 u=root n=ansible | changed: [slurm-wn2] => (item={'name': 'munge', 'uid': 991, 'shell': '/sbin/nologin', 'home': '/var/lib/munge'})
+2026-03-10 01:24:08,376 p=61087 u=root n=ansible | changed: [slurm-hn] => (item={'name': 'slurm', 'uid': 990, 'shell': '/bin/bash', 'home': '/var/lib/slurm'})
+2026-03-10 01:24:08,707 p=61087 u=root n=ansible | changed: [slurm-wn1] => (item={'name': 'slurm', 'uid': 990, 'shell': '/bin/bash', 'home': '/var/lib/slurm'})
+2026-03-10 01:24:08,741 p=61087 u=root n=ansible | changed: [slurm-wn2] => (item={'name': 'slurm', 'uid': 990, 'shell': '/bin/bash', 'home': '/var/lib/slurm'})
+2026-03-10 01:24:08,756 p=61087 u=root n=ansible | TASK [common : Actualizar cache de apt] ******************************************************************************************************************************************************
+2026-03-10 01:24:09,991 p=61087 u=root n=ansible | changed: [slurm-wn2]
+2026-03-10 01:24:10,146 p=61087 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 01:24:10,199 p=61087 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 01:24:10,210 p=61087 u=root n=ansible | TASK [common : Extender la partición root para ocupar todo el disco] *************************************************************************************************************************
+2026-03-10 01:24:10,661 p=61087 u=root n=ansible | skipping: [slurm-hn]
+2026-03-10 01:24:10,796 p=61087 u=root n=ansible | skipping: [slurm-wn2]
+2026-03-10 01:24:10,797 p=61087 u=root n=ansible | skipping: [slurm-wn1]
+2026-03-10 01:24:10,806 p=61087 u=root n=ansible | TASK [common : Redimensionar el sistema de archivos ext4] ************************************************************************************************************************************
+2026-03-10 01:24:10,840 p=61087 u=root n=ansible | skipping: [slurm-hn]
+2026-03-10 01:24:10,842 p=61087 u=root n=ansible | skipping: [slurm-wn1]
+2026-03-10 01:24:10,856 p=61087 u=root n=ansible | skipping: [slurm-wn2]
+2026-03-10 01:24:10,865 p=61087 u=root n=ansible | TASK [common : Instalar paquetes comunes] ****************************************************************************************************************************************************
+2026-03-10 01:24:13,248 p=61087 u=root n=ansible | changed: [slurm-wn2]
+2026-03-10 01:24:13,583 p=61087 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 01:24:14,007 p=61087 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 01:24:14,017 p=61087 u=root n=ansible | TASK [common : Crear directorios de Munge] ***************************************************************************************************************************************************
+2026-03-10 01:24:14,486 p=61087 u=root n=ansible | changed: [slurm-hn] => (item=/etc/munge)
+2026-03-10 01:24:14,623 p=61087 u=root n=ansible | changed: [slurm-wn1] => (item=/etc/munge)
+2026-03-10 01:24:14,633 p=61087 u=root n=ansible | changed: [slurm-wn2] => (item=/etc/munge)
+2026-03-10 01:24:14,773 p=61087 u=root n=ansible | changed: [slurm-hn] => (item=/var/log/munge)
+2026-03-10 01:24:15,079 p=61087 u=root n=ansible | changed: [slurm-hn] => (item=/var/lib/munge)
+2026-03-10 01:24:15,081 p=61087 u=root n=ansible | [WARNING]: failed to look up user munge. Create user up to this point in real play
+
+2026-03-10 01:24:15,082 p=61087 u=root n=ansible | [WARNING]: failed to look up group munge. Create group up to this point in real play
+
+2026-03-10 01:24:15,108 p=61087 u=root n=ansible | changed: [slurm-wn1] => (item=/var/log/munge)
+2026-03-10 01:24:15,118 p=61087 u=root n=ansible | changed: [slurm-wn2] => (item=/var/log/munge)
+2026-03-10 01:24:15,572 p=61087 u=root n=ansible | changed: [slurm-wn1] => (item=/var/lib/munge)
+2026-03-10 01:24:15,623 p=61087 u=root n=ansible | changed: [slurm-wn2] => (item=/var/lib/munge)
+2026-03-10 01:24:15,635 p=61087 u=root n=ansible | TASK [common : Crear directorios de Slurm] ***************************************************************************************************************************************************
+2026-03-10 01:24:15,976 p=61087 u=root n=ansible | changed: [slurm-hn] => (item=/var/log/slurm-llnl)
+2026-03-10 01:24:16,161 p=61087 u=root n=ansible | changed: [slurm-wn1] => (item=/var/log/slurm-llnl)
+2026-03-10 01:24:16,174 p=61087 u=root n=ansible | changed: [slurm-wn2] => (item=/var/log/slurm-llnl)
+2026-03-10 01:24:16,303 p=61087 u=root n=ansible | changed: [slurm-hn] => (item=/var/lib/slurm-llnl)
+2026-03-10 01:24:16,631 p=61087 u=root n=ansible | changed: [slurm-hn] => (item=/var/lib/slurm/slurmd)
+2026-03-10 01:24:16,641 p=61087 u=root n=ansible | changed: [slurm-wn1] => (item=/var/lib/slurm-llnl)
+2026-03-10 01:24:16,657 p=61087 u=root n=ansible | changed: [slurm-wn2] => (item=/var/lib/slurm-llnl)
+2026-03-10 01:24:16,931 p=61087 u=root n=ansible | changed: [slurm-hn] => (item=/var/lib/slurm/slurmctld)
+2026-03-10 01:24:17,136 p=61087 u=root n=ansible | changed: [slurm-wn1] => (item=/var/lib/slurm/slurmd)
+2026-03-10 01:24:17,153 p=61087 u=root n=ansible | changed: [slurm-wn2] => (item=/var/lib/slurm/slurmd)
+2026-03-10 01:24:17,240 p=61087 u=root n=ansible | changed: [slurm-hn] => (item=/etc/slurm-llnl)
+2026-03-10 01:24:17,242 p=61087 u=root n=ansible | [WARNING]: failed to look up user slurm. Create user up to this point in real play
+
+2026-03-10 01:24:17,242 p=61087 u=root n=ansible | [WARNING]: failed to look up group slurm. Create group up to this point in real play
+
+2026-03-10 01:24:17,568 p=61087 u=root n=ansible | changed: [slurm-wn1] => (item=/var/lib/slurm/slurmctld)
+2026-03-10 01:24:17,653 p=61087 u=root n=ansible | changed: [slurm-wn2] => (item=/var/lib/slurm/slurmctld)
+2026-03-10 01:24:18,007 p=61087 u=root n=ansible | changed: [slurm-wn1] => (item=/etc/slurm-llnl)
+2026-03-10 01:24:18,164 p=61087 u=root n=ansible | changed: [slurm-wn2] => (item=/etc/slurm-llnl)
+2026-03-10 01:24:18,176 p=61087 u=root n=ansible | TASK [common : Distribuir archivo slurm.conf] ************************************************************************************************************************************************
+2026-03-10 01:24:18,521 p=61087 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 01:24:18,673 p=61087 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 01:24:18,734 p=61087 u=root n=ansible | changed: [slurm-wn2]
+2026-03-10 01:24:18,746 p=61087 u=root n=ansible | TASK [common : Detener munge inicialmente] ***************************************************************************************************************************************************
+2026-03-10 01:24:19,592 p=61087 u=root n=ansible | fatal: [slurm-hn]: FAILED! => {"changed": false, "msg": "Could not find the requested service munge: host"}
+2026-03-10 01:24:19,751 p=61087 u=root n=ansible | fatal: [slurm-wn1]: FAILED! => {"changed": false, "msg": "Could not find the requested service munge: host"}
+2026-03-10 01:24:19,760 p=61087 u=root n=ansible | fatal: [slurm-wn2]: FAILED! => {"changed": false, "msg": "Could not find the requested service munge: host"}
+2026-03-10 01:24:19,762 p=61087 u=root n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************
+2026-03-10 01:24:19,762 p=61087 u=root n=ansible | slurm-hn                   : ok=10   changed=9    unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
+2026-03-10 01:24:19,763 p=61087 u=root n=ansible | slurm-wn1                  : ok=10   changed=9    unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
+2026-03-10 01:24:19,763 p=61087 u=root n=ansible | slurm-wn2                  : ok=10   changed=9    unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
+2026-03-10 01:31:01,879 p=62339 u=root n=ansible | PLAY [Configuracion General de todo el cluster] **********************************************************************************************************************************************
+2026-03-10 01:31:01,892 p=62339 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-10 01:31:03,465 p=62339 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 01:31:04,221 p=62339 u=root n=ansible | ok: [slurm-wn2]
+2026-03-10 01:31:04,296 p=62339 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 01:31:04,331 p=62339 u=root n=ansible | TASK [common : Configurar hostname del nodo] *************************************************************************************************************************************************
+2026-03-10 01:31:05,506 p=62339 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 01:31:25,521 p=62339 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 01:31:25,529 p=62339 u=root n=ansible | changed: [slurm-wn2]
+2026-03-10 01:31:25,537 p=62339 u=root n=ansible | TASK [common : Configurar archivo '/etc/hosts'] **********************************************************************************************************************************************
+2026-03-10 01:31:26,428 p=62339 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 01:31:26,660 p=62339 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 01:31:26,687 p=62339 u=root n=ansible | changed: [slurm-wn2]
+2026-03-10 01:31:26,697 p=62339 u=root n=ansible | TASK [common : Crear grupos del sistema] *****************************************************************************************************************************************************
+2026-03-10 01:31:27,177 p=62339 u=root n=ansible | failed: [slurm-hn] (item={'name': 'munge', 'gid': 991}) => {"ansible_loop_var": "item", "changed": false, "item": {"gid": 991, "name": "munge"}, "msg": "groupadd: GID '991' already exists\n", "name": "munge"}
+2026-03-10 01:31:27,298 p=62339 u=root n=ansible | failed: [slurm-wn1] (item={'name': 'munge', 'gid': 991}) => {"ansible_loop_var": "item", "changed": false, "item": {"gid": 991, "name": "munge"}, "msg": "groupadd: GID '991' already exists\n", "name": "munge"}
+2026-03-10 01:31:27,305 p=62339 u=root n=ansible | failed: [slurm-wn2] (item={'name': 'munge', 'gid': 991}) => {"ansible_loop_var": "item", "changed": false, "item": {"gid": 991, "name": "munge"}, "msg": "groupadd: GID '991' already exists\n", "name": "munge"}
+2026-03-10 01:31:27,497 p=62339 u=root n=ansible | failed: [slurm-hn] (item={'name': 'slurm', 'gid': 990}) => {"ansible_loop_var": "item", "changed": false, "item": {"gid": 990, "name": "slurm"}, "msg": "groupadd: GID '990' already exists\n", "name": "slurm"}
+2026-03-10 01:31:27,807 p=62339 u=root n=ansible | failed: [slurm-wn1] (item={'name': 'slurm', 'gid': 990}) => {"ansible_loop_var": "item", "changed": false, "item": {"gid": 990, "name": "slurm"}, "msg": "groupadd: GID '990' already exists\n", "name": "slurm"}
+2026-03-10 01:31:27,815 p=62339 u=root n=ansible | failed: [slurm-wn2] (item={'name': 'slurm', 'gid': 990}) => {"ansible_loop_var": "item", "changed": false, "item": {"gid": 990, "name": "slurm"}, "msg": "groupadd: GID '990' already exists\n", "name": "slurm"}
+2026-03-10 01:31:27,818 p=62339 u=root n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************
+2026-03-10 01:31:27,819 p=62339 u=root n=ansible | slurm-hn                   : ok=3    changed=2    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2026-03-10 01:31:27,820 p=62339 u=root n=ansible | slurm-wn1                  : ok=3    changed=2    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2026-03-10 01:31:27,820 p=62339 u=root n=ansible | slurm-wn2                  : ok=3    changed=2    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2026-03-10 01:32:06,081 p=62790 u=root n=ansible | PLAY [Configuracion General de todo el cluster] **********************************************************************************************************************************************
+2026-03-10 01:32:06,095 p=62790 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-10 01:32:07,622 p=62790 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 01:32:07,831 p=62790 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 01:32:07,834 p=62790 u=root n=ansible | ok: [slurm-wn2]
+2026-03-10 01:32:07,871 p=62790 u=root n=ansible | TASK [common : Configurar hostname del nodo] *************************************************************************************************************************************************
+2026-03-10 01:32:08,879 p=62790 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 01:32:09,031 p=62790 u=root n=ansible | ok: [slurm-wn2]
+2026-03-10 01:32:09,065 p=62790 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 01:32:09,073 p=62790 u=root n=ansible | TASK [common : Configurar archivo '/etc/hosts'] **********************************************************************************************************************************************
+2026-03-10 01:32:09,993 p=62790 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 01:32:10,133 p=62790 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 01:32:10,135 p=62790 u=root n=ansible | ok: [slurm-wn2]
+2026-03-10 01:32:10,144 p=62790 u=root n=ansible | TASK [common : Crear grupos del sistema] *****************************************************************************************************************************************************
+2026-03-10 01:32:10,639 p=62790 u=root n=ansible | failed: [slurm-hn] (item={'name': 'munge', 'gid': 991}) => {"ansible_loop_var": "item", "changed": false, "item": {"gid": 991, "name": "munge"}, "msg": "groupadd: GID '991' already exists\n", "name": "munge"}
+2026-03-10 01:32:10,768 p=62790 u=root n=ansible | failed: [slurm-wn1] (item={'name': 'munge', 'gid': 991}) => {"ansible_loop_var": "item", "changed": false, "item": {"gid": 991, "name": "munge"}, "msg": "groupadd: GID '991' already exists\n", "name": "munge"}
+2026-03-10 01:32:10,783 p=62790 u=root n=ansible | failed: [slurm-wn2] (item={'name': 'munge', 'gid': 991}) => {"ansible_loop_var": "item", "changed": false, "item": {"gid": 991, "name": "munge"}, "msg": "groupadd: GID '991' already exists\n", "name": "munge"}
+2026-03-10 01:32:10,962 p=62790 u=root n=ansible | failed: [slurm-hn] (item={'name': 'slurm', 'gid': 990}) => {"ansible_loop_var": "item", "changed": false, "item": {"gid": 990, "name": "slurm"}, "msg": "groupadd: GID '990' already exists\n", "name": "slurm"}
+2026-03-10 01:32:11,263 p=62790 u=root n=ansible | failed: [slurm-wn1] (item={'name': 'slurm', 'gid': 990}) => {"ansible_loop_var": "item", "changed": false, "item": {"gid": 990, "name": "slurm"}, "msg": "groupadd: GID '990' already exists\n", "name": "slurm"}
+2026-03-10 01:32:11,286 p=62790 u=root n=ansible | failed: [slurm-wn2] (item={'name': 'slurm', 'gid': 990}) => {"ansible_loop_var": "item", "changed": false, "item": {"gid": 990, "name": "slurm"}, "msg": "groupadd: GID '990' already exists\n", "name": "slurm"}
+2026-03-10 01:32:11,289 p=62790 u=root n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************
+2026-03-10 01:32:11,289 p=62790 u=root n=ansible | slurm-hn                   : ok=3    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2026-03-10 01:32:11,289 p=62790 u=root n=ansible | slurm-wn1                  : ok=3    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2026-03-10 01:32:11,290 p=62790 u=root n=ansible | slurm-wn2                  : ok=3    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2026-03-10 01:34:41,170 p=63232 u=root n=ansible | PLAY [Configuracion General de todo el cluster] **********************************************************************************************************************************************
+2026-03-10 01:34:41,184 p=63232 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-10 01:34:42,763 p=63232 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 01:34:43,552 p=63232 u=root n=ansible | ok: [slurm-wn2]
+2026-03-10 01:34:43,569 p=63232 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 01:34:43,610 p=63232 u=root n=ansible | TASK [common : Configurar hostname del nodo] *************************************************************************************************************************************************
+2026-03-10 01:34:44,616 p=63232 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 01:34:44,769 p=63232 u=root n=ansible | ok: [slurm-wn2]
+2026-03-10 01:34:44,774 p=63232 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 01:34:44,785 p=63232 u=root n=ansible | TASK [common : Configurar archivo '/etc/hosts'] **********************************************************************************************************************************************
+2026-03-10 01:34:45,731 p=63232 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 01:34:45,863 p=63232 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 01:34:45,874 p=63232 u=root n=ansible | ok: [slurm-wn2]
+2026-03-10 01:34:45,886 p=63232 u=root n=ansible | TASK [common : Crear grupos del sistema] *****************************************************************************************************************************************************
+2026-03-10 01:34:46,385 p=63232 u=root n=ansible | failed: [slurm-hn] (item={'name': 'munge', 'gid': 991}) => {"ansible_loop_var": "item", "changed": false, "item": {"gid": 991, "name": "munge"}, "msg": "groupadd: GID '991' already exists\n", "name": "munge"}
+2026-03-10 01:34:46,505 p=63232 u=root n=ansible | failed: [slurm-wn1] (item={'name': 'munge', 'gid': 991}) => {"ansible_loop_var": "item", "changed": false, "item": {"gid": 991, "name": "munge"}, "msg": "groupadd: GID '991' already exists\n", "name": "munge"}
+2026-03-10 01:34:46,514 p=63232 u=root n=ansible | failed: [slurm-wn2] (item={'name': 'munge', 'gid': 991}) => {"ansible_loop_var": "item", "changed": false, "item": {"gid": 991, "name": "munge"}, "msg": "groupadd: GID '991' already exists\n", "name": "munge"}
+2026-03-10 01:34:46,711 p=63232 u=root n=ansible | failed: [slurm-hn] (item={'name': 'slurm', 'gid': 990}) => {"ansible_loop_var": "item", "changed": false, "item": {"gid": 990, "name": "slurm"}, "msg": "groupadd: GID '990' already exists\n", "name": "slurm"}
+2026-03-10 01:34:47,003 p=63232 u=root n=ansible | failed: [slurm-wn1] (item={'name': 'slurm', 'gid': 990}) => {"ansible_loop_var": "item", "changed": false, "item": {"gid": 990, "name": "slurm"}, "msg": "groupadd: GID '990' already exists\n", "name": "slurm"}
+2026-03-10 01:34:47,019 p=63232 u=root n=ansible | failed: [slurm-wn2] (item={'name': 'slurm', 'gid': 990}) => {"ansible_loop_var": "item", "changed": false, "item": {"gid": 990, "name": "slurm"}, "msg": "groupadd: GID '990' already exists\n", "name": "slurm"}
+2026-03-10 01:34:47,022 p=63232 u=root n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************
+2026-03-10 01:34:47,023 p=63232 u=root n=ansible | slurm-hn                   : ok=3    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2026-03-10 01:34:47,023 p=63232 u=root n=ansible | slurm-wn1                  : ok=3    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2026-03-10 01:34:47,023 p=63232 u=root n=ansible | slurm-wn2                  : ok=3    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2026-03-10 01:36:54,509 p=63703 u=root n=ansible | PLAY [Configuracion General de todo el cluster] **********************************************************************************************************************************************
+2026-03-10 01:36:54,522 p=63703 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-10 01:36:56,056 p=63703 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 01:36:56,832 p=63703 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 01:36:56,888 p=63703 u=root n=ansible | ok: [slurm-wn2]
+2026-03-10 01:36:56,929 p=63703 u=root n=ansible | TASK [common : Configurar hostname del nodo] *************************************************************************************************************************************************
+2026-03-10 01:36:57,955 p=63703 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 01:36:58,074 p=63703 u=root n=ansible | ok: [slurm-wn2]
+2026-03-10 01:36:58,078 p=63703 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 01:36:58,087 p=63703 u=root n=ansible | TASK [common : Configurar archivo '/etc/hosts'] **********************************************************************************************************************************************
+2026-03-10 01:36:59,030 p=63703 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 01:36:59,156 p=63703 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 01:36:59,168 p=63703 u=root n=ansible | ok: [slurm-wn2]
+2026-03-10 01:36:59,176 p=63703 u=root n=ansible | TASK [common : Crear grupos del sistema] *****************************************************************************************************************************************************
+2026-03-10 01:36:59,705 p=63703 u=root n=ansible | changed: [slurm-hn] => (item={'name': 'munge'})
+2026-03-10 01:36:59,848 p=63703 u=root n=ansible | changed: [slurm-wn2] => (item={'name': 'munge'})
+2026-03-10 01:36:59,849 p=63703 u=root n=ansible | changed: [slurm-wn1] => (item={'name': 'munge'})
+2026-03-10 01:37:00,052 p=63703 u=root n=ansible | changed: [slurm-hn] => (item={'name': 'slurm'})
+2026-03-10 01:37:00,382 p=63703 u=root n=ansible | changed: [slurm-wn1] => (item={'name': 'slurm'})
+2026-03-10 01:37:00,388 p=63703 u=root n=ansible | changed: [slurm-wn2] => (item={'name': 'slurm'})
+2026-03-10 01:37:00,396 p=63703 u=root n=ansible | TASK [common : Crear usuarios del sistema] ***************************************************************************************************************************************************
+2026-03-10 01:37:01,087 p=63703 u=root n=ansible | changed: [slurm-hn] => (item={'name': 'munge', 'shell': '/usr/sbin/nologin', 'home': '/var/lib/munge'})
+2026-03-10 01:37:01,215 p=63703 u=root n=ansible | changed: [slurm-wn1] => (item={'name': 'munge', 'shell': '/usr/sbin/nologin', 'home': '/var/lib/munge'})
+2026-03-10 01:37:01,269 p=63703 u=root n=ansible | changed: [slurm-wn2] => (item={'name': 'munge', 'shell': '/usr/sbin/nologin', 'home': '/var/lib/munge'})
+2026-03-10 01:37:01,510 p=63703 u=root n=ansible | changed: [slurm-hn] => (item={'name': 'slurm', 'shell': '/bin/bash', 'home': '/var/lib/slurm'})
+2026-03-10 01:37:01,845 p=63703 u=root n=ansible | changed: [slurm-wn1] => (item={'name': 'slurm', 'shell': '/bin/bash', 'home': '/var/lib/slurm'})
+2026-03-10 01:37:01,914 p=63703 u=root n=ansible | changed: [slurm-wn2] => (item={'name': 'slurm', 'shell': '/bin/bash', 'home': '/var/lib/slurm'})
+2026-03-10 01:37:01,933 p=63703 u=root n=ansible | TASK [common : Actualizar cache de apt] ******************************************************************************************************************************************************
+2026-03-10 01:37:25,683 p=63703 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 01:40:02,689 p=63703 u=root n=ansible |  [ERROR]: User interrupted execution
+
+2026-03-10 02:03:01,491 p=64670 u=root n=ansible | PLAY [Configuracion General de todo el cluster] **********************************************************************************************************************************************
+2026-03-10 02:03:01,505 p=64670 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-10 02:03:03,170 p=64670 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 02:03:03,439 p=64670 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 02:03:03,825 p=64670 u=root n=ansible | ok: [slurm-wn2]
+2026-03-10 02:03:03,863 p=64670 u=root n=ansible | TASK [common : Configurar hostname del nodo] *************************************************************************************************************************************************
+2026-03-10 02:03:04,907 p=64670 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 02:03:05,013 p=64670 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 02:03:05,017 p=64670 u=root n=ansible | ok: [slurm-wn2]
+2026-03-10 02:03:05,027 p=64670 u=root n=ansible | TASK [common : Configurar archivo '/etc/hosts'] **********************************************************************************************************************************************
+2026-03-10 02:03:05,979 p=64670 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 02:03:06,095 p=64670 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 02:03:06,104 p=64670 u=root n=ansible | ok: [slurm-wn2]
+2026-03-10 02:03:06,113 p=64670 u=root n=ansible | TASK [common : Crear grupos del sistema] *****************************************************************************************************************************************************
+2026-03-10 02:03:06,596 p=64670 u=root n=ansible | ok: [slurm-hn] => (item={'name': 'munge'})
+2026-03-10 02:03:06,722 p=64670 u=root n=ansible | ok: [slurm-wn2] => (item={'name': 'munge'})
+2026-03-10 02:03:06,733 p=64670 u=root n=ansible | ok: [slurm-wn1] => (item={'name': 'munge'})
+2026-03-10 02:03:06,920 p=64670 u=root n=ansible | ok: [slurm-hn] => (item={'name': 'slurm'})
+2026-03-10 02:03:07,210 p=64670 u=root n=ansible | ok: [slurm-wn2] => (item={'name': 'slurm'})
+2026-03-10 02:03:07,219 p=64670 u=root n=ansible | ok: [slurm-wn1] => (item={'name': 'slurm'})
+2026-03-10 02:03:07,230 p=64670 u=root n=ansible | TASK [common : Crear usuarios del sistema] ***************************************************************************************************************************************************
+2026-03-10 02:03:07,845 p=64670 u=root n=ansible | ok: [slurm-hn] => (item={'name': 'munge', 'shell': '/usr/sbin/nologin', 'home': '/var/lib/munge'})
+2026-03-10 02:03:07,995 p=64670 u=root n=ansible | ok: [slurm-wn1] => (item={'name': 'munge', 'shell': '/usr/sbin/nologin', 'home': '/var/lib/munge'})
+2026-03-10 02:03:08,002 p=64670 u=root n=ansible | ok: [slurm-wn2] => (item={'name': 'munge', 'shell': '/usr/sbin/nologin', 'home': '/var/lib/munge'})
+2026-03-10 02:03:08,212 p=64670 u=root n=ansible | ok: [slurm-hn] => (item={'name': 'slurm', 'shell': '/bin/bash', 'home': '/var/lib/slurm'})
+2026-03-10 02:03:08,506 p=64670 u=root n=ansible | ok: [slurm-wn2] => (item={'name': 'slurm', 'shell': '/bin/bash', 'home': '/var/lib/slurm'})
+2026-03-10 02:03:08,556 p=64670 u=root n=ansible | ok: [slurm-wn1] => (item={'name': 'slurm', 'shell': '/bin/bash', 'home': '/var/lib/slurm'})
+2026-03-10 02:03:08,573 p=64670 u=root n=ansible | TASK [common : Actualizar cache de apt] ******************************************************************************************************************************************************
+2026-03-10 02:03:09,664 p=64670 u=root n=ansible | ok: [slurm-wn2]
+2026-03-10 02:03:09,761 p=64670 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 02:03:25,878 p=64670 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 02:03:25,889 p=64670 u=root n=ansible | TASK [common : Extender la partición root para ocupar todo el disco] *************************************************************************************************************************
+2026-03-10 02:03:27,039 p=64670 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 02:03:27,289 p=64670 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 02:03:27,319 p=64670 u=root n=ansible | changed: [slurm-wn2]
+2026-03-10 02:03:27,331 p=64670 u=root n=ansible | TASK [common : Redimensionar el sistema de archivos ext4] ************************************************************************************************************************************
+2026-03-10 02:03:28,193 p=64670 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 02:03:28,227 p=64670 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 02:03:28,245 p=64670 u=root n=ansible | changed: [slurm-wn2]
+2026-03-10 02:03:28,254 p=64670 u=root n=ansible | TASK [common : Instalar paquetes comunes] ****************************************************************************************************************************************************
+2026-03-10 02:03:29,658 p=64670 u=root n=ansible | fatal: [slurm-wn2]: FAILED! => {"cache_update_time": 1773108172, "cache_updated": false, "changed": false, "msg": "'/usr/bin/apt-get -y -o \"Dpkg::Options::=--force-confdef\" -o \"Dpkg::Options::=--force-confold\"       install 'chrony=4.5-1ubuntu4.2' 'sssd=2.9.4-1.1ubuntu6.3' 'sssd-ldap=2.9.4-1.1ubuntu6.3' 'ldap-utils=2.6.10+dfsg-0ubuntu0.24.04.1' 'acl=2.3.2-1build1.1' 'munge=0.5.15-4ubuntu0.1' 'slurm-wlm=23.11.4-1.2ubuntu5' 'nfs-common=1:2.6.4-3ubuntu5.1' 'prometheus-node-exporter=1.7.0-1ubuntu0.3'' failed: E: Could not get lock /var/lib/dpkg/lock-frontend. It is held by process 11951 (unattended-upgr)\nE: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend), is another process using it?\n", "rc": 100, "stderr": "E: Could not get lock /var/lib/dpkg/lock-frontend. It is held by process 11951 (unattended-upgr)\nE: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend), is another process using it?\n", "stderr_lines": ["E: Could not get lock /var/lib/dpkg/lock-frontend. It is held by process 11951 (unattended-upgr)", "E: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend), is another process using it?"], "stdout": "", "stdout_lines": []}
+2026-03-10 02:03:36,058 p=64670 u=root n=ansible |  [ERROR]: User interrupted execution
+
+2026-03-10 02:03:58,844 p=65469 u=root n=ansible | PLAY [Configuracion General de todo el cluster] **********************************************************************************************************************************************
+2026-03-10 02:03:58,858 p=65469 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-10 02:04:00,418 p=65469 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 02:04:00,544 p=65469 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 02:04:00,553 p=65469 u=root n=ansible | ok: [slurm-wn2]
+2026-03-10 02:04:00,589 p=65469 u=root n=ansible | TASK [common : Configurar hostname del nodo] *************************************************************************************************************************************************
+2026-03-10 02:04:01,609 p=65469 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 02:04:01,738 p=65469 u=root n=ansible | ok: [slurm-wn2]
+2026-03-10 02:04:01,767 p=65469 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 02:04:01,778 p=65469 u=root n=ansible | TASK [common : Configurar archivo '/etc/hosts'] **********************************************************************************************************************************************
+2026-03-10 02:04:02,736 p=65469 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 02:04:02,864 p=65469 u=root n=ansible | ok: [slurm-wn2]
+2026-03-10 02:04:02,865 p=65469 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 02:04:02,875 p=65469 u=root n=ansible | TASK [common : Crear grupos del sistema] *****************************************************************************************************************************************************
+2026-03-10 02:04:03,332 p=65469 u=root n=ansible | ok: [slurm-hn] => (item={'name': 'munge'})
+2026-03-10 02:04:03,478 p=65469 u=root n=ansible | ok: [slurm-wn2] => (item={'name': 'munge'})
+2026-03-10 02:04:03,487 p=65469 u=root n=ansible | ok: [slurm-wn1] => (item={'name': 'munge'})
+2026-03-10 02:04:03,645 p=65469 u=root n=ansible | ok: [slurm-hn] => (item={'name': 'slurm'})
+2026-03-10 02:04:03,981 p=65469 u=root n=ansible | ok: [slurm-wn1] => (item={'name': 'slurm'})
+2026-03-10 02:04:03,983 p=65469 u=root n=ansible | ok: [slurm-wn2] => (item={'name': 'slurm'})
+2026-03-10 02:04:03,997 p=65469 u=root n=ansible | TASK [common : Crear usuarios del sistema] ***************************************************************************************************************************************************
+2026-03-10 02:04:04,646 p=65469 u=root n=ansible | ok: [slurm-hn] => (item={'name': 'munge', 'shell': '/usr/sbin/nologin', 'home': '/var/lib/munge'})
+2026-03-10 02:04:04,735 p=65469 u=root n=ansible | ok: [slurm-wn2] => (item={'name': 'munge', 'shell': '/usr/sbin/nologin', 'home': '/var/lib/munge'})
+2026-03-10 02:04:04,742 p=65469 u=root n=ansible | ok: [slurm-wn1] => (item={'name': 'munge', 'shell': '/usr/sbin/nologin', 'home': '/var/lib/munge'})
+2026-03-10 02:04:05,043 p=65469 u=root n=ansible | ok: [slurm-hn] => (item={'name': 'slurm', 'shell': '/bin/bash', 'home': '/var/lib/slurm'})
+2026-03-10 02:04:05,222 p=65469 u=root n=ansible | ok: [slurm-wn2] => (item={'name': 'slurm', 'shell': '/bin/bash', 'home': '/var/lib/slurm'})
+2026-03-10 02:04:05,295 p=65469 u=root n=ansible | ok: [slurm-wn1] => (item={'name': 'slurm', 'shell': '/bin/bash', 'home': '/var/lib/slurm'})
+2026-03-10 02:04:05,314 p=65469 u=root n=ansible | TASK [common : Actualizar cache de apt] ******************************************************************************************************************************************************
+2026-03-10 02:04:06,386 p=65469 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 02:04:06,434 p=65469 u=root n=ansible | ok: [slurm-wn2]
+2026-03-10 02:04:06,443 p=65469 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 02:04:06,456 p=65469 u=root n=ansible | TASK [common : Extender la partición root para ocupar todo el disco] *************************************************************************************************************************
+2026-03-10 02:04:07,024 p=65469 u=root n=ansible | fatal: [slurm-hn]: FAILED! => {"changed": false, "cmd": ["growpart", "/dev/vda", "2"], "delta": "0:00:00.098742", "end": "2026-03-10 02:04:06.981028", "msg": "non-zero return code", "rc": 1, "start": "2026-03-10 02:04:06.882286", "stderr": "", "stderr_lines": [], "stdout": "NOCHANGE: partition 2 is size 52424671. it cannot be grown", "stdout_lines": ["NOCHANGE: partition 2 is size 52424671. it cannot be grown"]}
+2026-03-10 02:04:07,024 p=65469 u=root n=ansible | ...ignoring
+2026-03-10 02:04:07,096 p=65469 u=root n=ansible | fatal: [slurm-wn2]: FAILED! => {"changed": false, "cmd": ["growpart", "/dev/vda", "2"], "delta": "0:00:00.104024", "end": "2026-03-10 02:04:07.028480", "msg": "non-zero return code", "rc": 1, "start": "2026-03-10 02:04:06.924456", "stderr": "", "stderr_lines": [], "stdout": "NOCHANGE: partition 2 is size 52424671. it cannot be grown", "stdout_lines": ["NOCHANGE: partition 2 is size 52424671. it cannot be grown"]}
+2026-03-10 02:04:07,096 p=65469 u=root n=ansible | ...ignoring
+2026-03-10 02:04:07,144 p=65469 u=root n=ansible | fatal: [slurm-wn1]: FAILED! => {"changed": false, "cmd": ["growpart", "/dev/vda", "2"], "delta": "0:00:00.103651", "end": "2026-03-10 02:04:07.070231", "msg": "non-zero return code", "rc": 1, "start": "2026-03-10 02:04:06.966580", "stderr": "", "stderr_lines": [], "stdout": "NOCHANGE: partition 2 is size 52424671. it cannot be grown", "stdout_lines": ["NOCHANGE: partition 2 is size 52424671. it cannot be grown"]}
+2026-03-10 02:04:07,145 p=65469 u=root n=ansible | ...ignoring
+2026-03-10 02:04:07,156 p=65469 u=root n=ansible | TASK [common : Redimensionar el sistema de archivos ext4] ************************************************************************************************************************************
+2026-03-10 02:04:07,192 p=65469 u=root n=ansible | skipping: [slurm-hn]
+2026-03-10 02:04:07,195 p=65469 u=root n=ansible | skipping: [slurm-wn1]
+2026-03-10 02:04:07,205 p=65469 u=root n=ansible | skipping: [slurm-wn2]
+2026-03-10 02:04:07,214 p=65469 u=root n=ansible | TASK [common : Instalar paquetes comunes] ****************************************************************************************************************************************************
+2026-03-10 02:04:08,483 p=65469 u=root n=ansible | fatal: [slurm-wn2]: FAILED! => {"cache_update_time": 1773108172, "cache_updated": false, "changed": false, "msg": "'/usr/bin/apt-get -y -o \"Dpkg::Options::=--force-confdef\" -o \"Dpkg::Options::=--force-confold\"       install 'chrony=4.5-1ubuntu4.2' 'sssd=2.9.4-1.1ubuntu6.3' 'sssd-ldap=2.9.4-1.1ubuntu6.3' 'ldap-utils=2.6.10+dfsg-0ubuntu0.24.04.1' 'acl=2.3.2-1build1.1' 'munge=0.5.15-4ubuntu0.1' 'slurm-wlm=23.11.4-1.2ubuntu5' 'nfs-common=1:2.6.4-3ubuntu5.1' 'prometheus-node-exporter=1.7.0-1ubuntu0.3'' failed: E: Could not get lock /var/lib/dpkg/lock-frontend. It is held by process 11951 (unattended-upgr)\nE: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend), is another process using it?\n", "rc": 100, "stderr": "E: Could not get lock /var/lib/dpkg/lock-frontend. It is held by process 11951 (unattended-upgr)\nE: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend), is another process using it?\n", "stderr_lines": ["E: Could not get lock /var/lib/dpkg/lock-frontend. It is held by process 11951 (unattended-upgr)", "E: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend), is another process using it?"], "stdout": "", "stdout_lines": []}
+2026-03-10 02:05:23,720 p=65469 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 02:05:43,864 p=65469 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 02:05:43,879 p=65469 u=root n=ansible | TASK [common : Crear directorios de Munge] ***************************************************************************************************************************************************
+2026-03-10 02:05:44,225 p=65469 u=root n=ansible | ok: [slurm-hn] => (item=/etc/munge)
+2026-03-10 02:05:44,463 p=65469 u=root n=ansible | ok: [slurm-wn1] => (item=/etc/munge)
+2026-03-10 02:05:44,528 p=65469 u=root n=ansible | ok: [slurm-hn] => (item=/var/log/munge)
+2026-03-10 02:05:44,802 p=65469 u=root n=ansible | changed: [slurm-hn] => (item=/var/lib/munge)
+2026-03-10 02:05:44,966 p=65469 u=root n=ansible | ok: [slurm-wn1] => (item=/var/log/munge)
+2026-03-10 02:05:45,481 p=65469 u=root n=ansible | changed: [slurm-wn1] => (item=/var/lib/munge)
+2026-03-10 02:05:45,493 p=65469 u=root n=ansible | TASK [common : Crear directorios de Slurm] ***************************************************************************************************************************************************
+2026-03-10 02:05:45,852 p=65469 u=root n=ansible | changed: [slurm-hn] => (item=/var/log/slurm-llnl)
+2026-03-10 02:05:46,039 p=65469 u=root n=ansible | changed: [slurm-wn1] => (item=/var/log/slurm-llnl)
+2026-03-10 02:05:46,164 p=65469 u=root n=ansible | changed: [slurm-hn] => (item=/var/lib/slurm-llnl)
+2026-03-10 02:05:46,475 p=65469 u=root n=ansible | ok: [slurm-hn] => (item=/var/lib/slurm/slurmd)
+2026-03-10 02:05:46,533 p=65469 u=root n=ansible | changed: [slurm-wn1] => (item=/var/lib/slurm-llnl)
+2026-03-10 02:05:46,818 p=65469 u=root n=ansible | ok: [slurm-hn] => (item=/var/lib/slurm/slurmctld)
+2026-03-10 02:05:47,043 p=65469 u=root n=ansible | ok: [slurm-wn1] => (item=/var/lib/slurm/slurmd)
+2026-03-10 02:05:47,134 p=65469 u=root n=ansible | changed: [slurm-hn] => (item=/etc/slurm-llnl)
+2026-03-10 02:05:47,537 p=65469 u=root n=ansible | ok: [slurm-wn1] => (item=/var/lib/slurm/slurmctld)
+2026-03-10 02:05:48,028 p=65469 u=root n=ansible | changed: [slurm-wn1] => (item=/etc/slurm-llnl)
+2026-03-10 02:05:48,041 p=65469 u=root n=ansible | TASK [common : Distribuir archivo slurm.conf] ************************************************************************************************************************************************
+2026-03-10 02:05:48,839 p=65469 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 02:05:49,041 p=65469 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 02:05:49,055 p=65469 u=root n=ansible | TASK [common : Detener munge inicialmente] ***************************************************************************************************************************************************
+2026-03-10 02:05:49,971 p=65469 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 02:05:50,139 p=65469 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 02:05:50,160 p=65469 u=root n=ansible | TASK [firewall : Configurar reglas de NFTables] **********************************************************************************************************************************************
+2026-03-10 02:05:50,786 p=65469 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 02:05:51,181 p=65469 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 02:05:51,191 p=65469 u=root n=ansible | TASK [firewall : Habilitar servicio NFTables] ************************************************************************************************************************************************
+2026-03-10 02:05:52,340 p=65469 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 02:05:52,538 p=65469 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 02:05:52,560 p=65469 u=root n=ansible | TASK [ldap : Configurar SSSD para LDAP] ******************************************************************************************************************************************************
+2026-03-10 02:05:53,174 p=65469 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 02:05:53,564 p=65469 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 02:05:53,575 p=65469 u=root n=ansible | TASK [ldap : Habilitar servicio SSSD] ********************************************************************************************************************************************************
+2026-03-10 02:05:54,509 p=65469 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 02:05:54,697 p=65469 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 02:05:54,733 p=65469 u=root n=ansible | RUNNING HANDLER [firewall : Reiniciar nftables] **********************************************************************************************************************************************
+2026-03-10 02:05:55,381 p=65469 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 02:05:55,604 p=65469 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 02:05:55,614 p=65469 u=root n=ansible | RUNNING HANDLER [ldap : Reiniciar sssd] ******************************************************************************************************************************************************
+2026-03-10 02:05:56,373 p=65469 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 02:05:56,643 p=65469 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 02:05:56,652 p=65469 u=root n=ansible | TASK [Mensaje final de configuracion general] ************************************************************************************************************************************************
+2026-03-10 02:05:56,680 p=65469 u=root n=ansible | ok: [slurm-hn] => {
+    "msg": [
+        "=========================================",
+        "Configuracion General Completada",
+        "========================================="
+    ]
+}
+2026-03-10 02:05:56,694 p=65469 u=root n=ansible | ok: [slurm-wn1] => {
+    "msg": [
+        "=========================================",
+        "Configuracion General Completada",
+        "========================================="
+    ]
+}
+2026-03-10 02:05:56,724 p=65469 u=root n=ansible | PLAY [Resumen] *******************************************************************************************************************************************************************************
+2026-03-10 02:05:56,729 p=65469 u=root n=ansible | TASK [Display deployment summary] ************************************************************************************************************************************************************
+2026-03-10 02:05:56,756 p=65469 u=root n=ansible | ok: [localhost] => {
+    "msg": [
+        "",
+        "=========================================",
+        "Cluster SLURM configurado",
+        "=========================================",
+        ""
+    ]
+}
+2026-03-10 02:05:56,764 p=65469 u=root n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************
+2026-03-10 02:05:56,764 p=65469 u=root n=ansible | localhost                  : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-03-10 02:05:56,765 p=65469 u=root n=ansible | slurm-hn                   : ok=19   changed=11   unreachable=0    failed=0    skipped=1    rescued=0    ignored=1   
+2026-03-10 02:05:56,765 p=65469 u=root n=ansible | slurm-wn1                  : ok=19   changed=11   unreachable=0    failed=0    skipped=1    rescued=0    ignored=1   
+2026-03-10 02:05:56,765 p=65469 u=root n=ansible | slurm-wn2                  : ok=7    changed=0    unreachable=0    failed=1    skipped=1    rescued=0    ignored=1   
+2026-03-10 02:38:45,120 p=71386 u=root n=ansible | PLAY [Instalar SSHPASS para la conexion ssh de headnode a workers] ***************************************************************************************************************************
+2026-03-10 02:38:45,133 p=71386 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-10 02:38:46,750 p=71386 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 02:38:46,781 p=71386 u=root n=ansible | TASK [initial_setup : Actualizar cache de apt] ***********************************************************************************************************************************************
+2026-03-10 02:38:55,860 p=71386 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 02:38:55,870 p=71386 u=root n=ansible | TASK [initial_setup : Instalar sshpass] ******************************************************************************************************************************************************
+2026-03-10 02:38:57,019 p=71386 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 02:38:57,027 p=71386 u=root n=ansible | TASK [initial_setup : Instalar rng-tools] ****************************************************************************************************************************************************
+2026-03-10 02:38:58,143 p=71386 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 02:38:58,150 p=71386 u=root n=ansible | TASK [initial_setup : Deshabilitar rp_filter (all)] ******************************************************************************************************************************************
+2026-03-10 02:38:58,620 p=71386 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 02:38:58,630 p=71386 u=root n=ansible | TASK [initial_setup : Deshabilitar rp_filter por defecto] ************************************************************************************************************************************
+2026-03-10 02:38:58,965 p=71386 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 02:38:58,990 p=71386 u=root n=ansible | TASK [Mensaje final de configuracion general] ************************************************************************************************************************************************
+2026-03-10 02:38:59,016 p=71386 u=root n=ansible | ok: [slurm-hn] => {
+    "msg": [
+        "=========================================",
+        " Configuracion Inicial Completada",
+        "========================================="
+    ]
+}
+2026-03-10 02:38:59,032 p=71386 u=root n=ansible | PLAY [Resumen] *******************************************************************************************************************************************************************************
+2026-03-10 02:38:59,037 p=71386 u=root n=ansible | TASK [Display deployment summary] ************************************************************************************************************************************************************
+2026-03-10 02:38:59,064 p=71386 u=root n=ansible | ok: [localhost] => {
+    "msg": [
+        "",
+        "=========================================",
+        "Cluster SLURM configurado",
+        "=========================================",
+        ""
+    ]
+}
+2026-03-10 02:38:59,072 p=71386 u=root n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************
+2026-03-10 02:38:59,073 p=71386 u=root n=ansible | localhost                  : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-03-10 02:38:59,073 p=71386 u=root n=ansible | slurm-hn                   : ok=7    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-03-10 02:51:05,141 p=72208 u=root n=ansible | PLAY [Configuracion General de todo el cluster] **********************************************************************************************************************************************
+2026-03-10 02:51:05,156 p=72208 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-10 02:51:06,775 p=72208 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 02:51:07,148 p=72208 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 02:51:07,496 p=72208 u=root n=ansible | ok: [slurm-wn2]
+2026-03-10 02:51:07,534 p=72208 u=root n=ansible | TASK [common : Configurar hostname del nodo] *************************************************************************************************************************************************
+2026-03-10 02:51:08,574 p=72208 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 02:51:08,689 p=72208 u=root n=ansible | ok: [slurm-wn2]
+2026-03-10 02:51:08,708 p=72208 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 02:51:08,719 p=72208 u=root n=ansible | TASK [common : Configurar archivo '/etc/hosts'] **********************************************************************************************************************************************
+2026-03-10 02:51:09,666 p=72208 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 02:51:09,834 p=72208 u=root n=ansible | ok: [slurm-wn2]
+2026-03-10 02:51:09,843 p=72208 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 02:51:09,853 p=72208 u=root n=ansible | TASK [common : Crear grupos del sistema] *****************************************************************************************************************************************************
+2026-03-10 02:51:10,316 p=72208 u=root n=ansible | ok: [slurm-hn] => (item={'name': 'munge'})
+2026-03-10 02:51:10,465 p=72208 u=root n=ansible | ok: [slurm-wn2] => (item={'name': 'munge'})
+2026-03-10 02:51:10,487 p=72208 u=root n=ansible | ok: [slurm-wn1] => (item={'name': 'munge'})
+2026-03-10 02:51:10,628 p=72208 u=root n=ansible | ok: [slurm-hn] => (item={'name': 'slurm'})
+2026-03-10 02:51:10,959 p=72208 u=root n=ansible | ok: [slurm-wn2] => (item={'name': 'slurm'})
+2026-03-10 02:51:10,977 p=72208 u=root n=ansible | ok: [slurm-wn1] => (item={'name': 'slurm'})
+2026-03-10 02:51:10,985 p=72208 u=root n=ansible | TASK [common : Crear usuarios del sistema] ***************************************************************************************************************************************************
+2026-03-10 02:51:11,597 p=72208 u=root n=ansible | ok: [slurm-hn] => (item={'name': 'munge', 'shell': '/usr/sbin/nologin', 'home': '/var/lib/munge'})
+2026-03-10 02:51:11,743 p=72208 u=root n=ansible | ok: [slurm-wn2] => (item={'name': 'munge', 'shell': '/usr/sbin/nologin', 'home': '/var/lib/munge'})
+2026-03-10 02:51:11,749 p=72208 u=root n=ansible | ok: [slurm-wn1] => (item={'name': 'munge', 'shell': '/usr/sbin/nologin', 'home': '/var/lib/munge'})
+2026-03-10 02:51:11,986 p=72208 u=root n=ansible | ok: [slurm-hn] => (item={'name': 'slurm', 'shell': '/bin/bash', 'home': '/var/lib/slurm'})
+2026-03-10 02:51:12,331 p=72208 u=root n=ansible | ok: [slurm-wn1] => (item={'name': 'slurm', 'shell': '/bin/bash', 'home': '/var/lib/slurm'})
+2026-03-10 02:51:12,343 p=72208 u=root n=ansible | ok: [slurm-wn2] => (item={'name': 'slurm', 'shell': '/bin/bash', 'home': '/var/lib/slurm'})
+2026-03-10 02:51:12,356 p=72208 u=root n=ansible | TASK [common : Actualizar cache de apt] ******************************************************************************************************************************************************
+2026-03-10 02:51:13,440 p=72208 u=root n=ansible | ok: [slurm-wn2]
+2026-03-10 02:51:13,472 p=72208 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 02:51:13,614 p=72208 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 02:51:13,627 p=72208 u=root n=ansible | TASK [common : Extender la partición root para ocupar todo el disco] *************************************************************************************************************************
+2026-03-10 02:51:14,203 p=72208 u=root n=ansible | fatal: [slurm-hn]: FAILED! => {"changed": false, "cmd": ["growpart", "/dev/vda", "2"], "delta": "0:00:00.118470", "end": "2026-03-10 02:51:14.156678", "msg": "non-zero return code", "rc": 1, "start": "2026-03-10 02:51:14.038208", "stderr": "", "stderr_lines": [], "stdout": "NOCHANGE: partition 2 is size 52424671. it cannot be grown", "stdout_lines": ["NOCHANGE: partition 2 is size 52424671. it cannot be grown"]}
+2026-03-10 02:51:14,204 p=72208 u=root n=ansible | ...ignoring
+2026-03-10 02:51:14,313 p=72208 u=root n=ansible | fatal: [slurm-wn2]: FAILED! => {"changed": false, "cmd": ["growpart", "/dev/vda", "2"], "delta": "0:00:00.103884", "end": "2026-03-10 02:51:14.036007", "msg": "non-zero return code", "rc": 1, "start": "2026-03-10 02:51:13.932123", "stderr": "", "stderr_lines": [], "stdout": "NOCHANGE: partition 2 is size 52424671. it cannot be grown", "stdout_lines": ["NOCHANGE: partition 2 is size 52424671. it cannot be grown"]}
+2026-03-10 02:51:14,313 p=72208 u=root n=ansible | ...ignoring
+2026-03-10 02:51:14,335 p=72208 u=root n=ansible | fatal: [slurm-wn1]: FAILED! => {"changed": false, "cmd": ["growpart", "/dev/vda", "2"], "delta": "0:00:00.123552", "end": "2026-03-10 02:51:14.051498", "msg": "non-zero return code", "rc": 1, "start": "2026-03-10 02:51:13.927946", "stderr": "", "stderr_lines": [], "stdout": "NOCHANGE: partition 2 is size 52424671. it cannot be grown", "stdout_lines": ["NOCHANGE: partition 2 is size 52424671. it cannot be grown"]}
+2026-03-10 02:51:14,335 p=72208 u=root n=ansible | ...ignoring
+2026-03-10 02:51:14,346 p=72208 u=root n=ansible | TASK [common : Redimensionar el sistema de archivos ext4] ************************************************************************************************************************************
+2026-03-10 02:51:14,383 p=72208 u=root n=ansible | skipping: [slurm-hn]
+2026-03-10 02:51:14,384 p=72208 u=root n=ansible | skipping: [slurm-wn1]
+2026-03-10 02:51:14,395 p=72208 u=root n=ansible | skipping: [slurm-wn2]
+2026-03-10 02:51:14,403 p=72208 u=root n=ansible | TASK [common : Instalar paquetes comunes] ****************************************************************************************************************************************************
+2026-03-10 02:51:15,607 p=72208 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 02:51:15,931 p=72208 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 02:52:31,897 p=72208 u=root n=ansible | changed: [slurm-wn2]
+2026-03-10 02:52:31,907 p=72208 u=root n=ansible | TASK [common : Crear directorios de Munge] ***************************************************************************************************************************************************
+2026-03-10 02:52:32,256 p=72208 u=root n=ansible | ok: [slurm-hn] => (item=/etc/munge)
+2026-03-10 02:52:32,416 p=72208 u=root n=ansible | ok: [slurm-wn2] => (item=/etc/munge)
+2026-03-10 02:52:32,566 p=72208 u=root n=ansible | ok: [slurm-hn] => (item=/var/log/munge)
+2026-03-10 02:52:32,862 p=72208 u=root n=ansible | ok: [slurm-wn2] => (item=/var/log/munge)
+2026-03-10 02:52:32,892 p=72208 u=root n=ansible | ok: [slurm-hn] => (item=/var/lib/munge)
+2026-03-10 02:52:33,362 p=72208 u=root n=ansible | changed: [slurm-wn2] => (item=/var/lib/munge)
+2026-03-10 02:52:33,389 p=72208 u=root n=ansible | ok: [slurm-wn1] => (item=/etc/munge)
+2026-03-10 02:52:33,905 p=72208 u=root n=ansible | ok: [slurm-wn1] => (item=/var/log/munge)
+2026-03-10 02:52:34,416 p=72208 u=root n=ansible | ok: [slurm-wn1] => (item=/var/lib/munge)
+2026-03-10 02:52:34,430 p=72208 u=root n=ansible | TASK [common : Crear directorios de Slurm] ***************************************************************************************************************************************************
+2026-03-10 02:52:34,764 p=72208 u=root n=ansible | ok: [slurm-hn] => (item=/var/log/slurm-llnl)
+2026-03-10 02:52:34,965 p=72208 u=root n=ansible | ok: [slurm-wn1] => (item=/var/log/slurm-llnl)
+2026-03-10 02:52:35,009 p=72208 u=root n=ansible | changed: [slurm-wn2] => (item=/var/log/slurm-llnl)
+2026-03-10 02:52:35,079 p=72208 u=root n=ansible | ok: [slurm-hn] => (item=/var/lib/slurm-llnl)
+2026-03-10 02:52:35,379 p=72208 u=root n=ansible | ok: [slurm-hn] => (item=/var/lib/slurm/slurmd)
+2026-03-10 02:52:35,486 p=72208 u=root n=ansible | ok: [slurm-wn1] => (item=/var/lib/slurm-llnl)
+2026-03-10 02:52:35,515 p=72208 u=root n=ansible | changed: [slurm-wn2] => (item=/var/lib/slurm-llnl)
+2026-03-10 02:52:35,696 p=72208 u=root n=ansible | ok: [slurm-hn] => (item=/var/lib/slurm/slurmctld)
+2026-03-10 02:52:35,992 p=72208 u=root n=ansible | ok: [slurm-wn1] => (item=/var/lib/slurm/slurmd)
+2026-03-10 02:52:36,005 p=72208 u=root n=ansible | ok: [slurm-hn] => (item=/etc/slurm-llnl)
+2026-03-10 02:52:36,012 p=72208 u=root n=ansible | ok: [slurm-wn2] => (item=/var/lib/slurm/slurmd)
+2026-03-10 02:52:36,497 p=72208 u=root n=ansible | ok: [slurm-wn1] => (item=/var/lib/slurm/slurmctld)
+2026-03-10 02:52:36,520 p=72208 u=root n=ansible | ok: [slurm-wn2] => (item=/var/lib/slurm/slurmctld)
+2026-03-10 02:52:37,008 p=72208 u=root n=ansible | ok: [slurm-wn1] => (item=/etc/slurm-llnl)
+2026-03-10 02:52:37,024 p=72208 u=root n=ansible | changed: [slurm-wn2] => (item=/etc/slurm-llnl)
+2026-03-10 02:52:37,037 p=72208 u=root n=ansible | TASK [common : Distribuir archivo slurm.conf] ************************************************************************************************************************************************
+2026-03-10 02:52:37,700 p=72208 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 02:52:38,064 p=72208 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 02:52:38,243 p=72208 u=root n=ansible | changed: [slurm-wn2]
+2026-03-10 02:52:38,255 p=72208 u=root n=ansible | TASK [common : Detener munge inicialmente] ***************************************************************************************************************************************************
+2026-03-10 02:52:39,172 p=72208 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 02:52:39,326 p=72208 u=root n=ansible | changed: [slurm-wn2]
+2026-03-10 02:52:39,347 p=72208 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 02:52:39,372 p=72208 u=root n=ansible | TASK [firewall : Configurar reglas de NFTables] **********************************************************************************************************************************************
+2026-03-10 02:52:40,033 p=72208 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 02:52:40,413 p=72208 u=root n=ansible | changed: [slurm-wn2]
+2026-03-10 02:52:40,416 p=72208 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 02:52:40,427 p=72208 u=root n=ansible | TASK [firewall : Habilitar servicio NFTables] ************************************************************************************************************************************************
+2026-03-10 02:52:41,023 p=72208 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 02:52:41,252 p=72208 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 02:52:41,883 p=72208 u=root n=ansible | changed: [slurm-wn2]
+2026-03-10 02:52:41,909 p=72208 u=root n=ansible | TASK [ldap : Configurar SSSD para LDAP] ******************************************************************************************************************************************************
+2026-03-10 02:52:42,583 p=72208 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 02:52:42,901 p=72208 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 02:52:42,959 p=72208 u=root n=ansible | changed: [slurm-wn2]
+2026-03-10 02:52:42,972 p=72208 u=root n=ansible | TASK [ldap : Habilitar servicio SSSD] ********************************************************************************************************************************************************
+2026-03-10 02:52:43,564 p=72208 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 02:52:43,789 p=72208 u=root n=ansible | ok: [slurm-wn1]
+2026-03-10 02:52:44,133 p=72208 u=root n=ansible | changed: [slurm-wn2]
+2026-03-10 02:52:44,187 p=72208 u=root n=ansible | RUNNING HANDLER [firewall : Reiniciar nftables] **********************************************************************************************************************************************
+2026-03-10 02:52:44,822 p=72208 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 02:52:44,984 p=72208 u=root n=ansible | changed: [slurm-wn2]
+2026-03-10 02:52:45,078 p=72208 u=root n=ansible | changed: [slurm-wn1]
+2026-03-10 02:52:45,091 p=72208 u=root n=ansible | TASK [Mensaje final de configuracion general] ************************************************************************************************************************************************
+2026-03-10 02:52:45,126 p=72208 u=root n=ansible | ok: [slurm-hn] => {
+    "msg": [
+        "=========================================",
+        "Configuracion General Completada",
+        "========================================="
+    ]
+}
+2026-03-10 02:52:45,132 p=72208 u=root n=ansible | ok: [slurm-wn1] => {
+    "msg": [
+        "=========================================",
+        "Configuracion General Completada",
+        "========================================="
+    ]
+}
+2026-03-10 02:52:46,118 p=72208 u=root n=ansible | TASK [Mensaje final de configuracion general] ************************************************************************************************************************************************
+2026-03-10 02:52:46,119 p=72208 u=root n=ansible | changed: [slurm-wn2]
+2026-03-10 02:52:46,140 p=72208 u=root n=ansible | TASK [Mensaje final de configuracion general] ************************************************************************************************************************************************
+2026-03-10 02:52:46,172 p=72208 u=root n=ansible | ok: [slurm-wn2] => {
+    "msg": [
+        "=========================================",
+        "Configuracion General Completada",
+        "========================================="
+    ]
+}
+2026-03-10 02:52:46,209 p=72208 u=root n=ansible | PLAY [Resumen] *******************************************************************************************************************************************************************************
+2026-03-10 02:52:46,215 p=72208 u=root n=ansible | TASK [Display deployment summary] ************************************************************************************************************************************************************
+2026-03-10 02:52:46,240 p=72208 u=root n=ansible | ok: [localhost] => {
+    "msg": [
+        "",
+        "=========================================",
+        "Cluster SLURM configurado",
+        "=========================================",
+        ""
+    ]
+}
+2026-03-10 02:52:46,249 p=72208 u=root n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************
+2026-03-10 02:52:46,249 p=72208 u=root n=ansible | localhost                  : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-03-10 02:52:46,249 p=72208 u=root n=ansible | slurm-hn                   : ok=18   changed=2    unreachable=0    failed=0    skipped=1    rescued=0    ignored=1   
+2026-03-10 02:52:46,250 p=72208 u=root n=ansible | slurm-wn1                  : ok=18   changed=2    unreachable=0    failed=0    skipped=1    rescued=0    ignored=1   
+2026-03-10 02:52:46,250 p=72208 u=root n=ansible | slurm-wn2                  : ok=19   changed=11   unreachable=0    failed=0    skipped=1    rescued=0    ignored=1   
+2026-03-10 02:54:00,438 p=73910 u=root n=ansible | PLAY [Configuraciones especificas del Headnode] **********************************************************************************************************************************************
+2026-03-10 02:54:00,458 p=73910 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-10 02:54:02,040 p=73910 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 02:54:02,059 p=73910 u=root n=ansible | TASK [munge : Configurar Munge en headnode] **************************************************************************************************************************************************
+2026-03-10 02:54:02,101 p=73910 u=root n=ansible | included: /root/ansible-cluster-slurm/roles/munge/tasks/headnode.yml for slurm-hn
+2026-03-10 02:54:02,109 p=73910 u=root n=ansible | TASK [munge : Generar llave Munge] ***********************************************************************************************************************************************************
+2026-03-10 02:54:02,570 p=73910 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 02:54:02,580 p=73910 u=root n=ansible | TASK [munge : Asegurar permisos estrictos de llave Munge] ************************************************************************************************************************************
+2026-03-10 02:54:03,059 p=73910 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 02:54:03,068 p=73910 u=root n=ansible | TASK [munge : Descargar llave Munge al controlador] ******************************************************************************************************************************************
+2026-03-10 02:54:03,089 p=73910 u=root n=ansible | skipping: [slurm-hn]
+2026-03-10 02:54:03,097 p=73910 u=root n=ansible | TASK [munge : Crear directorio de backup] ****************************************************************************************************************************************************
+2026-03-10 02:54:03,426 p=73910 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 02:54:03,435 p=73910 u=root n=ansible | TASK [munge : Backup de munge.key] ***********************************************************************************************************************************************************
+2026-03-10 02:54:03,916 p=73910 u=root n=ansible | fatal: [slurm-hn]: FAILED! => {"changed": false, "msg": "Destination directory /root/backups does not exist"}
+2026-03-10 02:54:03,919 p=73910 u=root n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************
+2026-03-10 02:54:03,920 p=73910 u=root n=ansible | slurm-hn                   : ok=5    changed=2    unreachable=0    failed=1    skipped=1    rescued=0    ignored=0   
+2026-03-10 18:01:31,624 p=77179 u=root n=ansible | PLAY [Configuraciones especificas del Headnode] **********************************************************************************************************************************************
+2026-03-10 18:01:31,646 p=77179 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-10 18:01:33,264 p=77179 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:01:33,283 p=77179 u=root n=ansible | TASK [munge : Configurar Munge en headnode] **************************************************************************************************************************************************
+2026-03-10 18:01:33,322 p=77179 u=root n=ansible | included: /root/ansible-cluster-slurm/roles/munge/tasks/headnode.yml for slurm-hn
+2026-03-10 18:01:33,330 p=77179 u=root n=ansible | TASK [munge : Generar llave Munge] ***********************************************************************************************************************************************************
+2026-03-10 18:01:33,785 p=77179 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:01:33,795 p=77179 u=root n=ansible | TASK [munge : Asegurar permisos estrictos de llave Munge] ************************************************************************************************************************************
+2026-03-10 18:01:34,274 p=77179 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:01:34,285 p=77179 u=root n=ansible | TASK [munge : Descargar llave Munge al controlador] ******************************************************************************************************************************************
+2026-03-10 18:01:34,735 p=77179 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:01:34,744 p=77179 u=root n=ansible | TASK [munge : Crear directorio de backup] ****************************************************************************************************************************************************
+2026-03-10 18:01:35,088 p=77179 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:01:35,097 p=77179 u=root n=ansible | TASK [munge : Backup de munge.key] ***********************************************************************************************************************************************************
+2026-03-10 18:01:35,567 p=77179 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:01:35,580 p=77179 u=root n=ansible | TASK [munge : Iniciar servicio Munge] ********************************************************************************************************************************************************
+2026-03-10 18:01:36,583 p=77179 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:01:36,592 p=77179 u=root n=ansible | TASK [munge : Configurar Munge en workers] ***************************************************************************************************************************************************
+2026-03-10 18:01:36,614 p=77179 u=root n=ansible | skipping: [slurm-hn]
+2026-03-10 18:01:36,623 p=77179 u=root n=ansible | TASK [munge : Verificar que el socket de Munge esté disponible] ******************************************************************************************************************************
+2026-03-10 18:01:37,083 p=77179 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:01:37,092 p=77179 u=root n=ansible | TASK [munge : Verificar que Munge responda correctamente] ************************************************************************************************************************************
+2026-03-10 18:01:38,437 p=77179 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:01:38,453 p=77179 u=root n=ansible | TASK [chrony_server : Asegurar que Chrony use pools de Sudamérica] ***************************************************************************************************************************
+2026-03-10 18:01:38,937 p=77179 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:01:38,949 p=77179 u=root n=ansible | TASK [chrony_server : Permitir sincronización a la red interna] ******************************************************************************************************************************
+2026-03-10 18:01:39,279 p=77179 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:01:39,289 p=77179 u=root n=ansible | TASK [chrony_server : Forzar al Headnode a ser autoritativo (Local Stratum)] *****************************************************************************************************************
+2026-03-10 18:01:39,617 p=77179 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:01:39,632 p=77179 u=root n=ansible | TASK [ldap_server : Pre-configurar contrasenas de slapd (debconf)] ***************************************************************************************************************************
+2026-03-10 18:01:40,439 p=77179 u=root n=ansible | changed: [slurm-hn] => (item={'question': 'slapd/root_password'})
+2026-03-10 18:01:41,030 p=77179 u=root n=ansible | changed: [slurm-hn] => (item={'question': 'slapd/root_password_again'})
+2026-03-10 18:01:41,042 p=77179 u=root n=ansible | TASK [ldap_server : Instalar paquetes de OpenLDAP] *******************************************************************************************************************************************
+2026-03-10 18:01:52,585 p=77179 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:01:52,596 p=77179 u=root n=ansible | TASK [ldap_server : Asegurar que slapd este iniciado y habilitado] ***************************************************************************************************************************
+2026-03-10 18:01:53,196 p=77179 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:01:53,207 p=77179 u=root n=ansible | TASK [ldap_server : Crear unidades organizativas base (People y Group)] **********************************************************************************************************************
+2026-03-10 18:01:53,754 p=77179 u=root n=ansible | An exception occurred during task execution. To see the full traceback, use -vvv. The error was: ldap.INVALID_CREDENTIALS: {'msgtype': 97, 'msgid': 1, 'result': 49, 'desc': 'Invalid credentials', 'ctrls': []}
+2026-03-10 18:01:53,755 p=77179 u=root n=ansible | failed: [slurm-hn] (item={'dn': 'ou=People,dc=cluster,dc=local', 'objectClass': ['top', 'organizationalUnit']}) => {"ansible_loop_var": "item", "changed": false, "details": "{'msgtype': 97, 'msgid': 1, 'result': 49, 'desc': 'Invalid credentials', 'ctrls': []}", "item": {"dn": "ou=People,dc=cluster,dc=local", "objectClass": ["top", "organizationalUnit"]}, "msg": "Cannot bind to the server."}
+2026-03-10 18:01:54,151 p=77179 u=root n=ansible | An exception occurred during task execution. To see the full traceback, use -vvv. The error was: ldap.INVALID_CREDENTIALS: {'msgtype': 97, 'msgid': 1, 'result': 49, 'desc': 'Invalid credentials', 'ctrls': []}
+2026-03-10 18:01:54,151 p=77179 u=root n=ansible | failed: [slurm-hn] (item={'dn': 'ou=Group,dc=cluster,dc=local', 'objectClass': ['top', 'organizationalUnit']}) => {"ansible_loop_var": "item", "changed": false, "details": "{'msgtype': 97, 'msgid': 1, 'result': 49, 'desc': 'Invalid credentials', 'ctrls': []}", "item": {"dn": "ou=Group,dc=cluster,dc=local", "objectClass": ["top", "organizationalUnit"]}, "msg": "Cannot bind to the server."}
+2026-03-10 18:01:54,156 p=77179 u=root n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************
+2026-03-10 18:01:54,156 p=77179 u=root n=ansible | slurm-hn                   : ok=16   changed=10   unreachable=0    failed=1    skipped=1    rescued=0    ignored=0   
+2026-03-10 18:07:56,016 p=78103 u=root n=ansible | PLAY [Configuraciones especificas del Headnode] **********************************************************************************************************************************************
+2026-03-10 18:07:56,035 p=78103 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-10 18:07:57,613 p=78103 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:07:57,633 p=78103 u=root n=ansible | TASK [munge : Configurar Munge en headnode] **************************************************************************************************************************************************
+2026-03-10 18:07:57,671 p=78103 u=root n=ansible | included: /root/ansible-cluster-slurm/roles/munge/tasks/headnode.yml for slurm-hn
+2026-03-10 18:07:57,678 p=78103 u=root n=ansible | TASK [munge : Generar llave Munge] ***********************************************************************************************************************************************************
+2026-03-10 18:07:58,138 p=78103 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:07:58,149 p=78103 u=root n=ansible | TASK [munge : Asegurar permisos estrictos de llave Munge] ************************************************************************************************************************************
+2026-03-10 18:07:58,626 p=78103 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:07:58,638 p=78103 u=root n=ansible | TASK [munge : Descargar llave Munge al controlador] ******************************************************************************************************************************************
+2026-03-10 18:07:59,087 p=78103 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:07:59,098 p=78103 u=root n=ansible | TASK [munge : Crear directorio de backup] ****************************************************************************************************************************************************
+2026-03-10 18:07:59,434 p=78103 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:07:59,446 p=78103 u=root n=ansible | TASK [munge : Backup de munge.key] ***********************************************************************************************************************************************************
+2026-03-10 18:07:59,925 p=78103 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:07:59,938 p=78103 u=root n=ansible | TASK [munge : Iniciar servicio Munge] ********************************************************************************************************************************************************
+2026-03-10 18:08:00,881 p=78103 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:08:00,888 p=78103 u=root n=ansible | TASK [munge : Configurar Munge en workers] ***************************************************************************************************************************************************
+2026-03-10 18:08:00,910 p=78103 u=root n=ansible | skipping: [slurm-hn]
+2026-03-10 18:08:00,919 p=78103 u=root n=ansible | TASK [munge : Verificar que el socket de Munge esté disponible] ******************************************************************************************************************************
+2026-03-10 18:08:01,388 p=78103 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:08:01,396 p=78103 u=root n=ansible | TASK [munge : Verificar que Munge responda correctamente] ************************************************************************************************************************************
+2026-03-10 18:08:01,732 p=78103 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:08:01,748 p=78103 u=root n=ansible | TASK [chrony_server : Asegurar que Chrony use pools de Sudamérica] ***************************************************************************************************************************
+2026-03-10 18:08:02,223 p=78103 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:08:02,234 p=78103 u=root n=ansible | TASK [chrony_server : Permitir sincronización a la red interna] ******************************************************************************************************************************
+2026-03-10 18:08:02,563 p=78103 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:08:02,572 p=78103 u=root n=ansible | TASK [chrony_server : Forzar al Headnode a ser autoritativo (Local Stratum)] *****************************************************************************************************************
+2026-03-10 18:08:02,897 p=78103 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:08:02,912 p=78103 u=root n=ansible | TASK [ldap_server : Pre-configurar contrasenas de slapd (debconf)] ***************************************************************************************************************************
+2026-03-10 18:08:03,538 p=78103 u=root n=ansible | failed: [slurm-hn] (item={'question': 'slapd/root_password'}) => {"ansible_loop_var": "item", "changed": false, "item": {"question": "slapd/root_password"}, "msg": "Failed to find required executable \"debconf-get-selections\" in paths: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"}
+2026-03-10 18:08:03,988 p=78103 u=root n=ansible | failed: [slurm-hn] (item={'question': 'slapd/root_password_again'}) => {"ansible_loop_var": "item", "changed": false, "item": {"question": "slapd/root_password_again"}, "msg": "Failed to find required executable \"debconf-get-selections\" in paths: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"}
+2026-03-10 18:08:03,992 p=78103 u=root n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************
+2026-03-10 18:08:03,993 p=78103 u=root n=ansible | slurm-hn                   : ok=13   changed=0    unreachable=0    failed=1    skipped=1    rescued=0    ignored=0   
+2026-03-10 18:14:35,568 p=78616 u=root n=ansible | PLAY [Configuraciones especificas del Headnode] **********************************************************************************************************************************************
+2026-03-10 18:14:35,579 p=78616 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-10 18:14:37,117 p=78616 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:14:37,136 p=78616 u=root n=ansible | TASK [ldap_server : Instalar utilidades de debconf] ******************************************************************************************************************************************
+2026-03-10 18:14:47,303 p=78616 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:14:47,314 p=78616 u=root n=ansible | TASK [ldap_server : Pre-configurar contrasenas de slapd (debconf)] ***************************************************************************************************************************
+2026-03-10 18:14:48,250 p=78616 u=root n=ansible | changed: [slurm-hn] => (item={'question': 'slapd/root_password'})
+2026-03-10 18:14:49,056 p=78616 u=root n=ansible | changed: [slurm-hn] => (item={'question': 'slapd/root_password_again'})
+2026-03-10 18:14:49,066 p=78616 u=root n=ansible | TASK [ldap_server : Instalar paquetes de OpenLDAP] *******************************************************************************************************************************************
+2026-03-10 18:14:50,155 p=78616 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:14:50,165 p=78616 u=root n=ansible | TASK [ldap_server : Forzar reconfiguración de slapd con variables de all.yml] ****************************************************************************************************************
+2026-03-10 18:14:52,286 p=78616 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:14:52,304 p=78616 u=root n=ansible | TASK [ldap_server : Asegurar que slapd este iniciado y habilitado] ***************************************************************************************************************************
+2026-03-10 18:14:53,213 p=78616 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:14:53,222 p=78616 u=root n=ansible | TASK [ldap_server : Crear unidades organizativas base (People y Group)] **********************************************************************************************************************
+2026-03-10 18:14:53,791 p=78616 u=root n=ansible | An exception occurred during task execution. To see the full traceback, use -vvv. The error was: ldap.INVALID_CREDENTIALS: {'msgtype': 97, 'msgid': 1, 'result': 49, 'desc': 'Invalid credentials', 'ctrls': []}
+2026-03-10 18:14:53,792 p=78616 u=root n=ansible | failed: [slurm-hn] (item={'dn': 'ou=People,dc=cluster,dc=local', 'objectClass': ['top', 'organizationalUnit']}) => {"ansible_loop_var": "item", "changed": false, "details": "{'msgtype': 97, 'msgid': 1, 'result': 49, 'desc': 'Invalid credentials', 'ctrls': []}", "item": {"dn": "ou=People,dc=cluster,dc=local", "objectClass": ["top", "organizationalUnit"]}, "msg": "Cannot bind to the server."}
+2026-03-10 18:14:54,178 p=78616 u=root n=ansible | An exception occurred during task execution. To see the full traceback, use -vvv. The error was: ldap.INVALID_CREDENTIALS: {'msgtype': 97, 'msgid': 1, 'result': 49, 'desc': 'Invalid credentials', 'ctrls': []}
+2026-03-10 18:14:54,178 p=78616 u=root n=ansible | failed: [slurm-hn] (item={'dn': 'ou=Group,dc=cluster,dc=local', 'objectClass': ['top', 'organizationalUnit']}) => {"ansible_loop_var": "item", "changed": false, "details": "{'msgtype': 97, 'msgid': 1, 'result': 49, 'desc': 'Invalid credentials', 'ctrls': []}", "item": {"dn": "ou=Group,dc=cluster,dc=local", "objectClass": ["top", "organizationalUnit"]}, "msg": "Cannot bind to the server."}
+2026-03-10 18:14:54,182 p=78616 u=root n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************
+2026-03-10 18:14:54,183 p=78616 u=root n=ansible | slurm-hn                   : ok=6    changed=3    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2026-03-10 18:33:33,783 p=79344 u=root n=ansible | PLAY [Configuraciones especificas del Headnode] **********************************************************************************************************************************************
+2026-03-10 18:33:33,795 p=79344 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-10 18:33:35,444 p=79344 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:33:35,465 p=79344 u=root n=ansible | TASK [ldap_server : Instalar utilidades y paquetes OpenLDAP] *********************************************************************************************************************************
+2026-03-10 18:33:36,868 p=79344 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:33:36,879 p=79344 u=root n=ansible | TASK [ldap_server : Detener slapd para configuración manual] *********************************************************************************************************************************
+2026-03-10 18:33:37,850 p=79344 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:33:37,863 p=79344 u=root n=ansible | TASK [ldap_server : Limpiar configuración antigua de LDAP] ***********************************************************************************************************************************
+2026-03-10 18:33:38,354 p=79344 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:33:38,366 p=79344 u=root n=ansible | TASK [ldap_server : Generar configuración base (LDIF)] ***************************************************************************************************************************************
+2026-03-10 18:33:39,323 p=79344 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:33:39,335 p=79344 u=root n=ansible | TASK [ldap_server : Reconfigurar slapd mediante dpkg (ahora sí con directorios limpios)] *****************************************************************************************************
+2026-03-10 18:33:40,955 p=79344 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:33:40,963 p=79344 u=root n=ansible | TASK [ldap_server : Asegurar que slapd esté iniciado] ****************************************************************************************************************************************
+2026-03-10 18:33:41,563 p=79344 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:33:41,573 p=79344 u=root n=ansible | TASK [ldap_server : Crear unidades organizativas base (People y Group)] **********************************************************************************************************************
+2026-03-10 18:33:42,160 p=79344 u=root n=ansible | An exception occurred during task execution. To see the full traceback, use -vvv. The error was: ldap.INVALID_CREDENTIALS: {'msgtype': 97, 'msgid': 1, 'result': 49, 'desc': 'Invalid credentials', 'ctrls': []}
+2026-03-10 18:33:42,161 p=79344 u=root n=ansible | failed: [slurm-hn] (item={'dn': 'ou=People,dc=cluster,dc=local', 'objectClass': ['top', 'organizationalUnit']}) => {"ansible_loop_var": "item", "changed": false, "details": "{'msgtype': 97, 'msgid': 1, 'result': 49, 'desc': 'Invalid credentials', 'ctrls': []}", "item": {"dn": "ou=People,dc=cluster,dc=local", "objectClass": ["top", "organizationalUnit"]}, "msg": "Cannot bind to the server."}
+2026-03-10 18:33:42,539 p=79344 u=root n=ansible | An exception occurred during task execution. To see the full traceback, use -vvv. The error was: ldap.INVALID_CREDENTIALS: {'msgtype': 97, 'msgid': 1, 'result': 49, 'desc': 'Invalid credentials', 'ctrls': []}
+2026-03-10 18:33:42,539 p=79344 u=root n=ansible | failed: [slurm-hn] (item={'dn': 'ou=Group,dc=cluster,dc=local', 'objectClass': ['top', 'organizationalUnit']}) => {"ansible_loop_var": "item", "changed": false, "details": "{'msgtype': 97, 'msgid': 1, 'result': 49, 'desc': 'Invalid credentials', 'ctrls': []}", "item": {"dn": "ou=Group,dc=cluster,dc=local", "objectClass": ["top", "organizationalUnit"]}, "msg": "Cannot bind to the server."}
+2026-03-10 18:33:42,545 p=79344 u=root n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************
+2026-03-10 18:33:42,545 p=79344 u=root n=ansible | slurm-hn                   : ok=7    changed=4    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2026-03-10 18:37:12,966 p=79863 u=root n=ansible | PLAY [Configuraciones especificas del Headnode] **********************************************************************************************************************************************
+2026-03-10 18:37:12,977 p=79863 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-10 18:37:14,622 p=79863 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:37:14,643 p=79863 u=root n=ansible | TASK [ldap_server : Instalar utilidades y paquetes OpenLDAP] *********************************************************************************************************************************
+2026-03-10 18:37:16,107 p=79863 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:37:16,116 p=79863 u=root n=ansible | TASK [ldap_server : Detener slapd para configuración manual] *********************************************************************************************************************************
+2026-03-10 18:37:17,043 p=79863 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:37:17,053 p=79863 u=root n=ansible | TASK [ldap_server : Limpiar configuración antigua de LDAP] ***********************************************************************************************************************************
+2026-03-10 18:37:17,533 p=79863 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:37:17,545 p=79863 u=root n=ansible | TASK [ldap_server : Generar configuración base (LDIF)] ***************************************************************************************************************************************
+2026-03-10 18:37:18,496 p=79863 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:37:18,505 p=79863 u=root n=ansible | TASK [ldap_server : Reconfigurar slapd mediante dpkg (ahora sí con directorios limpios)] *****************************************************************************************************
+2026-03-10 18:37:20,220 p=79863 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:37:20,231 p=79863 u=root n=ansible | TASK [ldap_server : Asegurar que slapd esté iniciado] ****************************************************************************************************************************************
+2026-03-10 18:37:20,865 p=79863 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:37:20,875 p=79863 u=root n=ansible | TASK [ldap_server : Forzar reseteo de contraseña de admin (Manual Override)] *****************************************************************************************************************
+2026-03-10 18:37:21,230 p=79863 u=root n=ansible | fatal: [slurm-hn]: FAILED! => {"changed": true, "cmd": "# Usamos ldappasswd con EXTERNAL para no necesitar la clave vieja\nldappasswd -Q -Y EXTERNAL -H ldapi:/// \"cn=admin,dc=cluster,dc=local\" -s \"admin_password\"\n", "delta": "0:00:00.018532", "end": "2026-03-10 18:37:21.193594", "msg": "non-zero return code", "rc": 1, "start": "2026-03-10 18:37:21.175062", "stderr": "", "stderr_lines": [], "stdout": "Result: No such object (32)", "stdout_lines": ["Result: No such object (32)"]}
+2026-03-10 18:37:21,233 p=79863 u=root n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************
+2026-03-10 18:37:21,233 p=79863 u=root n=ansible | slurm-hn                   : ok=7    changed=3    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2026-03-10 18:48:19,861 p=80386 u=root n=ansible | PLAY [Configuraciones especificas del Headnode] **********************************************************************************************************************************************
+2026-03-10 18:48:19,873 p=80386 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-10 18:48:21,430 p=80386 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:48:21,450 p=80386 u=root n=ansible | TASK [ldap_server : Instalar utilidades y paquetes OpenLDAP] *********************************************************************************************************************************
+2026-03-10 18:48:22,822 p=80386 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:48:22,833 p=80386 u=root n=ansible | TASK [ldap_server : Detener slapd para configuración manual] *********************************************************************************************************************************
+2026-03-10 18:48:23,723 p=80386 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:48:23,733 p=80386 u=root n=ansible | TASK [ldap_server : Limpiar directorios de LDAP] *********************************************************************************************************************************************
+2026-03-10 18:48:24,181 p=80386 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:48:24,189 p=80386 u=root n=ansible | TASK [ldap_server : Configurar debconf para el dominio] **************************************************************************************************************************************
+2026-03-10 18:48:25,781 p=80386 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:48:25,789 p=80386 u=root n=ansible | TASK [ldap_server : Detener slapd de nuevo (dpkg lo inicia solo)] ****************************************************************************************************************************
+2026-03-10 18:48:26,423 p=80386 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:48:26,430 p=80386 u=root n=ansible | TASK [ldap_server : Crear archivo LDIF de emergencia para estructura completa] ***************************************************************************************************************
+2026-03-10 18:48:27,244 p=80386 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:48:27,254 p=80386 u=root n=ansible | TASK [ldap_server : Inyectar estructura directamente a la base de datos (Offline)] ***********************************************************************************************************
+2026-03-10 18:48:27,616 p=80386 u=root n=ansible | [WARNING]: Module remote_tmp /var/lib/ldap/.ansible/tmp did not exist and was created with a mode of 0700, this may cause issues when running as another user. To avoid this, create the
+remote_tmp dir with the correct permissions manually
+
+2026-03-10 18:48:27,617 p=80386 u=root n=ansible | fatal: [slurm-hn]: FAILED! => {"changed": true, "cmd": "slapadd -F /etc/ldap/slapd.d -l /tmp/full_structure.ldif", "delta": "0:00:00.030383", "end": "2026-03-10 18:48:27.576881", "msg": "non-zero return code", "rc": 1, "start": "2026-03-10 18:48:27.546498", "stderr": "mdb_id2entry_put: mdb_put failed: MDB_KEYEXIST: Key/data pair already exists(-30799) \"dc=cluster,dc=local\"\n=> mdb_tool_entry_put: id2entry_add failed: err=-30799\n=> mdb_tool_entry_put: txn_aborted! MDB_KEYEXIST: Key/data pair already exists (-30799)\nslapadd: could not add entry dn=\"dc=cluster,dc=local\" (line=1): txn_aborted! MDB_KEYEXIST: Key/data pair already exists (-30799)", "stderr_lines": ["mdb_id2entry_put: mdb_put failed: MDB_KEYEXIST: Key/data pair already exists(-30799) \"dc=cluster,dc=local\"", "=> mdb_tool_entry_put: id2entry_add failed: err=-30799", "=> mdb_tool_entry_put: txn_aborted! MDB_KEYEXIST: Key/data pair already exists (-30799)", "slapadd: could not add entry dn=\"dc=cluster,dc=local\" (line=1): txn_aborted! MDB_KEYEXIST: Key/data pair already exists (-30799)"], "stdout": "", "stdout_lines": []}
+2026-03-10 18:48:27,619 p=80386 u=root n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************
+2026-03-10 18:48:27,619 p=80386 u=root n=ansible | slurm-hn                   : ok=7    changed=5    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2026-03-10 18:51:35,391 p=80927 u=root n=ansible | PLAY [Configuraciones especificas del Headnode] **********************************************************************************************************************************************
+2026-03-10 18:51:35,403 p=80927 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-10 18:51:36,969 p=80927 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:51:36,987 p=80927 u=root n=ansible | TASK [ldap_server : Instalar utilidades y paquetes OpenLDAP] *********************************************************************************************************************************
+2026-03-10 18:51:38,339 p=80927 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:51:38,349 p=80927 u=root n=ansible | TASK [ldap_server : Detener slapd para configuración manual] *********************************************************************************************************************************
+2026-03-10 18:51:39,169 p=80927 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:51:39,177 p=80927 u=root n=ansible | TASK [ldap_server : Limpiar directorios de LDAP] *********************************************************************************************************************************************
+2026-03-10 18:51:39,625 p=80927 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:51:39,635 p=80927 u=root n=ansible | TASK [ldap_server : Configurar debconf para el dominio] **************************************************************************************************************************************
+2026-03-10 18:51:41,284 p=80927 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:51:41,297 p=80927 u=root n=ansible | TASK [ldap_server : Detener slapd de nuevo (dpkg lo inicia solo)] ****************************************************************************************************************************
+2026-03-10 18:51:41,938 p=80927 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:51:41,946 p=80927 u=root n=ansible | TASK [ldap_server : Crear archivo LDIF de emergencia para estructura completa] ***************************************************************************************************************
+2026-03-10 18:51:42,860 p=80927 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:51:42,869 p=80927 u=root n=ansible | TASK [ldap_server : Inyectar estructura directamente a la base de datos (Offline)] ***********************************************************************************************************
+2026-03-10 18:51:43,226 p=80927 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:51:43,237 p=80927 u=root n=ansible | TASK [ldap_server : Corregir permisos de la base de datos] ***********************************************************************************************************************************
+2026-03-10 18:51:43,555 p=80927 u=root n=ansible | ok: [slurm-hn] => (item=/var/lib/ldap)
+2026-03-10 18:51:43,861 p=80927 u=root n=ansible | ok: [slurm-hn] => (item=/etc/ldap/slapd.d)
+2026-03-10 18:51:43,873 p=80927 u=root n=ansible | TASK [ldap_server : Iniciar slapd definitivo] ************************************************************************************************************************************************
+2026-03-10 18:51:44,499 p=80927 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:51:44,509 p=80927 u=root n=ansible | TASK [ldap_server : Asegurar Unidades Organizativas (Online)] ********************************************************************************************************************************
+2026-03-10 18:51:45,060 p=80927 u=root n=ansible | ok: [slurm-hn] => (item={'dn': 'ou=People,dc=cluster,dc=local', 'objectClass': ['top', 'organizationalUnit']})
+2026-03-10 18:51:45,442 p=80927 u=root n=ansible | ok: [slurm-hn] => (item={'dn': 'ou=Group,dc=cluster,dc=local', 'objectClass': ['top', 'organizationalUnit']})
+2026-03-10 18:51:45,461 p=80927 u=root n=ansible | TASK [Configurar SSH keys en headnode] *******************************************************************************************************************************************************
+2026-03-10 18:51:45,505 p=80927 u=root n=ansible | TASK [ssh_keys : Generar par de llaves ssh RSA para root] ************************************************************************************************************************************
+2026-03-10 18:51:46,093 p=80927 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:51:46,107 p=80927 u=root n=ansible | TASK [ssh_keys : Descargar llave publica SSH de root] ****************************************************************************************************************************************
+2026-03-10 18:51:46,567 p=80927 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:51:46,592 p=80927 u=root n=ansible | TASK [Mensaje final de configuracion del headnode] *******************************************************************************************************************************************
+2026-03-10 18:51:46,619 p=80927 u=root n=ansible | ok: [slurm-hn] => {
+    "msg": [
+        "=========================================",
+        "Configuracion del Headnode Completada",
+        "========================================="
+    ]
+}
+2026-03-10 18:51:46,635 p=80927 u=root n=ansible | PLAY [Resumen] *******************************************************************************************************************************************************************************
+2026-03-10 18:51:46,639 p=80927 u=root n=ansible | TASK [Display deployment summary] ************************************************************************************************************************************************************
+2026-03-10 18:51:46,664 p=80927 u=root n=ansible | ok: [localhost] => {
+    "msg": [
+        "",
+        "=========================================",
+        "Cluster SLURM configurado",
+        "=========================================",
+        ""
+    ]
+}
+2026-03-10 18:51:46,671 p=80927 u=root n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************
+2026-03-10 18:51:46,671 p=80927 u=root n=ansible | localhost                  : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-03-10 18:51:46,671 p=80927 u=root n=ansible | slurm-hn                   : ok=14   changed=6    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-03-10 18:55:49,943 p=81643 u=root n=ansible | PLAY [Configuraciones especificas del Headnode] **********************************************************************************************************************************************
+2026-03-10 18:55:49,953 p=81643 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-10 18:55:50,693 p=81643 u=root n=ansible |  [ERROR]: User interrupted execution
+
+2026-03-10 18:55:55,638 p=81685 u=root n=ansible | PLAY [Configuraciones especificas del Headnode] **********************************************************************************************************************************************
+2026-03-10 18:55:55,650 p=81685 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-10 18:55:57,206 p=81685 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:55:57,227 p=81685 u=root n=ansible | TASK [nfs_server : Instalar nfs-kernel-server] ***********************************************************************************************************************************************
+2026-03-10 18:55:59,706 p=81685 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:55:59,717 p=81685 u=root n=ansible | TASK [nfs_server : Crear directorios para exportar NFS] **************************************************************************************************************************************
+2026-03-10 18:56:00,275 p=81685 u=root n=ansible | changed: [slurm-hn] => (item=/home)
+2026-03-10 18:56:00,600 p=81685 u=root n=ansible | changed: [slurm-hn] => (item=/nfs/general)
+2026-03-10 18:56:00,934 p=81685 u=root n=ansible | changed: [slurm-hn] => (item=/nfs/privileged)
+2026-03-10 18:56:00,947 p=81685 u=root n=ansible | TASK [nfs_server : Configurar exports NFS] ***************************************************************************************************************************************************
+2026-03-10 18:56:01,419 p=81685 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:56:01,428 p=81685 u=root n=ansible | TASK [nfs_server : Aplicar configuración de exports] *****************************************************************************************************************************************
+2026-03-10 18:56:01,905 p=81685 u=root n=ansible | skipping: [slurm-hn]
+2026-03-10 18:56:01,930 p=81685 u=root n=ansible | RUNNING HANDLER [nfs_server : Reiniciar nfs] *************************************************************************************************************************************************
+2026-03-10 18:56:02,774 p=81685 u=root n=ansible | fatal: [slurm-hn]: FAILED! => {"changed": false, "msg": "Could not find the requested service nfs-kernel-server: host"}
+2026-03-10 18:56:02,776 p=81685 u=root n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************
+2026-03-10 18:56:02,777 p=81685 u=root n=ansible | slurm-hn                   : ok=4    changed=3    unreachable=0    failed=1    skipped=1    rescued=0    ignored=0   
+2026-03-10 18:56:31,465 p=81995 u=root n=ansible | PLAY [Configuraciones especificas del Headnode] **********************************************************************************************************************************************
+2026-03-10 18:56:31,475 p=81995 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-10 18:56:33,040 p=81995 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:56:33,063 p=81995 u=root n=ansible | TASK [nfs_server : Instalar nfs-kernel-server] ***********************************************************************************************************************************************
+2026-03-10 18:56:49,954 p=81995 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:56:49,962 p=81995 u=root n=ansible | TASK [nfs_server : Crear directorios para exportar NFS] **************************************************************************************************************************************
+2026-03-10 18:56:50,419 p=81995 u=root n=ansible | changed: [slurm-hn] => (item=/home)
+2026-03-10 18:56:50,692 p=81995 u=root n=ansible | changed: [slurm-hn] => (item=/nfs/general)
+2026-03-10 18:56:51,000 p=81995 u=root n=ansible | changed: [slurm-hn] => (item=/nfs/privileged)
+2026-03-10 18:56:51,013 p=81995 u=root n=ansible | TASK [nfs_server : Configurar exports NFS] ***************************************************************************************************************************************************
+2026-03-10 18:56:51,939 p=81995 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:56:51,951 p=81995 u=root n=ansible | TASK [nfs_server : Aplicar configuración de exports] *****************************************************************************************************************************************
+2026-03-10 18:56:52,375 p=81995 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:56:52,400 p=81995 u=root n=ansible | RUNNING HANDLER [nfs_server : Reiniciar nfs] *************************************************************************************************************************************************
+2026-03-10 18:56:53,587 p=81995 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:56:53,596 p=81995 u=root n=ansible | TASK [Mensaje final de configuracion del headnode] *******************************************************************************************************************************************
+2026-03-10 18:56:53,622 p=81995 u=root n=ansible | ok: [slurm-hn] => {
+    "msg": [
+        "=========================================",
+        "Configuracion del Headnode Completada",
+        "========================================="
+    ]
+}
+2026-03-10 18:56:53,643 p=81995 u=root n=ansible | PLAY [Resumen] *******************************************************************************************************************************************************************************
+2026-03-10 18:56:53,647 p=81995 u=root n=ansible | TASK [Display deployment summary] ************************************************************************************************************************************************************
+2026-03-10 18:56:53,675 p=81995 u=root n=ansible | ok: [localhost] => {
+    "msg": [
+        "",
+        "=========================================",
+        "Cluster SLURM configurado",
+        "=========================================",
+        ""
+    ]
+}
+2026-03-10 18:56:53,683 p=81995 u=root n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************
+2026-03-10 18:56:53,683 p=81995 u=root n=ansible | localhost                  : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-03-10 18:56:53,683 p=81995 u=root n=ansible | slurm-hn                   : ok=7    changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-03-10 18:57:50,989 p=82782 u=root n=ansible | PLAY [Configuraciones especificas del Headnode] **********************************************************************************************************************************************
+2026-03-10 18:57:51,001 p=82782 u=root n=ansible | TASK [Gathering Facts] ***********************************************************************************************************************************************************************
+2026-03-10 18:57:52,547 p=82782 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:57:52,568 p=82782 u=root n=ansible | TASK [mariadb : Instalar mariadb y dependencias] *********************************************************************************************************************************************
+2026-03-10 18:58:25,824 p=82782 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:58:25,835 p=82782 u=root n=ansible | TASK [mariadb : Iniciar servicio MariaDB] ****************************************************************************************************************************************************
+2026-03-10 18:58:26,721 p=82782 u=root n=ansible | ok: [slurm-hn]
+2026-03-10 18:58:26,730 p=82782 u=root n=ansible | TASK [mariadb : Crear BD para Slurm Accounting] **********************************************************************************************************************************************
+2026-03-10 18:58:27,280 p=82782 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:58:27,289 p=82782 u=root n=ansible | TASK [mariadb : Crear Usuario de Base de Datos y dar permisos] *******************************************************************************************************************************
+2026-03-10 18:58:27,882 p=82782 u=root n=ansible | [WARNING]: Option column_case_sensitive is not provided. The default is now false, so the column's name will be uppercased. The default will be changed to true in community.mysql 4.0.0.
+
+2026-03-10 18:58:27,882 p=82782 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:58:27,893 p=82782 u=root n=ansible | TASK [mariadb : Optimizar MariaDB para Slurm Accounting] *************************************************************************************************************************************
+2026-03-10 18:58:28,362 p=82782 u=root n=ansible | changed: [slurm-hn] => (item={'regexp': '^innodb_buffer_pool_size', 'line': 'innodb_buffer_pool_size = 1G'})
+2026-03-10 18:58:28,659 p=82782 u=root n=ansible | changed: [slurm-hn] => (item={'regexp': '^innodb_log_file_size', 'line': 'innodb_log_file_size = 64M'})
+2026-03-10 18:58:28,960 p=82782 u=root n=ansible | changed: [slurm-hn] => (item={'regexp': '^innodb_lock_wait_timeout', 'line': 'innodb_lock_wait_timeout = 900'})
+2026-03-10 18:58:29,273 p=82782 u=root n=ansible | changed: [slurm-hn] => (item={'regexp': '^innodb_flush_log_at_trx_commit', 'line': 'innodb_flush_log_at_trx_commit = 2'})
+2026-03-10 18:58:29,306 p=82782 u=root n=ansible | RUNNING HANDLER [mariadb : Reiniciar mariadb] ************************************************************************************************************************************************
+2026-03-10 18:58:30,685 p=82782 u=root n=ansible | changed: [slurm-hn]
+2026-03-10 18:58:30,694 p=82782 u=root n=ansible | TASK [Mensaje final de configuracion del headnode] *******************************************************************************************************************************************
+2026-03-10 18:58:30,718 p=82782 u=root n=ansible | ok: [slurm-hn] => {
+    "msg": [
+        "=========================================",
+        "Configuracion del Headnode Completada",
+        "========================================="
+    ]
+}
+2026-03-10 18:58:30,733 p=82782 u=root n=ansible | PLAY [Resumen] *******************************************************************************************************************************************************************************
+2026-03-10 18:58:30,738 p=82782 u=root n=ansible | TASK [Display deployment summary] ************************************************************************************************************************************************************
+2026-03-10 18:58:30,759 p=82782 u=root n=ansible | ok: [localhost] => {
+    "msg": [
+        "",
+        "=========================================",
+        "Cluster SLURM configurado",
+        "=========================================",
+        ""
+    ]
+}
+2026-03-10 18:58:30,767 p=82782 u=root n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************
+2026-03-10 18:58:30,768 p=82782 u=root n=ansible | localhost                  : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2026-03-10 18:58:30,768 p=82782 u=root n=ansible | slurm-hn                   : ok=8    changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   

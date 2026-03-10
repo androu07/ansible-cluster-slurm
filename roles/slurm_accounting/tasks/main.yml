@@ -2,23 +2,36 @@
 # ===== SLURM Accounting Configuration =====
 
 - name: Registrar Cluster en Accounting
-  command: sacctmgr -i add cluster {{ cluster_name }}
+  ansible.builtin.command: sacctmgr -i add cluster {{ cluster_name }}
   register: cluster_add
-  changed_when: "'Cluster added' in cluster_add.stdout"
+  changed_when: "'Adding Cluster' in cluster_add.stdout"
   failed_when:
     - cluster_add.rc != 0
-    - "'already exists' not in cluster_add.stdout"
-  ignore_errors: yes
+    - "'already exists' not in cluster_add.stdout and 'already exists' not in cluster_add.stderr"
   tags:
     - register_cluster
 
 - name: Crear cuentas base de usuarios
-  command: sacctmgr -i add account {{ item }} Description="Base Account" Organization="Cluster"
+  ansible.builtin.command: sacctmgr -i add account {{ item }} Description="Base Account" Organization="Cluster"
   loop:
     - researchers
     - students
   register: acct_add
-  changed_when: "'Account added' in acct_add.stdout"
-  failed_when: false
+  changed_when: "'Adding Account' in acct_add.stdout"
+  failed_when:
+    - acct_add.rc != 0
+    - "'already exists' not in acct_add.stdout and 'already exists' not in acct_add.stderr"
   tags:
     - create_accounts
+
+- name: Vincular usuarios LDAP a cuentas de Slurm (Ejemplo)
+  ansible.builtin.command:
+    cmd: "sacctmgr -i add user {{ item.user }} account={{ item.acct }}"
+  loop:
+    - { user: 'admin', acct: 'researchers' }
+  register: user_add
+  changed_when: "'Adding User' in user_add.stdout"
+  failed_when:
+    - user_add.rc != 0
+    - "'already exists' not in user_add.stdout and 'already exists' not in user_add.stderr"
+  tags: [create_users]

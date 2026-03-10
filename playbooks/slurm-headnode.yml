@@ -7,22 +7,22 @@
   gather_facts: yes
   
   roles:
-    - munge
-    - chrony_server
-    - ldap_server
-    - nfs_server
+#    - munge
+#    - chrony_server
+#    - ldap_server
+#    - nfs_server
     - mariadb
-    - slurmdbd
-    - slurmctld
-    - slurm_accounting
-    - monitoring
+#    - slurmdbd
+#    - slurmctld
+#    - slurm_accounting
+#    - monitoring
 
-  tasks:
-    # Configurar SSH keys
-    - name: Configurar SSH keys en headnode
-      include_role:
-        name: ssh_keys
-        tasks_from: headnode
+#  tasks:
+#    # Configurar SSH keys
+#    - name: Configurar SSH keys en headnode
+#      include_role:
+#        name: ssh_keys
+#        tasks_from: headnode
 
   post_tasks:
     - name: Mensaje final de configuracion del headnode

@@ -9,6 +9,7 @@
   roles:
     - munge
     - chrony_client
+    - ldap_client
     - nfs_client
     - slurmd
 
@@ -26,3 +27,4 @@
           - "========================================="
           - "Configuracion de los Workers Completada"
           - "========================================="
+

@@ -1,0 +1,33 @@
+---
+# ===== Configuracion de SSSD (Cliente LDAP para Workers) =====
+
+- name: Instalar paquetes necesarios para SSSD y LDAP
+  ansible.builtin.apt:
+    name:
+      - sssd
+      - sssd-ldap
+      - ldap-utils
+      - libnss-ldap
+      - libpam-ldap
+    state: present
+
+- name: Configurar SSSD desde el template
+  ansible.builtin.template:
+    src: sssd.conf.j2
+    dest: /etc/sssd/sssd.conf
+    owner: root
+    group: root
+    mode: '0600'
+  notify: Reiniciar sssd
+
+- name: Asegurar que SSSD esté habilitado e iniciado
+  ansible.builtin.service:
+    name: sssd
+    state: started
+    enabled: yes
+
+- name: Configurar mkhomedir en PAM (Workers)
+  ansible.builtin.lineinfile:
+    path: /etc/pam.d/common-session
+    line: "session optional pam_mkhomedir.so skel=/etc/skel umask=0077"
+    state: present

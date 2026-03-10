@@ -1,31 +1,87 @@
 ---
 # ===== Instalacion y Configuracion de OpenLDAP Server (Headnode) =====
 
-- name: Pre-configurar contrasenas de slapd (debconf)
-  ansible.builtin.debconf:
-    name: slapd
-    question: "{{ item.question }}"
-    value: "{{ ldap_admin_password }}"
-    vtype: 'password'
-  loop:
-    - { question: 'slapd/root_password' }
-    - { question: 'slapd/root_password_again' }
-
-- name: Instalar paquetes de OpenLDAP
+- name: Instalar utilidades y paquetes OpenLDAP
   ansible.builtin.apt:
     name:
       - slapd
       - ldap-utils
       - python3-ldap
+      - debconf-utils
     state: present
 
-- name: Asegurar que slapd este iniciado y habilitado
+- name: Detener slapd para configuración manual
+  ansible.builtin.service:
+    name: slapd
+    state: stopped
+
+- name: Limpiar directorios de LDAP
+  ansible.builtin.shell: "rm -rf /var/lib/ldap/* /etc/ldap/slapd.d/*"
+
+- name: Configurar debconf para el dominio
+  ansible.builtin.shell: |
+    echo "slapd slapd/domain string {{ ldap_domain }}" | debconf-set-selections
+    dpkg-reconfigure -f noninteractive slapd
+  args:
+    executable: /bin/bash
+
+- name: Detener slapd de nuevo (dpkg lo inicia solo)
+  ansible.builtin.service:
+    name: slapd
+    state: stopped
+
+- name: Crear archivo LDIF de emergencia para estructura completa
+  ansible.builtin.copy:
+    dest: /tmp/full_structure.ldif
+    content: |
+      dn: {{ ldap_base_dn }}
+      objectClass: top
+      objectClass: dcObject
+      objectClass: organization
+      o: {{ cluster_name }}
+      dc: {{ ldap_domain.split('.')[0] }}
+
+      dn: cn=admin,{{ ldap_base_dn }}
+      objectClass: simpleSecurityObject
+      objectClass: organizationalRole
+      cn: admin
+      description: LDAP administrator
+      userPassword: {{ ldap_admin_password }}
+
+      dn: ou=People,{{ ldap_base_dn }}
+      objectClass: organizationalUnit
+      ou: People
+
+      dn: ou=Group,{{ ldap_base_dn }}
+      objectClass: organizationalUnit
+      ou: Group
+
+- name: Inyectar estructura directamente a la base de datos (Offline)
+  ansible.builtin.shell: "slapadd -c -F /etc/ldap/slapd.d -l /tmp/full_structure.ldif"
+  become: yes
+  become_user: root 
+  register: slapadd_out
+  failed_when: 
+    - slapadd_out.rc != 0 
+    - "'MDB_KEYEXIST' not in slapadd_out.stderr"
+
+- name: Corregir permisos de la base de datos
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: openldap
+    group: openldap
+    recurse: yes
+  loop:
+    - /var/lib/ldap
+    - /etc/ldap/slapd.d
+
+- name: Iniciar slapd definitivo
   ansible.builtin.service:
     name: slapd
     state: started
     enabled: yes
 
-- name: Crear unidades organizativas base (People y Group)
+- name: Asegurar Unidades Organizativas (Online)
   community.general.ldap_entry:
     dn: "{{ item.dn }}"
     objectClass: "{{ item.objectClass }}"
@@ -35,11 +91,4 @@
   loop:
     - { dn: "ou=People,{{ ldap_base_dn }}", objectClass: ['top', 'organizationalUnit'] }
     - { dn: "ou=Group,{{ ldap_base_dn }}", objectClass: ['top', 'organizationalUnit'] }
-  tags: [ldap_structure]
 
-- name: Configurar mkhomedir en el Headnode (PAM)
-  ansible.builtin.lineinfile:
-    path: /etc/pam.d/common-session
-    line: "session optional pam_mkhomedir.so skel=/etc/skel umask=0077"
-    state: present
-  tags: [pam_config]

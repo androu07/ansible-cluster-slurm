@@ -30,6 +30,13 @@ table inet filter {
     }
     chain forward {
         type filter hook forward priority 0; policy drop;
+
+{% if inventory_hostname in groups['headnode'] %}
+        # Permitir trafico del cluster hacia internet
+        iif "ens4" oif "ens3" accept 
+        # Permitir trafico de retorno desde internet hacia el cluster 
+        iif "ens3" oif "ens4" ct state established,related accept
+{% endif %}
     }
     chain output {
         type filter hook output priority 0; policy accept;

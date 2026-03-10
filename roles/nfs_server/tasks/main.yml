@@ -2,27 +2,28 @@
 # ===== Servidor NFS (Headnode) =====
 
 - name: Instalar nfs-kernel-server
-  apt:
+  ansible.builtin.apt:
     name: nfs-kernel-server
     state: present
   tags:
     - install_nfs
 
 - name: Crear directorios para exportar NFS
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     owner: nobody
     group: nogroup
     mode: '0777'
   loop:
+    - /home
     - /nfs/general
     - /nfs/privileged
   tags:
     - nfs_config
 
 - name: Configurar exports NFS
-  template:
+  ansible.builtin.template:
     src: exports.j2
     dest: /etc/exports
     mode: '0644'
@@ -31,6 +32,6 @@
     - nfs_config
 
 - name: Aplicar configuración de exports
-  command: exportfs -ra
+  ansible.builtin.command: exportfs -ra
   tags:
     - nfs_config
