@@ -74,6 +74,7 @@
       - acl
       - munge
       - slurm-wlm
+      - stress
       - nftables
       - nfs-common
       - prometheus-node-exporter

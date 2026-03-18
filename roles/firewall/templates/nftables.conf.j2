@@ -42,3 +42,13 @@ table inet filter {
         type filter hook output priority 0; policy accept;
     }
 }
+
+{% if inventory_hostname in groups['headnode'] %}
+table ip nat {
+    chain postrouting {
+        type nat hook postrouting priority 100; policy accept;
+        # Enmascarar el tráfico que sale por la interfaz pública
+        oifname "ens3" masquerade
+    }
+}
+{% endif %}

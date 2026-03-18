@@ -1,13 +1,6 @@
 ---
 # ===== SLURM Accounting Configuration =====
 
-- name: Asegurar enlace simbólico para slurm.conf
-  ansible.builtin.file:
-    src: /etc/slurm/slurm.conf
-    dest: /etc/slurm/slurm.conf
-    state: link
-    force: yes
-
 - name: Registrar Cluster en Accounting
   ansible.builtin.command: sacctmgr -i add cluster {{ cluster_name }}
   register: cluster_add
@@ -27,7 +20,8 @@
   changed_when: "'Adding Account' in acct_add.stdout"
   failed_when:
     - acct_add.rc != 0
-    - "'already exists' not in acct_add.stdout and 'already exists' not in acct_add.stderr"
+    - "'Already existing' not in acct_add.stdout"
+    - "'already exists' not in acct_add.stdout"
   tags:
     - create_accounts
 
@@ -40,5 +34,6 @@
   changed_when: "'Adding User' in user_add.stdout"
   failed_when:
     - user_add.rc != 0
-    - "'already exists' not in user_add.stdout and 'already exists' not in user_add.stderr"
+    - "'already exists' not in user_add.stdout"
+    - "'Nothing added' not in user_add.stdout"
 

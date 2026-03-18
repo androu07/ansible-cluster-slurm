@@ -3,15 +3,15 @@
 
 - name: Asegurar directorio de configuración
   ansible.builtin.file:
-    path: /etc/slurm
+    path: "{{ item }}"
     state: directory
     owner: slurm
     group: slurm
     mode: '0755'
   loop:
     - /etc/slurm
-    - /etc/slurm
     - /var/lib/slurm
+    - /var/lib/slurm/slurmd
     - /var/spool/slurmd
 
 - name: Enviar slurm.conf maestro a los workers
@@ -41,3 +41,4 @@
     enabled: yes
   tags:
     - start_slurmd
+

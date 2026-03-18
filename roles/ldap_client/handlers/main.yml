@@ -1,0 +1,8 @@
+---
+# roles/ldap_client/handlers/main.yml
+
+- name: Reiniciar sssd
+  ansible.builtin.service:
+    name: sssd
+    state: restarted
+    enabled: true

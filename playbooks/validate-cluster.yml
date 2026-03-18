@@ -1,0 +1,270 @@
+---
+# ===== Playbook de Validación del Cluster SLURM =====
+# Ejecutar con:
+#   ansible-playbook -i hosts playbooks/validate-cluster.yml
+# Para ver solo los resultados de validación:
+#   ansible-playbook -i hosts playbooks/validate-cluster.yml | grep -E "(TASK|ok|FAILED|fatal|msg)"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# BLOQUE 1: Servicios base en TODOS los nodos
+# ─────────────────────────────────────────────────────────────────────────────
+- name: "VAL-1 | Servicios base (munge, slurm-*) en todos los nodos"
+  hosts: all
+  become: yes
+  gather_facts: no
+
+  tasks:
+    - name: "Verificar servicio munge activo"
+      ansible.builtin.systemd:
+        name: munge
+      register: munge_status
+      failed_when: munge_status.status.ActiveState != 'active'
+
+    - name: "Munge responde correctamente (encode/decode)"
+      ansible.builtin.shell: munge -n | unmunge
+      register: munge_test
+      changed_when: false
+      failed_when: munge_test.rc != 0
+
+    - name: "Mostrar resultado munge"
+      ansible.builtin.debug:
+        msg: "OK - munge operativo en {{ inventory_hostname }}"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# BLOQUE 2: Servicios exclusivos del Headnode
+# ─────────────────────────────────────────────────────────────────────────────
+- name: "VAL-2 | Servicios del Headnode (slurmctld, slurmdbd, mariadb)"
+  hosts: headnode
+  become: yes
+  gather_facts: no
+
+  tasks:
+    - name: "Verificar slurmctld activo"
+      ansible.builtin.systemd:
+        name: slurmctld
+      register: slurmctld_status
+      failed_when: slurmctld_status.status.ActiveState != 'active'
+
+    - name: "Verificar slurmdbd activo"
+      ansible.builtin.systemd:
+        name: slurmdbd
+      register: slurmdbd_status
+      failed_when: slurmdbd_status.status.ActiveState != 'active'
+
+    - name: "Verificar mariadb activo"
+      ansible.builtin.systemd:
+        name: mariadb
+      register: mariadb_status
+      failed_when: mariadb_status.status.ActiveState != 'active'
+
+    - name: "Mostrar estado de servicios headnode"
+      ansible.builtin.debug:
+        msg:
+          - "OK - slurmctld : {{ slurmctld_status.status.ActiveState }}"
+          - "OK - slurmdbd  : {{ slurmdbd_status.status.ActiveState }}"
+          - "OK - mariadb   : {{ mariadb_status.status.ActiveState }}"
+
+    - name: "sinfo - estado de particiones y nodos"
+      ansible.builtin.command: sinfo --long
+      register: sinfo_out
+      changed_when: false
+
+    - name: "Mostrar sinfo"
+      ansible.builtin.debug:
+        msg: "{{ sinfo_out.stdout_lines }}"
+
+    - name: "scontrol - detalle de nodos"
+      ansible.builtin.command: scontrol show nodes
+      register: scontrol_nodes
+      changed_when: false
+
+    - name: "Mostrar detalle de nodos"
+      ansible.builtin.debug:
+        msg: "{{ scontrol_nodes.stdout_lines }}"
+
+    - name: "scontrol - detalle de particiones"
+      ansible.builtin.command: scontrol show partitions
+      register: scontrol_parts
+      changed_when: false
+
+    - name: "Mostrar detalle de particiones"
+      ansible.builtin.debug:
+        msg: "{{ scontrol_parts.stdout_lines }}"
+
+    - name: "Accounting - clusters registrados"
+      ansible.builtin.command: sacctmgr show cluster format=Cluster,State -n
+      register: acct_clusters
+      changed_when: false
+
+    - name: "Mostrar clusters en accounting"
+      ansible.builtin.debug:
+        msg: "{{ acct_clusters.stdout_lines }}"
+
+    - name: "Accounting - cuentas y usuarios"
+      ansible.builtin.command: >
+        sacctmgr show associations format=Cluster,Account,User,Partition -n
+      register: acct_assoc
+      changed_when: false
+
+    - name: "Mostrar asociaciones de accounting"
+      ansible.builtin.debug:
+        msg: "{{ acct_assoc.stdout_lines }}"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# BLOQUE 3: Servicios exclusivos de los Workers
+# ─────────────────────────────────────────────────────────────────────────────
+- name: "VAL-3 | Servicios de los Workers (slurmd)"
+  hosts: workers
+  become: yes
+  gather_facts: no
+
+  tasks:
+    - name: "Verificar slurmd activo"
+      ansible.builtin.systemd:
+        name: slurmd
+      register: slurmd_status
+      failed_when: slurmd_status.status.ActiveState != 'active'
+
+    - name: "Mostrar estado slurmd"
+      ansible.builtin.debug:
+        msg: "OK - slurmd activo en {{ inventory_hostname }}"
+
+    - name: "Verificar montajes NFS activos"
+      ansible.builtin.shell: |
+        mount | grep nfs
+      register: nfs_mount
+      changed_when: false
+      failed_when: nfs_mount.rc != 0 and nfs_mount.stdout == ''
+
+    - name: "Mostrar montajes NFS"
+      ansible.builtin.debug:
+        msg: "{{ nfs_mount.stdout_lines }}"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# BLOQUE 4: Jobs de prueba (desde headnode, sobre el clúster)
+# ─────────────────────────────────────────────────────────────────────────────
+- name: "VAL-4 | Jobs de prueba Slurm"
+  hosts: headnode
+  become: no
+  gather_facts: no
+
+  tasks:
+    # --- Test 1: hostname en todos los nodos ---
+    - name: "JOB-1 | hostname en todos los workers (-N2)"
+      ansible.builtin.command: >
+        srun --chdir=/tmp -N2 hostname
+      register: job_hostname
+      changed_when: false
+
+    - name: "Resultado JOB-1"
+      ansible.builtin.debug:
+        msg: "{{ job_hostname.stdout_lines }}"
+
+    # --- Test 2: stress de CPU en 1 nodo ---
+    - name: "JOB-2 | stress CPU (1 core, 10 s)"
+      ansible.builtin.command: >
+        srun --chdir=/tmp --cpus-per-task=1 stress --cpu 1 --timeout 10
+      register: job_stress_cpu
+      changed_when: false
+
+    - name: "Resultado JOB-2"
+      ansible.builtin.debug:
+        msg: "{{ job_stress_cpu.stderr_lines | default([]) + job_stress_cpu.stdout_lines | default([]) }}"
+
+    # --- Test 3: stress de CPU en ambos nodos simultáneo ---
+    - name: "JOB-3 | stress CPU multinodo (-N2, 1 task/nodo, 15 s)"
+      ansible.builtin.command: >
+        srun --chdir=/tmp -N2 --ntasks-per-node=1 stress --cpu 1 --timeout 15
+      register: job_stress_multi
+      changed_when: false
+
+    - name: "Resultado JOB-3"
+      ansible.builtin.debug:
+        msg: "{{ job_stress_multi.stderr_lines | default([]) + job_stress_multi.stdout_lines | default([]) }}"
+
+    # --- Test 4: script bash a través de sbatch ---
+    - name: "JOB-4 | Crear script de prueba sbatch"
+      ansible.builtin.copy:
+        dest: /tmp/validate_job.sh
+        mode: '0755'
+        content: |
+          #!/bin/bash
+          #SBATCH --job-name=validate
+          #SBATCH --output=/tmp/validate_job_%j.out
+          #SBATCH --ntasks=2
+          #SBATCH --cpus-per-task=1
+          #SBATCH --time=00:01:00
+          #SBATCH --chdir=/tmp
+          echo "=== Job $SLURM_JOB_ID iniciado en $(date) ==="
+          echo "Nodo: $(hostname)"
+          echo "CPUs asignadas: $SLURM_CPUS_ON_NODE"
+          echo "Nodos: $SLURM_JOB_NODELIST"
+          srun hostname
+          echo "=== Job finalizado en $(date) ==="
+
+    - name: "JOB-4 | Enviar job con sbatch y esperar resultado"
+      ansible.builtin.shell: |
+        JID=$(sbatch /tmp/validate_job.sh | awk '{print $NF}')
+        echo "JobID=$JID"
+        for i in $(seq 1 30); do
+          STATE=$(squeue -j $JID -h -o %T 2>/dev/null)
+          if [ -z "$STATE" ]; then
+            break
+          fi
+          sleep 2
+        done
+        cat /tmp/validate_job_${JID}.out 2>/dev/null || echo "(output aun no disponible)"
+      register: job_sbatch
+      changed_when: false
+
+    - name: "Resultado JOB-4 (sbatch)"
+      ansible.builtin.debug:
+        msg: "{{ job_sbatch.stdout_lines }}"
+
+    # --- Test 5: sacct muestra los jobs completados ---
+    - name: "sacct - jobs completados hoy"
+      ansible.builtin.command: >
+        sacct --starttime=today --format=JobID,JobName,State,NodeList,CPUTime,Elapsed -n
+      register: sacct_out
+      changed_when: false
+
+    - name: "Mostrar sacct"
+      ansible.builtin.debug:
+        msg: "{{ sacct_out.stdout_lines }}"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# BLOQUE 5: Resumen final
+# ─────────────────────────────────────────────────────────────────────────────
+- name: "RESUMEN | Estado final del cluster"
+  hosts: headnode
+  become: no
+  gather_facts: no
+
+  tasks:
+    - name: "squeue - cola de trabajos (debe estar vacía)"
+      ansible.builtin.command: squeue
+      register: squeue_out
+      changed_when: false
+
+    - name: "sinfo final"
+      ansible.builtin.command: sinfo
+      register: sinfo_final
+      changed_when: false
+
+    - name: "Imprimir resumen"
+      ansible.builtin.debug:
+        msg:
+          - "================================================"
+          - "     VALIDACIÓN DEL CLUSTER SLURM COMPLETADA    "
+          - "================================================"
+          - ""
+          - "--- squeue ---"
+          - "{{ squeue_out.stdout_lines }}"
+          - ""
+          - "--- sinfo ---"
+          - "{{ sinfo_final.stdout_lines }}"
+          - ""
+          - "Si todos los bloques anteriores muestran 'ok'"
+          - "el cluster está completamente operativo."
+          - "================================================"
+
